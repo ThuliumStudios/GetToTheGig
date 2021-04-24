@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="1">
+ <tileset firstgid="1" name="castle" tilewidth="64" tileheight="64" tilecount="80" columns="8">
+  <image source="castle.png" width="512" height="640"/>
+ </tileset>
+ <layer id="3" name="bg" width="64" height="64" opacity="0.5">
+  <data encoding="base64" compression="zlib">
+   eJztzjEOQFAURNG/JTo6ClTY/2rMDjRefiTnJLedTGsAAAAAAAAAAAAAAAAAAMDfDGnsfaKjKc0Fu1va01Gw/aUlrQW7Z7rSXbDNuwdjsQMc
+  </data>
+ </layer>
+ <layer id="1" name="collision" width="64" height="64">
+  <data encoding="base64" compression="zlib">
+   eJzt1jsKgDAQBcC0aiPe/7AasLCTRJPIOgOv3webT0oAAAAAAAAAAAAAAAAA8Mw6eoCPm47MZ5bBs7R2twtblynaq935KP1r6R9L6TmI1r9U9P5v3f/XN/NvyX+EHZDyA3c=
+  </data>
+ </layer>
+ <layer id="4" name="collision-polygon" width="64" height="64">
+  <data encoding="base64" compression="zlib">
+   eJztzrkNgDAABEEXA454Itx/aVwHhCehGWnzHQMAAAAAAAAAAAAAAAAA+LMt7Wm2R0qOdKYr3eWXliet9gQAn161NgGR
+  </data>
+ </layer>
+ <layer id="2" name="fg" width="64" height="64">
+  <data encoding="base64" compression="zlib">
+   eJztziEOwCAQBED+UlkJjjr4/5s4UVVVdw2dSTabrNpSAAAAAAAAAAAAAAAAAABgXzXSsk8k6pEr+0SC4+4RmY/tD86XG9+yAI4CAgI=
+  </data>
+ </layer>
+</map>
