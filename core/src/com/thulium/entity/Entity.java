@@ -27,21 +27,22 @@ public class Entity extends BaseEntity {
 
 	public void update(float delta) {
 		super.update(delta);
-//		if (Math.abs(body.getLinearVelocity().x) <= Units.MAX_VELOCITY) {
-//			body.setLinearVelocity(velocity.x, body.getLinearVelocity().y);
-//		}
 		if (Math.abs(body.getLinearVelocity().x) <= Units.MAX_VELOCITY) 
 		body.applyForceToCenter(velocity, true);
 	}
 	
 	public void updateAnimation() {
+		// Process jump animations
 		if (body.getLinearVelocity().y > 0)
 			animate("jump_up");
 		else if (body.getLinearVelocity().y < 0)
 			animate("jump_down");
-		else if (getAnimationName().equals("jump_down"))
+		else if (getAnimationName().equals("jump_down")) {
 			animate("idle", .3f, true);
+			body.applyLinearImpulse(new Vector2(velocity.x, 0  ), body.getWorldCenter(), true);
+		}
 		
+		// Process run/stop animations
 		if (body.getLinearVelocity().y == 0 && Math.abs(body.getLinearVelocity().x) > 0)
 			animate("run");
 		else if (body.getLinearVelocity().isZero() && getAnimationName().equals("run"))

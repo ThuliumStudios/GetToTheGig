@@ -1,69 +1,97 @@
 
 player.png
-size: 128,512
+size: 2048, 128
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Nearest, Nearest
 repeat: none
+amp
+  rotate: false
+  xy: 2, 2
+  size: 108, 108
+  orig: 108, 108
+  offset: 0, 0
+  index: -1
 idle
   rotate: false
-  xy: 80, 347
-  size: 42, 96
-  orig: 42, 96
+  xy: 1190, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: -1
 jump_down
   rotate: false
-  xy: 2, 177
-  size: 62, 90
-  orig: 62, 90
+  xy: 1092, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
-  index: 0
+  index: -1
 jump_up
   rotate: false
-  xy: 69, 250
-  size: 55, 95
-  orig: 55, 95
+  xy: 406, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+kick
+  rotate: false
+  xy: 210, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 0
-run
+kick
   rotate: false
-  xy: 2, 363
-  size: 76, 80
-  orig: 76, 80
+  xy: 504, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 2
-run
+kick
   rotate: false
-  xy: 2, 269
-  size: 65, 92
-  orig: 65, 92
+  xy: 896, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 66, 166
-  size: 56, 82
-  orig: 56, 82
-  offset: 0, 0
-  index: 3
-run
-  rotate: false
-  xy: 2, 84
-  size: 61, 91
-  orig: 61, 91
+  xy: 112, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 4
 run
   rotate: false
-  xy: 65, 82
-  size: 55, 82
-  orig: 55, 82
+  xy: 308, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 1
+run
+  rotate: false
+  xy: 602, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 3
+run
+  rotate: false
+  xy: 700, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 0
 run
   rotate: false
-  xy: 2, 2
-  size: 72, 78
-  orig: 72, 78
+  xy: 798, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 5
+run
+  rotate: false
+  xy: 994, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 2

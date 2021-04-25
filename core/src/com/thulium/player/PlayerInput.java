@@ -14,8 +14,6 @@ public class PlayerInput implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
-		case Keys.SPACE:
-			break;
 		case Keys.LEFT:
 		case Keys.A:
 			player.setXVelocity(-Units.MAX_VELOCITY);
@@ -29,6 +27,7 @@ public class PlayerInput implements InputProcessor {
 			break;
 		case Keys.UP:
 		case Keys.W:
+		case Keys.SPACE:
 			player.jump();
 			break;
 		case Keys.PLUS:
@@ -43,6 +42,9 @@ public class PlayerInput implements InputProcessor {
 			player.setDebugging();
 			break;
 		case Keys.P:
+			break;
+		case Keys.K:
+			player.attack();
 			break;
 		default:
 			return false;

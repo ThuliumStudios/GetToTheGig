@@ -11,11 +11,11 @@ public class Player extends Entity {
 	private boolean isOnGround;
 	private boolean isDebugging;
 	private boolean jumped;
+	private boolean noJump = true;
 
 	public Player(TextureAtlas atlas) {
 		super(atlas);
 
-		setSize(.6f, 1);
 		animate("idle", 1, true);
 	}
 
@@ -28,9 +28,13 @@ public class Player extends Entity {
 	public void update(float delta) {
 		super.update(delta);
 	}
+	
+	public void attack() {
+		animate("kick", .25f, false);
+	}
 
 	public void jump() {
-		if (!isOnGround && jumped)
+		if (!isOnGround && noJump)
 			return;
 
 		float modifier = 1;

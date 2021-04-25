@@ -45,8 +45,6 @@ public class GameMap {
 	}
 
 	public void render(OrthographicCamera camera, int... layers) {
-		
-		
 		camera.position.set(camera.position.x, camera.position.y, 0);
 		mapRenderer.setView(camera);
 		mapRenderer.render(layers);
