@@ -33,13 +33,13 @@ public class Entity extends BaseEntity {
 	
 	public void updateAnimation() {
 		// Process jump animations
-		if (body.getLinearVelocity().y > 0)
+		if (body.getLinearVelocity().y > .0f)
 			animate("jump_up");
-		else if (body.getLinearVelocity().y < 0)
+		else if (body.getLinearVelocity().y < .0f)
 			animate("jump_down");
 		else if (getAnimationName().equals("jump_down")) {
 			animate("idle", .3f, true);
-			body.applyLinearImpulse(new Vector2(velocity.x, 0  ), body.getWorldCenter(), true);
+			// body.applyLinearImpulse(new Vector2(velocity.x / 2f, 0), body.getWorldCenter(), true);
 		}
 		
 		// Process run/stop animations
@@ -53,6 +53,7 @@ public class Entity extends BaseEntity {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(x, y);
+		bodyDef.fixedRotation = true;
 		return bodyDef;
 	}
 
@@ -90,14 +91,12 @@ public class Entity extends BaseEntity {
 		fixtureDef.shape = box;
 		fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
 		fixtureDef.filter.maskBits = Units.GROUND_FLAG;
+		fixtureDef.filter.groupIndex = 1;
+		fixtureDef.density = 1.5f;
 		body.createFixture(fixtureDef).setUserData(name);
 
 		if (hasFoot) {
 			box.setAsBox((width * .9f), (height * .1f), new Vector2(0, (-height)), 0);
-			fixtureDef.shape = box;
-			fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
-			fixtureDef.filter.maskBits = Units.GROUND_FLAG;
-			fixtureDef.isSensor = true;
 			body.createFixture(fixtureDef).setUserData("foot");
 		}
 

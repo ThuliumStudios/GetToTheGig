@@ -54,16 +54,16 @@ public class Amp {
 		fixtureDef.shape = box;
 		fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
 		fixtureDef.filter.maskBits = Units.GROUND_FLAG;
+		fixtureDef.density = 1;
 		body.createFixture(fixtureDef).setUserData(name);
 
 		if (hasFoot) {
-			box.setAsBox((width * .9f), (height * .1f), new Vector2(0, (-height)), 0);
-			fixtureDef.friction = 1;
+			box.setAsBox((width * .9f), (height * .25f), new Vector2(0, (height)), 0);
 			fixtureDef.shape = box;
-			fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
-			fixtureDef.filter.maskBits = Units.GROUND_FLAG;
-			fixtureDef.isSensor = true;
-			body.createFixture(fixtureDef).setUserData("foot");
+			fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
+			fixtureDef.filter.maskBits = Units.ENTITY_FLAG;
+			fixtureDef.isSensor = false;
+			body.createFixture(fixtureDef).setUserData("amp_top");
 		}
 
 		box.dispose();

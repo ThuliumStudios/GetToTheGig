@@ -8,11 +8,19 @@ public class Cable {
 	public Cable() {
 	}
 	
+	public void update() {
+		
+	}
+	
 	public RopeJointDef getBodyDef(Body bodyA, Body bodyB) {
 		RopeJointDef ropeDef = new RopeJointDef();
 		ropeDef.bodyA = bodyA;
 		ropeDef.bodyB = bodyB;
-		ropeDef.maxLength = 10;
+		ropeDef.maxLength = 5;
+		ropeDef.localAnchorA.set(bodyA.getLocalCenter());
+		ropeDef.localAnchorB.set(bodyB.getLocalCenter());
+		ropeDef.collideConnected = true;
+
 		ropeDef.type = JointType.RopeJoint;
 		return ropeDef;
 	}

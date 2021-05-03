@@ -23,7 +23,6 @@ public class PlayerInput implements InputProcessor {
 		case Keys.D:
 			player.setXVelocity(Units.MAX_VELOCITY);
 			player.setFlipState(false);
-			System.out.println("Moving? D");
 			break;
 		case Keys.UP:
 		case Keys.W:

@@ -49,7 +49,7 @@ public class Player extends Entity {
 	}
 
 	public void createBody(Body body) {
-		super.createBody(body, "entity", 16, 28, true);
+		super.createBody(body, "player", 16, 28, true);
 	}
 	
 	public boolean isDebugging() {
