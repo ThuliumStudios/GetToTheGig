@@ -139,8 +139,8 @@ public class GameWorld {
 		
 		if (player.isDebugging())
 			debugRenderer.render(world, camera.combined);
-		if (Gdx.input.isKeyJustPressed(Keys.K))
-			amp.kick(player.getBody().getPosition().x < amp.getBody().getPosition().x ? 1 : -1);
+//		if (Gdx.input.isKeyJustPressed(Keys.K))
+//			amp.kick(player.getBody().getPosition().x < amp.getBody().getPosition().x ? 1 : -1);
 	}
 
 	public void update() {

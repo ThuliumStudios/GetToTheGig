@@ -39,7 +39,6 @@ public class Entity extends BaseEntity {
 			animate("jump_down");
 		else if (getAnimationName().equals("jump_down")) {
 			animate("idle", .3f, true);
-			// body.applyLinearImpulse(new Vector2(velocity.x / 2f, 0), body.getWorldCenter(), true);
 		}
 		
 		// Process run/stop animations

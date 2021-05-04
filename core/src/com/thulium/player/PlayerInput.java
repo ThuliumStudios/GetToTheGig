@@ -43,7 +43,7 @@ public class PlayerInput implements InputProcessor {
 		case Keys.P:
 			break;
 		case Keys.K:
-			player.attack();
+			player.attack(false);
 			break;
 		default:
 			return false;
@@ -63,6 +63,9 @@ public class PlayerInput implements InputProcessor {
 			// player.getBody().setLinearVelocity(0, player.getBody().getLinearVelocity().y);
 			player.applyOpposingForce();
 			return true;
+		case Keys.K:
+			player.attack(true);
+			break;
 		}
 
 		return false;

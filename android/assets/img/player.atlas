@@ -13,21 +13,21 @@ amp
   index: -1
 idle
   rotate: false
-  xy: 1190, 14
+  xy: 1582, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 jump_down
   rotate: false
-  xy: 1092, 14
+  xy: 1386, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 jump_up
   rotate: false
-  xy: 406, 14
+  xy: 504, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
@@ -41,14 +41,49 @@ kick
   index: 0
 kick
   rotate: false
-  xy: 504, 14
+  xy: 602, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 2
 kick
   rotate: false
-  xy: 896, 14
+  xy: 798, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 4
+rare
+  rotate: false
+  xy: 798, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 0
+kick
+  rotate: false
+  xy: 1190, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 1
+kick
+  rotate: false
+  xy: 1484, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 3
+rare
+  rotate: false
+  xy: 406, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 2
+rare
+  rotate: false
+  xy: 994, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
@@ -69,28 +104,28 @@ run
   index: 1
 run
   rotate: false
-  xy: 602, 14
+  xy: 700, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 3
 run
   rotate: false
-  xy: 700, 14
+  xy: 896, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
 run
   rotate: false
-  xy: 798, 14
+  xy: 1092, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 994, 14
+  xy: 1288, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0

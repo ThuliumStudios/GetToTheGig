@@ -29,8 +29,12 @@ public class Player extends Entity {
 		super.update(delta);
 	}
 	
-	public void attack() {
-		animate("kick", .25f, false);
+	public void attack(boolean attack) {
+		if (attack) {
+			animate("kick", .25f, false);
+		} else {
+			animate("rare", .5f, true);
+		}
 	}
 
 	public void jump() {
