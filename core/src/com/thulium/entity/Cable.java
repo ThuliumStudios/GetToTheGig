@@ -1,15 +1,26 @@
 package com.thulium.entity;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.JointDef.JointType;
+import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
 import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 
 public class Cable {
+	private RopeJoint joint;
 	public Cable() {
 	}
 	
 	public void update() {
 		
+	}
+
+	public RopeJoint getJoint() {
+		return joint;
+	}
+
+	public void setJoint(Joint joint) {
+		this.joint = (RopeJoint) joint;
 	}
 	
 	public RopeJointDef getBodyDef(Body bodyA, Body bodyB) {
