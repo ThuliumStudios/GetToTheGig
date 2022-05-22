@@ -3,6 +3,7 @@ package com.thulium.entity;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,12 +19,14 @@ public class Amp {
 	public Amp(TextureRegion region) {
 		sprite = new Sprite(region);
 		sprite.setSize(1, 1);
+		sprite.setOriginCenter();
 	}
 
 	public void render(Batch batch) {
 		sprite.draw(batch);
 		sprite.setPosition((body.getPosition().x) - (sprite.getWidth() / 2f),
 				(body.getPosition().y) - (sprite.getHeight() / 2f));
+		sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 	}
 	
 	public void kick(float x) {
@@ -52,18 +55,18 @@ public class Amp {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = box;
 		fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
-		fixtureDef.filter.maskBits = Units.GROUND_FLAG;
+		fixtureDef.filter.maskBits = Units.GROUND_FLAG | Units.ALL_FLAG;
 		fixtureDef.density = 1;
 		body.createFixture(fixtureDef).setUserData(name);
 
-		if (hasFoot) {
-			box.setAsBox((width * .9f), (height * .25f), new Vector2(0, (height)), 0);
-			fixtureDef.shape = box;
-			fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
-			fixtureDef.filter.maskBits = Units.ENTITY_FLAG;
-			fixtureDef.isSensor = false;
-			body.createFixture(fixtureDef).setUserData("amp_top");
-		}
+//		if (hasFoot) {
+//			box.setAsBox((width * .9f), (height * .25f), new Vector2(0, (height * .75f)), 0);
+//			fixtureDef.shape = box;
+//			fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
+//			fixtureDef.filter.maskBits = Units.ENTITY_FLAG;
+//			fixtureDef.isSensor = false;
+//			body.createFixture(fixtureDef).setUserData("amp_top");
+//		}
 
 		box.dispose();
 	}
