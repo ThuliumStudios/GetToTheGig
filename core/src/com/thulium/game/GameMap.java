@@ -77,7 +77,7 @@ public class GameMap {
 				fixtureDef.friction = .25f;
 				fixtureDef.shape = cs;
 				fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
-				fixtureDef.filter.maskBits = Units.ENTITY_FLAG;
+				fixtureDef.filter.maskBits = Units.ENTITY_FLAG | Units.ALL_FLAG;
 				fixtureDef.isSensor = false;
 				world.createBody(bodyDef).createFixture(fixtureDef);
 				cs.dispose();
