@@ -10,15 +10,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thulium.entity.Amp;
@@ -39,10 +33,10 @@ public class GameWorld {
 	private Vector2 gravity;
 	private Vector2 spawn;
 	private World world;
-
 	private GameMap map;
 	private Player player;
 	private Amp amp;
+	private Cable cable;
 	private MyContactListener cl;
 
 	private Box2DDebugRenderer debugRenderer;
@@ -87,8 +81,8 @@ public class GameWorld {
 		amp = new Amp(playerAtlas.findRegion("amp"));
 		amp.createBody(world.createBody(amp.getBodyDef(spawn.x + 2, spawn.y - 3)), "amp", .4f, .4f, true);
 		
-		Cable cable = new Cable();
-		world.createJoint(cable.getBodyDef(amp.getBody(), player.getBody()));
+		cable = new Cable();
+		cable.setJoint(world.createJoint(cable.getBodyDef(amp.getBody(), player.getBody())));
 		
 		// Test rendering game info
 		info = new PlayerInfo(player, game.getSkin());
@@ -98,6 +92,9 @@ public class GameWorld {
 		groundBox.dispose();
 
 		PlayerInput pIn = new PlayerInput(player);
+		pIn.setAmp(amp);
+		pIn.setCable(cable);
+
 		debugRenderer = new Box2DDebugRenderer();
 		Gdx.input.setInputProcessor(new InputMultiplexer(pIn, info.getStage()));
 		Controllers.addListener(new PlayerControllerInput(pIn));
@@ -125,10 +122,30 @@ public class GameWorld {
 
 		map.render(camera, 3);
 		info.render(delta);
-		
-		
-		// TODO: Not this
-//		Fixture f = amp.getBody().getFixtureList().first();
+
+		if (player.isPullingAmp()) {
+			if (cable.getJoint().getMaxLength() > 0) {
+				pullAmp(delta);
+			}
+		}
+
+		// TODO: Delet dis -.-
+		if (Gdx.input.isKeyJustPressed(Keys.P)) {
+			cutCable();
+		}
+
+		// Attempt to adjust amp collision filter based on player's Y velocity
+		if (player.getBody().getLinearVelocity().y < -.05f) {
+			changeAmpState(Units.ALL_FLAG, Units.NONE_FLAG);
+		} else if (player.getBody().getLinearVelocity().y > .05f) {
+			System.out.println("Should not be colliding");
+			changeAmpState(Units.ENTITY_FLAG, Units.GROUND_FLAG);
+		}
+
+		// TODO: End delete block
+
+//		Fixture f = amp.getBody().getFixtureList().first
+//		();
 //		Filter fd = f.getFilterData();
 //		if (player.getBody().getLinearVelocity().y <= 0) {
 //			fd.categoryBits = Units.GROUND_FLAG | Units.ENTITY_FLAG;
@@ -162,6 +179,37 @@ public class GameWorld {
 	public float cameraScale(boolean width) {
 		return width ? (textCamera.viewportWidth / camera.viewportWidth)
 				: (textCamera.viewportHeight / camera.viewportHeight);
+	}
+
+	// Used to change collision properties of the amp depending on player's movement
+	public void changeAmpState(short categoryBits, short maskBits) {
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run() {
+				amp.getBody().getFixtureList().forEach(f -> {
+					Filter filter = f.getFilterData();
+					filter.categoryBits = categoryBits;
+					filter.maskBits = maskBits;
+					amp.getBody().getFixtureList().first().setFilterData(filter);
+				});
+			}
+		});
+//		amp.getBody().getFixtureList().forEach(f -> {
+//			Filter filter = f.getFilterData();
+//			System.out.println("Category: " + categoryBits);
+//			filter.categoryBits = categoryBits;
+//			filter.maskBits = maskBits;
+//			amp.getBody().getFixtureList().first().setFilterData(filter);
+//		});
+	}
+
+	public void pullAmp(float delta) {
+		changeAmpState(Units.ENTITY_FLAG, Units.ALL_FLAG);
+		cable.getJoint().setMaxLength(cable.getJoint().getMaxLength() - delta);
+	}
+
+	public void cutCable() {
+		world.destroyJoint(cable.getJoint());
 	}
 
 	public float getTimestsep() {
