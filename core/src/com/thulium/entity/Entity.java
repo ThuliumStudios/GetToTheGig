@@ -33,18 +33,18 @@ public class Entity extends BaseEntity {
 	
 	public void updateAnimation() {
 		// Process jump animations
-		if (body.getLinearVelocity().y > .0f)
+		if (body.getLinearVelocity().y > .01f)
 			animate("jump_up");
-		else if (body.getLinearVelocity().y < .0f)
+		else if (body.getLinearVelocity().y < -.01f)
 			animate("jump_down");
-		else if (getAnimationName().equals("jump_down")) {
+		else if (getAnimationName().equals("jump_down") || getAnimationName().equals("jump_up")) {
 			animate("idle", .3f, true);
 		}
 		
 		// Process run/stop animations
-		if (body.getLinearVelocity().y == 0 && Math.abs(body.getLinearVelocity().x) > 0)
+		if (body.getLinearVelocity().y == 0 && Math.abs(body.getLinearVelocity().x) > .01f)
 			animate("run");
-		else if (body.getLinearVelocity().isZero() && getAnimationName().equals("run"))
+		else if (inMargin(body.getLinearVelocity().x) && getAnimationName().equals("run"))
 			animate("idle", .3f, true);
 	}
 
@@ -70,11 +70,14 @@ public class Entity extends BaseEntity {
 	
 	public void setXVelocity(float x) {
 		velocity.x = x;
-		
 	}
-	
+
 	public void applyOpposingForce() {
 		body.applyLinearImpulse(new Vector2(-body.getLinearVelocity().x / 2f, 0), body.getWorldCenter(), true);
+	}
+
+	public boolean inMargin(float value) {
+		return value < .01f && value > -.01f;
 	}
 	
 	public void createBody(Body body, float width, float height) {
@@ -89,13 +92,14 @@ public class Entity extends BaseEntity {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = box;
 		fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
-		fixtureDef.filter.maskBits = Units.GROUND_FLAG;
+		fixtureDef.filter.maskBits = Units.GROUND_FLAG | Units.ALL_FLAG;
 		fixtureDef.filter.groupIndex = 1;
 		fixtureDef.density = 1.5f;
 		body.createFixture(fixtureDef).setUserData(name);
 
 		if (hasFoot) {
 			box.setAsBox((width * .9f), (height * .1f), new Vector2(0, (-height)), 0);
+			fixtureDef.isSensor = true;
 			body.createFixture(fixtureDef).setUserData("foot");
 		}
 
