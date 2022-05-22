@@ -10,6 +10,7 @@ import com.thulium.util.Units;
 public class Player extends Entity {
 	private boolean isOnGround;
 	private boolean isDebugging;
+	private boolean isPullingAmp;
 	private boolean jumped;
 	private boolean noJump = true;
 
@@ -50,6 +51,14 @@ public class Player extends Entity {
 		this.isOnGround = isOnGround;
 		if (isOnGround)
 			jumped = false;
+	}
+
+	public void pullAmp(boolean isPullingAmp) {
+		this.isPullingAmp = isPullingAmp;
+	}
+
+	public boolean isPullingAmp() {
+		return isPullingAmp;
 	}
 
 	public void createBody(Body body) {
