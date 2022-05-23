@@ -3,6 +3,7 @@ package com.thulium.player;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.thulium.entity.Amp;
 import com.thulium.entity.Cable;
 import com.thulium.util.Units;
@@ -69,7 +70,6 @@ public class PlayerInput implements InputProcessor {
 			case Keys.LEFT:
 			case Keys.RIGHT:
 				player.setXVelocity(0);
-				// player.getBody().setLinearVelocity(0, player.getBody().getLinearVelocity().y);
 				player.applyOpposingForce();
 				return true;
 			case Keys.K:
@@ -80,8 +80,14 @@ public class PlayerInput implements InputProcessor {
 				player.pullAmp(false);
 				// amp.getBody().applyAngularImpulse(5, true);
 				Vector2 impulse = new Vector2(0, 2);
-				player.getBody().applyLinearImpulse(impulse, player.getBody().getWorldCenter(), true);
 				amp.getBody().applyLinearImpulse(impulse, amp.getBody().getWorldCenter(), true);
+				// TODO: Fix and place somewhere else
+				amp.getBody().getFixtureList().forEach(f -> {
+					Filter filter = f.getFilterData();
+					filter.categoryBits = Units.ENTITY_FLAG;
+					filter.maskBits = Units.GROUND_FLAG;
+					amp.getBody().getFixtureList().first().setFilterData(filter);
+				});
 				break;
 		}
 
