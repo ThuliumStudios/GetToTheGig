@@ -5,10 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.thulium.util.Units;
 
@@ -29,8 +26,8 @@ public class Amp {
 		sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 	}
 	
-	public void kick(float x) {
-		body.applyLinearImpulse(new Vector2(10 * x, 10), body.getWorldCenter(), true);
+	public void kick(float val, float xMul, float yMul) {
+		body.applyLinearImpulse(new Vector2(10 * val, 10), body.getWorldCenter(), true);
 	}
 	
 	public Body getBody() {
@@ -49,7 +46,7 @@ public class Amp {
 	
 	public void createBody(Body body, Object name, float width, float height, boolean hasFoot) {
 		this.body = body;
-		
+
 		PolygonShape box = new PolygonShape();
 		box.setAsBox((width), (height));
 		FixtureDef fixtureDef = new FixtureDef();
@@ -69,5 +66,15 @@ public class Amp {
 //		}
 
 		box.dispose();
+
+	}
+
+	public void changeCollisionFilters(short categoryBits, short maskBits) {
+		body.getFixtureList().forEach(f -> {
+			Filter filter = f.getFilterData();
+			filter.categoryBits = categoryBits;
+			filter.maskBits = maskBits;
+			body.getFixtureList().first().setFilterData(filter);
+		});
 	}
 }
