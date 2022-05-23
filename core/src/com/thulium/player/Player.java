@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.thulium.entity.Entity;
 import com.thulium.util.Units;
 
@@ -44,6 +46,7 @@ public class Player extends Entity {
 
 		float modifier = 1;
 		getBody().setLinearVelocity(getBody().getLinearVelocity().x, Units.JUMP * modifier);
+		// pullAmp(false);
 		jumped = !isOnGround;
 	}
 
@@ -54,7 +57,9 @@ public class Player extends Entity {
 	}
 
 	public void pullAmp(boolean isPullingAmp) {
-		this.isPullingAmp = isPullingAmp;
+		// getBody().setType((isPullingAmp && isOnGround) ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody);
+		setMass(isPullingAmp && isOnGround ? 100 : 1);
+		this.isPullingAmp = (isPullingAmp && isOnGround);
 	}
 
 	public boolean isPullingAmp() {
@@ -63,6 +68,12 @@ public class Player extends Entity {
 
 	public void createBody(Body body) {
 		super.createBody(body, "player", 16, 28, true);
+	}
+
+	public void setMass(float massMul) {
+		MassData massData = getBody().getMassData();
+		massData.mass = getOriginalMass() * massMul;
+		getBody().setMassData(massData);
 	}
 	
 	public boolean isDebugging() {
