@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
@@ -32,7 +33,10 @@ public class GameMap {
 	public GameMap(MainGame game, Batch batch) {
 		loader = new TmxMapLoader();
 		map = loader.load("maps/map.tmx");
-		mapRenderer = new OrthogonalTiledMapRenderer(map, 1/64f, batch);
+		mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f, batch);
+
+		for (MapLayer layer : map.getLayers())
+			System.out.println(layer.getName());
 		
 		bg = new ParallaxBackground(game.getAsset("maps/snowymountains.png", Texture.class), 
 				game.getAsset("maps/whiteclouds.png", Texture.class));
@@ -63,14 +67,16 @@ public class GameMap {
 				if (cell == null || cell.getTile() == null)
 					continue;
 				bodyDef.type = BodyType.StaticBody;
-				bodyDef.position.set((x + .5f), (y + .5f));
+				// bodyDef.position.set((x + .5f), (y + .5f));
+				// Only create collision objects at the top of tiles
+				bodyDef.position.set(x + .5f, y + .8f);
 
 				ChainShape cs = new ChainShape();
 				Vector2[] v = new Vector2[5];
-				v[0] = new Vector2((-1 / 2f), (-1 / 2f));
-				v[1] = new Vector2((-1 / 2f), (1 / 2f));
-				v[2] = new Vector2((1 / 2f), (1 / 2f));
-				v[3] = new Vector2((1 / 2f), (-1 / 2f));
+				v[0] = new Vector2((-1 / 2f), (-1 / 8f));
+				v[1] = new Vector2((-1 / 2f), (1 / 8f));
+				v[2] = new Vector2((1 / 2f), (1 / 8f));
+				v[3] = new Vector2((1 / 2f), (-1 / 8f));
 				v[4] = new Vector2(v[0]);
 				
 				cs.createChain(v);
