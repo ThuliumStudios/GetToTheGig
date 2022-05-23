@@ -106,6 +106,7 @@ project(":core") {
 
 
     dependencies {
+        implementation 'org.mini2Dx:universal-tween-engine:6.3.3'
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
