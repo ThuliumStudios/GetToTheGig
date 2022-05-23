@@ -1,132 +1,167 @@
 
 player.png
-size: 2048, 128
+size: 512, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 amp
   rotate: false
-  xy: 2, 2
+  xy: 2, 394
   size: 108, 108
   orig: 108, 108
   offset: 0, 0
   index: -1
+climb
+  rotate: false
+  xy: 2, 198
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 1
+climb
+  rotate: false
+  xy: 100, 198
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 0
+gig_sprite_run3
+  rotate: false
+  xy: 394, 226
+  size: 76, 80
+  orig: 76, 80
+  offset: 0, 0
+  index: -1
 idle
   rotate: false
-  xy: 1582, 14
+  xy: 296, 112
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 jump_down
   rotate: false
-  xy: 1386, 14
+  xy: 394, 308
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 jump_up
   rotate: false
-  xy: 504, 14
+  xy: 308, 406
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 kick
   rotate: false
-  xy: 210, 14
+  xy: 112, 406
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
 kick
   rotate: false
-  xy: 602, 14
+  xy: 406, 406
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 2
 kick
   rotate: false
-  xy: 798, 14
+  xy: 100, 100
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 4
 rare
   rotate: false
-  xy: 798, 14
+  xy: 100, 100
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
 kick
   rotate: false
-  xy: 1190, 14
+  xy: 198, 112
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 kick
   rotate: false
-  xy: 1484, 14
+  xy: 198, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 3
 rare
   rotate: false
-  xy: 406, 14
+  xy: 2, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 2
 rare
   rotate: false
-  xy: 994, 14
+  xy: 198, 308
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 112, 14
+  xy: 2, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 4
 run
   rotate: false
-  xy: 308, 14
+  xy: 210, 406
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 700, 14
+  xy: 100, 296
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 3
 run
   rotate: false
-  xy: 896, 14
+  xy: 100, 2
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
 run
   rotate: false
-  xy: 1092, 14
+  xy: 198, 210
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 1288, 14
+  xy: 296, 210
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 2
+slide
+  rotate: false
+  xy: 2, 100
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 1
+slide
+  rotate: false
+  xy: 296, 308
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 0
