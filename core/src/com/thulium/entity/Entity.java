@@ -3,16 +3,14 @@ package com.thulium.entity;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.thulium.util.Units;
 
 public class Entity extends BaseEntity {
 	private Body body;
 	private Vector2 velocity;
+	private float originalMass;
 
 	public Entity(TextureAtlas atlas) {
 		super(atlas);
@@ -73,22 +71,33 @@ public class Entity extends BaseEntity {
 	}
 
 	public void applyOpposingForce() {
-		body.applyLinearImpulse(new Vector2(-body.getLinearVelocity().x / 2f, 0), body.getWorldCenter(), true);
+		body.applyLinearImpulse(new Vector2(-body.getLinearVelocity().x / 2f * body.getMass(), 0),
+				body.getWorldCenter(), true);
 	}
 
 	public boolean inMargin(float value) {
 		return value < .01f && value > -.01f;
 	}
-	
+
+	public float getOriginalMass() { return originalMass; }
+
 	public void createBody(Body body, float width, float height) {
-		createBody(body, "entity", width, height, true);
+		createBody(body, "entity", width, height, width, height, true);
+	}
+
+	public void createBody(Body body, float width, float height, float x, float y) {
+		createBody(body, "entity", width, height, x, y, true);
 	}
 
 	public void createBody(Body body, Object name, float width, float height, boolean hasFoot) {
+		createBody(body, "entity", width, height, width, height, hasFoot);
+	}
+
+	public void createBody(Body body, Object name, float width, float height, float x, float y, boolean hasFoot) {
 		this.body = body;
 
 		PolygonShape box = new PolygonShape();
-		box.setAsBox((width), (height));
+		box.setAsBox((width), (height), new Vector2(x, y), 0);
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = box;
 		fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
@@ -96,14 +105,32 @@ public class Entity extends BaseEntity {
 		fixtureDef.filter.groupIndex = 1;
 		fixtureDef.density = 1.5f;
 		body.createFixture(fixtureDef).setUserData(name);
+		originalMass = body.getMass();
 
 		if (hasFoot) {
-			box.setAsBox((width * .9f), (height * .1f), new Vector2(0, (-height)), 0);
+			box.setAsBox((width * .9f), (height * .1f), new Vector2(x, y - height), 0);
 			fixtureDef.isSensor = true;
 			body.createFixture(fixtureDef).setUserData("foot");
 		}
 
 		box.dispose();
+	}
+
+	// TODO: Possibly delete and replace
+	public void changeMass(float density) {
+		body.getFixtureList().forEach(f -> {
+			body.getFixtureList().first().setDensity(density);
+			body.resetMassData();
+		});
+	}
+
+	public void changeCollisionFilters(short categoryBits, short maskBits) {
+		body.getFixtureList().forEach(f -> {
+			Filter filter = f.getFilterData();
+			filter.categoryBits = categoryBits;
+			filter.maskBits = maskBits;
+			body.getFixtureList().first().setFilterData(filter);
+		});
 	}
 	
 	public void dispose() {

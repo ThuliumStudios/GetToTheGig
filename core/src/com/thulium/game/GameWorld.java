@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thulium.entity.Amp;
@@ -59,7 +60,7 @@ public class GameWorld {
 		textCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cl = new MyContactListener();
 
-		gravity = new Vector2(0, -29.43f);
+		gravity = new Vector2(0, -9.81f * 3);
 		world = new World(gravity, true);
 		world.setContactListener(cl);
 
@@ -70,16 +71,15 @@ public class GameWorld {
 		map = new GameMap(game, game.getBatch());
 		map.createBox2dObjects(world, groundBodyDef, groundDef);
 
-		spawn = new Vector2(16.5f, 6.5f);
+		spawn = new Vector2(2.5f, 12.5f);
 
 		playerAtlas = new TextureAtlas(Gdx.files.internal("img/player.atlas"));
 		player = new Player(playerAtlas);
 		
-		addEntity(player, .6f, .9f);
+		addEntity(player, .6f, .2f, 0, -.4f);
 		
 		// Testing 1/4 cable 
 		amp = new Amp(playerAtlas.findRegion("amp"));
-		amp.createBody(world.createBody(amp.getBodyDef(spawn.x + 2, spawn.y - 3)), "amp", .4f, .4f, true);
 		
 		cable = new Cable();
 		cable.setJoint(world.createJoint(cable.getBodyDef(amp.getBody(), player.getBody())));
@@ -106,7 +106,7 @@ public class GameWorld {
 		map.renderBG(batch, camera);
 		batch.end();
 		
-		map.render(camera, 0, 1, 2);
+		map.render(camera, 0, 1, 2, 3);
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
@@ -117,10 +117,14 @@ public class GameWorld {
 		shapes.setProjectionMatrix(camera.combined);
 		shapes.setColor(Color.BLACK);
 		shapes.begin(ShapeType.Filled);
-		shapes.rectLine(player.getBody().getPosition().x, player.getBody().getPosition().y, amp.getBody().getPosition().x, amp.getBody().getPosition().y, .025f);
+		Array<Joint> joints = new Array<>();
+		world.getJoints(joints);
+		joints.forEach(j -> {
+			shapes.rectLine(j.getAnchorA(), j.getAnchorB(), .025f);
+		});
 		shapes.end();
 
-		map.render(camera, 3);
+		map.render(camera, 4);
 		info.render(delta);
 
 		if (player.isPullingAmp()) {
@@ -135,24 +139,17 @@ public class GameWorld {
 		}
 
 		// Attempt to adjust amp collision filter based on player's Y velocity
-		if (player.getBody().getLinearVelocity().y < -.05f) {
-			changeAmpState(Units.ALL_FLAG, Units.NONE_FLAG);
-		} else if (player.getBody().getLinearVelocity().y > .05f) {
-			System.out.println("Should not be colliding");
-			changeAmpState(Units.ENTITY_FLAG, Units.GROUND_FLAG);
-		}
-
-		// TODO: End delete block
-
-//		Fixture f = amp.getBody().getFixtureList().first
-//		();
-//		Filter fd = f.getFilterData();
-//		if (player.getBody().getLinearVelocity().y <= 0) {
-//			fd.categoryBits = Units.GROUND_FLAG | Units.ENTITY_FLAG;
-//			fd.maskBits = Units.GROUND_FLAG;
-//		} else {
-//			fd.groupIndex = 1;
+//		if (player.getBody().getLinearVelocity().y < -.05f) {
+//			changeAmpState(Units.ALL_FLAG, Units.NONE_FLAG);
+//		} else if (player.getBody().getLinearVelocity().y > .05f) {
+//			changeAmpState(Units.ENTITY_FLAG, Units.GROUND_FLAG);
 //		}
+
+		if (player.getBody().getLinearVelocity().y >= .001f) {
+			player.changeCollisionFilters(Units.ENTITY_FLAG, (short)0);
+		} else {
+			player.changeCollisionFilters(Units.ENTITY_FLAG, Units.GROUND_FLAG);
+		}
 		
 		if (player.isDebugging())
 			debugRenderer.render(world, camera.combined);
@@ -176,35 +173,17 @@ public class GameWorld {
 		e.createBody(world.createBody(e.getBodyDef(spawn.x, spawn.y)), width / 2f, height / 2f);
 	}
 
+	public void addEntity(Entity e, float width, float height, float x, float y) {
+		e.createBody(world.createBody(e.getBodyDef(spawn.x, spawn.y)), width / 2f, height / 2f, x, y);
+	}
+
 	public float cameraScale(boolean width) {
 		return width ? (textCamera.viewportWidth / camera.viewportWidth)
 				: (textCamera.viewportHeight / camera.viewportHeight);
 	}
 
-	// Used to change collision properties of the amp depending on player's movement
-	public void changeAmpState(short categoryBits, short maskBits) {
-		Gdx.app.postRunnable(new Runnable() {
-			@Override
-			public void run() {
-				amp.getBody().getFixtureList().forEach(f -> {
-					Filter filter = f.getFilterData();
-					filter.categoryBits = categoryBits;
-					filter.maskBits = maskBits;
-					amp.getBody().getFixtureList().first().setFilterData(filter);
-				});
-			}
-		});
-//		amp.getBody().getFixtureList().forEach(f -> {
-//			Filter filter = f.getFilterData();
-//			System.out.println("Category: " + categoryBits);
-//			filter.categoryBits = categoryBits;
-//			filter.maskBits = maskBits;
-//			amp.getBody().getFixtureList().first().setFilterData(filter);
-//		});
-	}
-
 	public void pullAmp(float delta) {
-		changeAmpState(Units.ENTITY_FLAG, Units.ALL_FLAG);
+		amp.changeCollisionFilters(Units.ENTITY_FLAG, Units.ALL_FLAG);
 		cable.getJoint().setMaxLength(cable.getJoint().getMaxLength() - delta);
 	}
 
