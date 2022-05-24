@@ -97,8 +97,7 @@ public class GameMap {
 	}
 
 	public <T> T getProperty(String property, Class<T> classType) {
-		System.out.println("Property " + property + " is " + map.getProperties().get(""));
-		return map.getProperties().get("", classType);
+		return map.getProperties().get(property, classType);
 	}
 
 	public void dispose() {
@@ -122,7 +121,7 @@ public class GameMap {
 			bgs.forEach(bg -> {
 				int i = bgs.indexOf(bg, true);
 				bg.setRegionX((int) (camera.position.x * Math.sqrt(mul) / (i + 1)) % bg.getTexture().getWidth());
-				bg.setRegionWidth((int) bg.getTexture().getWidth());
+				bg.setRegionWidth((int) (bg.getTexture().getWidth() / 8f));
 
 				batch.draw(bg, camera.position.x - camera.viewportWidth/2f, camera.position.y - camera.viewportHeight / 2f,
 						Units.WIDTH, Units.HEIGHT);
@@ -132,8 +131,8 @@ public class GameMap {
 		public void renderFG(Batch batch, OrthographicCamera camera) {
 			fgs.forEach(fg -> {
 				int i = fgs.indexOf(fg, true);
-				fg.setRegionX((int) (camera.position.x * mul * (i + 1 * .25f)) % fg.getTexture().getWidth());
-				fg.setRegionWidth((int) fg.getTexture().getWidth());
+				fg.setRegionX((int) (camera.position.x * mul) % fg.getTexture().getWidth());
+				fg.setRegionWidth((int) (fg.getTexture().getWidth()));
 
 				batch.draw(fg, camera.position.x - camera.viewportWidth/2f, camera.position.y - camera.viewportHeight / 2f,
 						Units.WIDTH, Units.HEIGHT);
@@ -149,7 +148,7 @@ public class GameMap {
 
 		public void addForegrounds(Texture... fgsToAdd) {
 			Arrays.asList(fgsToAdd).forEach(fg -> {
-				fg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
+				fg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 				fgs.add(new TextureRegion(fg));
 			});
 		}

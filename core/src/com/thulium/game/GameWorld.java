@@ -167,15 +167,20 @@ public class GameWorld {
 	}
 
 	public void update(float delta) {
-		camera.position.set(player.getBody().getPosition(), 0);
+		camera.position.set(MathUtils.clamp(player.getBody().getPosition().x, camera.viewportWidth / 2f,
+				map.getProperty("width", Integer.class) - camera.viewportWidth/2f),
+				MathUtils.clamp(player.getBody().getPosition().y, 0,
+						map.getProperty("height", Integer.class)), 0);
 		textCamera.position.set(camera.position.x * (cameraScale(true)), camera.position.y * (cameraScale(false)), 0);
+
+		System.out.println(camera.position.x);
 
 		player.setOnGround(cl.isOnGround());
 		player.update(Gdx.graphics.getDeltaTime());
 		textCamera.update();
 		camera.update();
 
-		world.step(/**1 / 60f**/Math.min(1 / 165f, delta), 6, 2);
+		world.step(/**1 / 60f**/Math.min(1 / 60f, delta), 6, 2);
 	}
 
 	public void addEntity(Entity e, float width, float height) {
