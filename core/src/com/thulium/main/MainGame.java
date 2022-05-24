@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.thulium.screen.GameScreen;
 
+import java.util.Arrays;
+
 public class MainGame extends Game {
 	private AssetManager assets;
 	private Skin skin;
@@ -20,12 +22,7 @@ public class MainGame extends Game {
 		
 		skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
-		// TODO: Not this
-		assets = new AssetManager();
-		assets.load("maps/snowymountains.png", Texture.class);
-		assets.load("maps/whiteclouds.png", Texture.class);
-		assets.finishLoading();
-		
+		loadAssets();
 		setScreen(new GameScreen(this));
 	}
 	
@@ -45,7 +42,16 @@ public class MainGame extends Game {
 	public <T> T getAsset(String name, Class<T> type) {
 		return assets.get(name, type);
 	}
-	
+
+	public void loadAssets() {
+		assets = new AssetManager();
+
+		String[] mapBg = {"snowymountains", "whiteclouds", "trees_fg", "Ground"};
+		Arrays.asList(mapBg).forEach(img -> assets.load("maps/" + img + ".png", Texture.class));
+
+		assets.finishLoading();
+	}
+
 	@Override
 	public void dispose() {
 		super.dispose();
