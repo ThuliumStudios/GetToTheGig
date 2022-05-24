@@ -106,15 +106,16 @@ public class GameWorld {
 		batch.begin();
 		map.renderBG(batch, camera);
 		batch.end();
-		
+
 		map.render(camera, 0, 1, 2, 3);
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		amp.render(batch);
 		player.render(batch);
+		map.renderFG(batch, camera);
 		batch.end();
-		
+
 		shapes.setProjectionMatrix(camera.combined);
 		shapes.setColor(Color.BLACK);
 		shapes.begin(ShapeType.Filled);
@@ -126,6 +127,13 @@ public class GameWorld {
 		shapes.end();
 
 		map.render(camera, 4);
+
+		batch.setProjectionMatrix(camera.combined);
+		batch.begin();
+		map.renderFG(batch, camera);
+		batch.end();
+
+
 		info.render(delta);
 
 		if (player.isPullingAmp()) {
@@ -158,7 +166,7 @@ public class GameWorld {
 //			amp.kick(player.getBody().getPosition().x < amp.getBody().getPosition().x ? 1 : -1);
 	}
 
-	public void update() {
+	public void update(float delta) {
 		camera.position.set(player.getBody().getPosition(), 0);
 		textCamera.position.set(camera.position.x * (cameraScale(true)), camera.position.y * (cameraScale(false)), 0);
 
@@ -167,7 +175,7 @@ public class GameWorld {
 		textCamera.update();
 		camera.update();
 
-		world.step(1 / 60f, 6, 2);
+		world.step(/**1 / 60f**/Math.min(1 / 165f, delta), 6, 2);
 	}
 
 	public void addEntity(Entity e, float width, float height) {
