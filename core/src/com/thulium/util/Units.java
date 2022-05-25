@@ -1,5 +1,7 @@
 package com.thulium.util;
 
+import com.badlogic.gdx.math.Vector2;
+
 public final class Units {
 	public static final int WIDTH = 8;
 	public static final int HEIGHT = 5;
@@ -11,6 +13,8 @@ public final class Units {
 	public static final short ENTITY_FLAG = 1 << 3;
 
 	public static final float AMP_MASS = 0;
+
+	public static Vector2 POWER_SLIDE = new Vector2(5, 0);
 
 	public static final String[] animations = { "idle", "run", "jump_up", "jump_down" };
 

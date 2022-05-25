@@ -3,6 +3,7 @@ package com.thulium.player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.MassData;
@@ -48,6 +49,14 @@ public class Player extends Entity {
 		getBody().setLinearVelocity(getBody().getLinearVelocity().x, Units.JUMP * modifier);
 		// pullAmp(false);
 		jumped = !isOnGround;
+	}
+
+	public void powerslide() {
+		Vector2 force = new Vector2(5 / getBody().getLinearVelocity().x, 0);
+		setXVelocity(0);
+
+		getBody().applyLinearImpulse(force, getBody().getWorldCenter(), true);
+		applyOpposingForce();
 	}
 
 	public void setOnGround(boolean isOnGround) {

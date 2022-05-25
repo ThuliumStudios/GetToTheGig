@@ -173,8 +173,6 @@ public class GameWorld {
 						map.getProperty("height", Integer.class)), 0);
 		textCamera.position.set(camera.position.x * (cameraScale(true)), camera.position.y * (cameraScale(false)), 0);
 
-		System.out.println(camera.position.x);
-
 		player.setOnGround(cl.isOnGround());
 		player.update(Gdx.graphics.getDeltaTime());
 		textCamera.update();

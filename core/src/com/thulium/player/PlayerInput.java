@@ -3,12 +3,16 @@ package com.thulium.player;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.utils.Array;
 import com.thulium.entity.Amp;
 import com.thulium.entity.Cable;
 import com.thulium.util.Units;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 public class PlayerInput implements InputProcessor {
+	private Array<Integer> keysDown = new Array<>();
 	private Player player;
 	private Cable cable;
 	private Amp amp;
@@ -35,6 +39,11 @@ public class PlayerInput implements InputProcessor {
 			case Keys.SPACE:
 				player.jump();
 				break;
+			case Keys.SHIFT_LEFT:
+			case Keys.SHIFT_RIGHT:
+				if (keyIsDown(Keys.A, Keys.D))
+					player.powerslide();
+				break;
 			case Keys.PLUS:
 				break;
 			case Keys.MINUS:
@@ -56,9 +65,13 @@ public class PlayerInput implements InputProcessor {
 				player.attack(false);
 				break;
 			default:
-				return false;
+				break;
 		}
-		
+
+		keysDown.add(keycode);
+		System.out.print("Key down: " + keycode + ". Keys still down: ");
+		keysDown.forEach(k -> System.out.print(k + ", "));
+		System.out.println();
 		return false;
 	}
 
@@ -71,7 +84,7 @@ public class PlayerInput implements InputProcessor {
 			case Keys.RIGHT:
 				player.setXVelocity(0);
 				player.applyOpposingForce();
-				return true;
+				break;
 			case Keys.K:
 				player.attack(true);
 				break;
@@ -81,16 +94,15 @@ public class PlayerInput implements InputProcessor {
 				// amp.getBody().applyAngularImpulse(5, true);
 				Vector2 impulse = new Vector2(0, 2);
 				amp.getBody().applyLinearImpulse(impulse, amp.getBody().getWorldCenter(), true);
-				// TODO: Fix and place somewhere else
-				amp.getBody().getFixtureList().forEach(f -> {
-					Filter filter = f.getFilterData();
-					filter.categoryBits = Units.ENTITY_FLAG;
-					filter.maskBits = Units.GROUND_FLAG;
-					amp.getBody().getFixtureList().first().setFilterData(filter);
-				});
+				break;
+			default:
 				break;
 		}
 
+		keysDown.removeValue(keycode, true);
+		System.out.print("Key up: " + keycode + ". Keys still down: ");
+		keysDown.forEach(k -> System.out.print(k + ", "));
+		System.out.println();
 		return false;
 	}
 
@@ -121,6 +133,20 @@ public class PlayerInput implements InputProcessor {
 
 	@Override
 	public boolean scrolled(float amountX, float amountY) {
+		return false;
+	}
+
+	public boolean keyIsDown(int keycode) {
+		return keysDown.contains(keycode, true);
+	}
+
+	public boolean keyIsDown(int... keycodes) {
+		for (int key : keysDown) {
+			if (IntStream.of(keycodes).parallel().filter(i -> i == key).findAny().isPresent()) {
+				System.out.println("Key is down: " + key);
+				return true;
+			}
+		}
 		return false;
 	}
 
