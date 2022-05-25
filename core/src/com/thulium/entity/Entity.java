@@ -103,6 +103,7 @@ public class Entity extends BaseEntity {
 		fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
 		fixtureDef.filter.maskBits = Units.GROUND_FLAG | Units.ALL_FLAG;
 		fixtureDef.filter.groupIndex = 1;
+		fixtureDef.friction = 1;
 		fixtureDef.density = 1.5f;
 		body.createFixture(fixtureDef).setUserData(name);
 		originalMass = body.getMass();
