@@ -102,14 +102,14 @@ public class Entity extends BaseEntity {
 		fixtureDef.shape = box;
 		fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
 		fixtureDef.filter.maskBits = Units.GROUND_FLAG | Units.ALL_FLAG;
-		fixtureDef.filter.groupIndex = 1;
+		fixtureDef.filter.groupIndex = 2;
 		fixtureDef.friction = 1;
 		fixtureDef.density = 1.5f;
 		body.createFixture(fixtureDef).setUserData(name);
 		originalMass = body.getMass();
 
 		if (hasFoot) {
-			box.setAsBox((width * .9f), (height * .1f), new Vector2(x, y - height), 0);
+			box.setAsBox((width * .8f), (height * .1f), new Vector2(x, y - height), 0);
 			fixtureDef.isSensor = true;
 			body.createFixture(fixtureDef).setUserData("foot");
 		}
@@ -130,6 +130,14 @@ public class Entity extends BaseEntity {
 			Filter filter = f.getFilterData();
 			filter.categoryBits = categoryBits;
 			filter.maskBits = maskBits;
+			body.getFixtureList().first().setFilterData(filter);
+		});
+	}
+
+	public void changeCollisionGroup(short group) {
+		body.getFixtureList().forEach(f -> {
+			Filter filter = f.getFilterData();
+			filter.groupIndex = group;
 			body.getFixtureList().first().setFilterData(filter);
 		});
 	}

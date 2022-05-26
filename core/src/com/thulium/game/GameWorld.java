@@ -133,7 +133,6 @@ public class GameWorld {
 		map.renderFG(batch, camera);
 		batch.end();
 
-
 		info.render(delta);
 
 		if (player.isPullingAmp()) {
@@ -147,18 +146,17 @@ public class GameWorld {
 			cutCable();
 		}
 
-		// Attempt to adjust amp collision filter based on player's Y velocity
-//		if (player.getBody().getLinearVelocity().y < -.05f) {
-//			changeAmpState(Units.ALL_FLAG, Units.NONE_FLAG);
-//		} else if (player.getBody().getLinearVelocity().y > .05f) {
-//			changeAmpState(Units.ENTITY_FLAG, Units.GROUND_FLAG);
-//		}
-
 		if (player.getBody().getLinearVelocity().y >= .001f) {
 			player.changeCollisionFilters(Units.ENTITY_FLAG, (short)0);
+			// player.changeCollisionGroup((short) 2);
 		} else {
 			player.changeCollisionFilters(Units.ENTITY_FLAG, Units.GROUND_FLAG);
+			// player.changeCollisionGroup((short) 1);
 		}
+
+		player.changeCollisionGroup(player.getBody().getLinearVelocity().y >= .001f
+				|| player.getBody().getPosition().y < amp.getBody().getPosition().y + .6f
+				? (short) 2 : (short) 1);
 		
 		if (player.isDebugging())
 			debugRenderer.render(world, camera.combined);
@@ -195,7 +193,7 @@ public class GameWorld {
 	}
 
 	public void pullAmp(float delta) {
-		amp.changeCollisionFilters(Units.ENTITY_FLAG, Units.ALL_FLAG);
+		// amp.changeCollisionFilters(Units.ENTITY_FLAG, Units.ALL_FLAG);
 		cable.getJoint().setMaxLength(cable.getJoint().getMaxLength() - delta);
 	}
 

@@ -56,8 +56,12 @@ public class PlayerInput implements InputProcessor {
 				player.setDebugging();
 				break;
 			case Keys.O:
+				// player.changeCollisionGroup((short) 2);
 				cable.getJoint().setMaxLength(Math.abs(player.getBody().getPosition().dst(amp.getBody().getPosition())));
-				player.pullAmp(true);
+				if (player.pullAmp(true)) {
+					amp.changeCollisionFilters(Units.ALL_FLAG, Units.NONE_FLAG);
+					amp.changeCollisionGroup((short) 1);
+				}
 				break;
 			case Keys.P:
 				break;
@@ -90,7 +94,11 @@ public class PlayerInput implements InputProcessor {
 				break;
 			case Keys.O:
 				cable.getJoint().setMaxLength(5);
-				player.pullAmp(false);
+				if (player.pullAmp(false)) {
+					amp.changeCollisionFilters(Units.ALL_FLAG, (short) (Units.GROUND_FLAG | Units.ALL_FLAG));
+					amp.changeCollisionGroup((short) 2);
+				}
+				// player.changeCollisionGroup((short) 1);
 				// amp.getBody().applyAngularImpulse(5, true);
 				Vector2 impulse = new Vector2(0, 2);
 				amp.getBody().applyLinearImpulse(impulse, amp.getBody().getWorldCenter(), true);
@@ -143,7 +151,6 @@ public class PlayerInput implements InputProcessor {
 	public boolean keyIsDown(int... keycodes) {
 		for (int key : keysDown) {
 			if (IntStream.of(keycodes).parallel().filter(i -> i == key).findAny().isPresent()) {
-				System.out.println("Key is down: " + key);
 				return true;
 			}
 		}

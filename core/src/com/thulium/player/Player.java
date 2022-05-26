@@ -65,10 +65,12 @@ public class Player extends Entity {
 			jumped = false;
 	}
 
-	public void pullAmp(boolean isPullingAmp) {
+	public boolean pullAmp(boolean isPullingAmp) {
 		// getBody().setType((isPullingAmp && isOnGround) ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody);
+
 		setMass(isPullingAmp && isOnGround ? 100 : 1);
 		this.isPullingAmp = (isPullingAmp && isOnGround);
+		return isPullingAmp && isOnGround;
 	}
 
 	public boolean isPullingAmp() {
