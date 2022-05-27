@@ -1,5 +1,6 @@
 package com.thulium.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -34,13 +35,14 @@ public class GameMap {
 	public GameMap(MainGame game, Batch batch) {
 		loader = new TmxMapLoader();
 		map = loader.load("maps/map.tmx");
-		mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f, batch);
+		mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f / 2f, batch);
 
 		parallax = new ParallaxScene();
 		parallax.addBackgrounds(game.getAsset("maps/snowymountains.png", Texture.class),
-				game.getAsset("maps/whiteclouds.png", Texture.class));
-		parallax.addForegrounds(game.getAsset("maps/trees_fg.png", Texture.class),
-				game.getAsset("maps/Ground.png", Texture.class));
+				game.getAsset("maps/BG_Decor.png", Texture.class),
+				game.getAsset("maps/Middle_Decor.png", Texture.class));
+//		parallax.addForegrounds(game.getAsset("maps/trees_fg.png", Texture.class),
+//				game.getAsset("maps/Ground.png", Texture.class));
 	}
 	
 	public void render(OrthographicCamera camera) {
@@ -73,8 +75,11 @@ public class GameMap {
 					continue;
 				bodyDef.type = BodyType.StaticBody;
 				// bodyDef.position.set((x + .5f), (y + .5f));
+
 				// Only create collision objects at the top of tiles
-				bodyDef.position.set(x + .5f, y + .8f);
+				//bodyDef.position.set(x + .5f, y + .8f);
+				bodyDef.position.set((x + .5f) / 2f, (y + .8f) / 2f);
+
 
 				ChainShape cs = new ChainShape();
 				Vector2[] v = new Vector2[5];
@@ -83,6 +88,8 @@ public class GameMap {
 				v[2] = new Vector2((1 / 2f), (1 / 8f));
 				v[3] = new Vector2((1 / 2f), (-1 / 8f));
 				v[4] = new Vector2(v[0]);
+
+				Arrays.asList(v).forEach(vec -> vec.scl(.5f));
 				
 				cs.createChain(v);
 				fixtureDef.friction = .25f;
@@ -118,14 +125,16 @@ public class GameMap {
 		}
 
 		public void renderBG(Batch batch, OrthographicCamera camera) {
+			batch.setColor(1, 1, 1, .25f);
 			bgs.forEach(bg -> {
 				int i = bgs.indexOf(bg, true);
-				bg.setRegionX((int) (camera.position.x * Math.sqrt(mul) / (i + 1)) % bg.getTexture().getWidth());
-				bg.setRegionWidth((int) (bg.getTexture().getWidth() / 8f));
+				bg.setRegionX((int) (camera.position.x * Math.sqrt(mul) * i) % bg.getTexture().getWidth());
+				bg.setRegionWidth((int) (bg.getTexture().getWidth()));
 
 				batch.draw(bg, camera.position.x - camera.viewportWidth/2f, camera.position.y - camera.viewportHeight / 2f,
 						Units.WIDTH, Units.HEIGHT);
 			});
+			batch.setColor(Color.WHITE);
 		}
 
 		public void renderFG(Batch batch, OrthographicCamera camera) {
