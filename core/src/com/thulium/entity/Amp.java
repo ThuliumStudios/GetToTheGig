@@ -27,7 +27,7 @@ public class Amp {
 	}
 	
 	public void kick(float val, float xMul, float yMul) {
-		body.applyLinearImpulse(new Vector2(10 * val, 10), body.getWorldCenter(), true);
+		body.applyLinearImpulse(new Vector2(Units.ATTACK_FORCE * val, Units.ATTACK_FORCE), body.getWorldCenter(), true);
 	}
 	
 	public Body getBody() {

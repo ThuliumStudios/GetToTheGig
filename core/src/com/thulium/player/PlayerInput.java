@@ -9,6 +9,7 @@ import com.thulium.entity.Cable;
 import com.thulium.util.Units;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.IntStream;
 
 public class PlayerInput implements InputProcessor {
@@ -42,7 +43,7 @@ public class PlayerInput implements InputProcessor {
 			case Keys.SHIFT_LEFT:
 			case Keys.SHIFT_RIGHT:
 				if (keyIsDown(Keys.A, Keys.D))
-					player.powerslide();
+					// player.powerslide();
 				break;
 			case Keys.PLUS:
 				break;
@@ -91,6 +92,7 @@ public class PlayerInput implements InputProcessor {
 				break;
 			case Keys.K:
 				player.attack(true);
+				amp.kick(player.isFlipped() ? -1 : 1, 0, 0);
 				break;
 			case Keys.O:
 				cable.getJoint().setMaxLength(5);
@@ -107,9 +109,11 @@ public class PlayerInput implements InputProcessor {
 				break;
 		}
 
-		keysDown.removeValue(keycode, true);
+		keysDown.forEach(k -> keysDown.removeValue(k, true));
+		// keysDown.removeValue(keycode, true);
 		System.out.print("Key up: " + keycode + ". Keys still down: ");
 		keysDown.forEach(k -> System.out.print(k + ", "));
+
 		System.out.println();
 		return false;
 	}

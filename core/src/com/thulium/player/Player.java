@@ -35,9 +35,9 @@ public class Player extends Entity {
 	
 	public void attack(boolean attack) {
 		if (attack) {
-			animate("kick", .25f, false);
+			animate("kick", .1f, false);
 		} else {
-			animate("rare", .5f, true);
+			animate("idle", 1, false);
 		}
 	}
 
@@ -75,10 +75,6 @@ public class Player extends Entity {
 
 	public boolean isPullingAmp() {
 		return isPullingAmp;
-	}
-
-	public void createBody(Body body) {
-		super.createBody(body, "player", 16, 28, true);
 	}
 
 	public void setMass(float massMul) {

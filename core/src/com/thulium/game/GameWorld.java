@@ -77,7 +77,7 @@ public class GameWorld {
 		player = new Player(playerAtlas);
 		
 		addEntity(player, .6f, .2f, 0, -.4f);
-		
+
 		// Testing 1/4 cable 
 		amp = new Amp(playerAtlas.findRegion("amp"));
 		amp.createBody(world.createBody(amp.getBodyDef(spawn.x + 2, spawn.y)), "amp", .4f, .4f, true);
