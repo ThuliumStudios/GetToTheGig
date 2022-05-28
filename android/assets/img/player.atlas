@@ -1,5 +1,5 @@
 
-player.png
+Player.png
 size: 2048, 128
 format: RGBA8888
 filter: Nearest, Nearest
@@ -11,128 +11,135 @@ amp
   orig: 108, 108
   offset: 0, 0
   index: -1
+amp_old
+  rotate: false
+  xy: 112, 2
+  size: 108, 108
+  orig: 108, 108
+  offset: 0, 0
+  index: -1
 climb
   rotate: false
-  xy: 308, 14
+  xy: 418, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 climb
   rotate: false
-  xy: 798, 14
+  xy: 908, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
 idle
   rotate: false
-  xy: 1484, 14
+  xy: 1594, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 idle_axe
   rotate: false
-  xy: 1386, 14
+  xy: 1496, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 jump_down
   rotate: false
-  xy: 1288, 14
+  xy: 1398, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 jump_up
   rotate: false
-  xy: 504, 14
+  xy: 614, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 kick
   rotate: false
-  xy: 210, 14
+  xy: 320, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
 rare
   rotate: false
-  xy: 210, 14
+  xy: 320, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
 kick
   rotate: false
-  xy: 602, 14
+  xy: 712, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 2
 kick
   rotate: false
-  xy: 602, 14
+  xy: 712, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 3
 rare
   rotate: false
-  xy: 994, 14
+  xy: 1104, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 kick
   rotate: false
-  xy: 994, 14
+  xy: 1104, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 112, 14
+  xy: 222, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 4
 run
   rotate: false
-  xy: 406, 14
+  xy: 516, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 700, 14
+  xy: 810, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 3
 run
   rotate: false
-  xy: 896, 14
+  xy: 1006, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
 run
   rotate: false
-  xy: 1092, 14
+  xy: 1202, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 1190, 14
+  xy: 1300, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
