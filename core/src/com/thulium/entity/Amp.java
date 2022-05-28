@@ -27,7 +27,7 @@ public class Amp {
 	}
 	
 	public void kick(float val, float xMul, float yMul) {
-		body.applyLinearImpulse(new Vector2(10 * val, 10), body.getWorldCenter(), true);
+		body.applyLinearImpulse(new Vector2(Units.ATTACK_FORCE * val, Units.ATTACK_FORCE), body.getWorldCenter(), true);
 	}
 	
 	public Body getBody() {
@@ -53,20 +53,15 @@ public class Amp {
 		fixtureDef.shape = box;
 		fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
 		fixtureDef.filter.maskBits = Units.GROUND_FLAG | Units.ALL_FLAG;
+		fixtureDef.filter.groupIndex = 1;
 		fixtureDef.density = 1;
 		body.createFixture(fixtureDef).setUserData(name);
 
-//		if (hasFoot) {
-//			box.setAsBox((width * .9f), (height * .25f), new Vector2(0, (height * .75f)), 0);
-//			fixtureDef.shape = box;
-//			fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
-//			fixtureDef.filter.maskBits = Units.ENTITY_FLAG;
-//			fixtureDef.isSensor = false;
-//			body.createFixture(fixtureDef).setUserData("amp_top");
-//		}
+		// Add sensor
+			// fixtureDef.isSensor = true;
+			// body.createFixture(fixtureDef).setUserData("amp");
 
 		box.dispose();
-
 	}
 
 	public void changeCollisionFilters(short categoryBits, short maskBits) {
@@ -74,6 +69,14 @@ public class Amp {
 			Filter filter = f.getFilterData();
 			filter.categoryBits = categoryBits;
 			filter.maskBits = maskBits;
+			body.getFixtureList().first().setFilterData(filter);
+		});
+	}
+
+	public void changeCollisionGroup(short group) {
+		body.getFixtureList().forEach(f -> {
+			Filter filter = f.getFilterData();
+			filter.groupIndex = group;
 			body.getFixtureList().first().setFilterData(filter);
 		});
 	}

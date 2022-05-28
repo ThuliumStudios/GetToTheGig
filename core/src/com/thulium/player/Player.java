@@ -35,9 +35,9 @@ public class Player extends Entity {
 	
 	public void attack(boolean attack) {
 		if (attack) {
-			animate("kick", .25f, false);
+			animate("kick", .1f, false);
 		} else {
-			animate("rare", .5f, true);
+			animate("idle", 1, false);
 		}
 	}
 
@@ -65,18 +65,16 @@ public class Player extends Entity {
 			jumped = false;
 	}
 
-	public void pullAmp(boolean isPullingAmp) {
+	public boolean pullAmp(boolean isPullingAmp) {
 		// getBody().setType((isPullingAmp && isOnGround) ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody);
+
 		setMass(isPullingAmp && isOnGround ? 100 : 1);
 		this.isPullingAmp = (isPullingAmp && isOnGround);
+		return isPullingAmp && isOnGround;
 	}
 
 	public boolean isPullingAmp() {
 		return isPullingAmp;
-	}
-
-	public void createBody(Body body) {
-		super.createBody(body, "player", 16, 28, true);
 	}
 
 	public void setMass(float massMul) {

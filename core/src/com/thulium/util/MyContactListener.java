@@ -13,10 +13,6 @@ public class MyContactListener implements ContactListener {
 	public void beginContact(Contact contact) {
 		final Fixture a = contact.getFixtureA();
 		final Fixture b = contact.getFixtureB();
-		
-		if (collisionContains("amp_top", a, b)) {
-			System.out.println("on amp");
-		}
 
 		if (collisionContains("foot", a, b)) {
 			numFootontacts++;
@@ -39,6 +35,8 @@ public class MyContactListener implements ContactListener {
 		return (a.getUserData() != null && a.getUserData().equals(o)
 				|| (b.getUserData() != null && b.getUserData().equals(o)));
 	}
+
+
 
 	public boolean isOnGround() {
 		return numFootontacts > 0;

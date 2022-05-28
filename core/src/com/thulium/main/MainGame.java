@@ -46,7 +46,7 @@ public class MainGame extends Game {
 	public void loadAssets() {
 		assets = new AssetManager();
 
-		String[] mapBg = {"snowymountains", "whiteclouds", "trees_fg", "Ground"};
+		String[] mapBg = { "BG_Decor", "Ground", "Middle_Decor", "snowymountains", "trees_fg", "whiteclouds"};
 		Arrays.asList(mapBg).forEach(img -> assets.load("maps/" + img + ".png", Texture.class));
 
 		assets.finishLoading();
