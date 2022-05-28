@@ -5,9 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 public final class Units {
 	public static final int WIDTH = 8;
 	public static final int HEIGHT = 5;
-	public static final int JUMP = 12;
+	public static final int JUMP = 10;
 	public static final float MAX_VELOCITY = 5;
-	public static final float ATTACK_FORCE = 10;
 	public static final short ALL_FLAG = 1 << 0;
 	public static final short NONE_FLAG = Short.MAX_VALUE;
 	public static final short GROUND_FLAG = 1 << 2;
@@ -15,7 +14,8 @@ public final class Units {
 
 	public static final float AMP_MASS = 0;
 
-	public static Vector2 POWER_SLIDE = new Vector2(5, 0);
+	public static final Vector2 POWER_SLIDE = new Vector2(5, 0);
+	public static final Vector2 ATTACK_FORCE = new Vector2(5, 8);
 
 	public static final String[] animations = { "idle", "run", "jump_up", "jump_down" };
 

@@ -13,6 +13,10 @@ public class Amp {
 	private Sprite sprite;
 	private Body body;
 
+	private float originalMass;
+	private boolean isPullingPlayer;
+	private boolean isStateLocked;
+
 	public Amp(TextureRegion region) {
 		sprite = new Sprite(region);
 		sprite.setSize(1, 1);
@@ -27,16 +31,39 @@ public class Amp {
 	}
 	
 	public void kick(float val, float xMul, float yMul) {
-		body.applyLinearImpulse(new Vector2(Units.ATTACK_FORCE * val, Units.ATTACK_FORCE), body.getWorldCenter(), true);
+		body.applyLinearImpulse(new Vector2(Units.ATTACK_FORCE).scl(val, 1), body.getWorldCenter(), true);
 	}
-	
+
+	public void pullPlayer(boolean isPullingPlayer) {
+		setMass(isPullingPlayer ? 100 : 1);
+		this.isPullingPlayer = isPullingPlayer;
+	}
+
+	public boolean isPullingPlayer() {
+		return isPullingPlayer;
+	}
+
+	public void setMass(float massMul) {
+		MassData massData = getBody().getMassData();
+		massData.mass = originalMass * massMul;
+		getBody().setMassData(massData);
+	}
+
+	public void setStateLocked(boolean isStateLocked) {
+		this.isStateLocked = isStateLocked;
+	}
+
+	public boolean isStateLocked() {
+		return isStateLocked;
+	}
+
+	public void dispose() {
+	}
+
 	public Body getBody() {
 		return body;
 	}
-	
-	public void dispose() {
-	}
-	
+
 	public BodyDef getBodyDef(float x, float y) {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
@@ -56,6 +83,7 @@ public class Amp {
 		fixtureDef.filter.groupIndex = 1;
 		fixtureDef.density = 1;
 		body.createFixture(fixtureDef).setUserData(name);
+		originalMass = body.getMass();
 
 		// Add sensor
 			// fixtureDef.isSensor = true;
@@ -65,6 +93,8 @@ public class Amp {
 	}
 
 	public void changeCollisionFilters(short categoryBits, short maskBits) {
+		if (isStateLocked)
+			return;
 		body.getFixtureList().forEach(f -> {
 			Filter filter = f.getFilterData();
 			filter.categoryBits = categoryBits;

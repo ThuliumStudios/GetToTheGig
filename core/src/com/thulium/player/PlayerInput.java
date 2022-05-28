@@ -59,15 +59,20 @@ public class PlayerInput implements InputProcessor {
 			case Keys.O:
 				// player.changeCollisionGroup((short) 2);
 				cable.getJoint().setMaxLength(Math.abs(player.getBody().getPosition().dst(amp.getBody().getPosition())));
-				if (player.pullAmp(true)) {
-					amp.changeCollisionFilters(Units.ALL_FLAG, Units.NONE_FLAG);
+				if (player.getBody().getPosition().y > amp.getBody().getPosition().y + 1) {
+					player.pullAmp(true);
+					amp.changeCollisionFilters(Units.ALL_FLAG, (short) 0);
 					amp.changeCollisionGroup((short) 1);
+					amp.setStateLocked(true);
+				} else if (amp.getBody().getPosition().y > player.getBody().getPosition().y + 1) {
+					amp.pullPlayer(true);
 				}
 				break;
 			case Keys.P:
 				break;
 			case Keys.K:
-				player.attack(false);
+				// player.attack(false);
+				player.attack(true);
 				break;
 			default:
 				break;
@@ -91,19 +96,35 @@ public class PlayerInput implements InputProcessor {
 				player.applyOpposingForce();
 				break;
 			case Keys.K:
-				player.attack(true);
+				// player.attack(true);
 				amp.kick(player.isFlipped() ? -1 : 1, 0, 0);
 				break;
 			case Keys.O:
 				cable.getJoint().setMaxLength(5);
-				if (player.pullAmp(false)) {
+				Vector2 impulse = new Vector2(0, Units.JUMP / 2f);
+
+				if (player.isPullingAmp()) {
+					player.pullAmp(false);
+					amp.setStateLocked(false);
 					amp.changeCollisionFilters(Units.ALL_FLAG, (short) (Units.GROUND_FLAG | Units.ALL_FLAG));
-					amp.changeCollisionGroup((short) 2);
+					amp.changeCollisionGroup((short) 1);
+					amp.getBody().applyLinearImpulse(impulse, amp.getBody().getWorldCenter(), true);
+				} else if (amp.isPullingPlayer()) {
+					amp.pullPlayer(false);
+					player.getBody().applyLinearImpulse(impulse.scl(.25f), player.getBody().getWorldCenter(), true);
 				}
+
+
+//				if (player.isPullingAmp()) {
+//					player.pullAmp(false);
+//					amp.setStateLocked(false);
+//					amp.changeCollisionFilters(Units.ALL_FLAG, (short) (Units.GROUND_FLAG | Units.ALL_FLAG));
+//					amp.changeCollisionGroup((short) 1);
+//
+//					System.out.println("No longer pulling amp");
+//				}
 				// player.changeCollisionGroup((short) 1);
 				// amp.getBody().applyAngularImpulse(5, true);
-				Vector2 impulse = new Vector2(0, 2);
-				amp.getBody().applyLinearImpulse(impulse, amp.getBody().getWorldCenter(), true);
 				break;
 			default:
 				break;
