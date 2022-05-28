@@ -53,13 +53,16 @@ public class PlayerControllerInput implements ControllerListener {
 	public boolean buttonUp(Controller controller, int buttonCode) {
 		switch (buttonCode) {
 			case 10:
-				input.keyDown(Keys.O);
+				input.keyUp(Keys.O);
 				break;
 			case 13:
 				input.keyUp(Keys.A);
 				break;
 			case 14:
 				input.keyUp(Keys.D);
+				break;
+			case 2:
+				input.keyUp(Keys.K);
 				break;
 		}
 		return false;
