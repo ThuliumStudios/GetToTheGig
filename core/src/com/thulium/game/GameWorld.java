@@ -6,8 +6,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
@@ -43,6 +43,7 @@ public class GameWorld {
 	private Box2DDebugRenderer debugRenderer;
 	
 	// TODO: Delete
+	private PlayerAxe axe;
 	private PlayerInfo info;
 	private ShapeRenderer shapes;
 	
@@ -75,6 +76,9 @@ public class GameWorld {
 
 		playerAtlas = new TextureAtlas(Gdx.files.internal("img/player.atlas"));
 		player = new Player(playerAtlas);
+		// TODO: Delete
+		axe = new PlayerAxe(new TextureAtlas(Gdx.files.internal("img/axe.atlas")));
+		axe.setPosition(player.getX(), player.getY());
 		
 		addEntity(player, .6f, .2f, 0, -.4f);
 
@@ -102,6 +106,9 @@ public class GameWorld {
 	}
 
 	public void render(Batch batch, float delta) {
+		if (Gdx.input.isKeyJustPressed(Keys.K))
+			axe.stateTime = 0f;
+
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		map.renderBG(batch, camera);
@@ -113,6 +120,9 @@ public class GameWorld {
 		batch.begin();
 		amp.render(batch);
 		player.render(batch);
+		// TODO: Delete
+		axe.draw(batch, delta);
+
 		map.renderFG(batch, camera);
 		batch.end();
 
@@ -135,7 +145,7 @@ public class GameWorld {
 
 		info.render(delta);
 
-		if (player.isPullingAmp()) {
+		if (player.isPullingAmp() || amp.isPullingPlayer()) {
 			if (cable.getJoint().getMaxLength() > 0) {
 				pullAmp(delta);
 			}
@@ -146,6 +156,7 @@ public class GameWorld {
 			cutCable();
 		}
 
+		// TODO: Change collisioin filters for all entities in loop
 		if (player.getBody().getLinearVelocity().y >= .001f) {
 			player.changeCollisionFilters(Units.ENTITY_FLAG, (short)0);
 			// player.changeCollisionGroup((short) 2);
@@ -154,14 +165,22 @@ public class GameWorld {
 			// player.changeCollisionGroup((short) 1);
 		}
 
+		if (!amp.isStateLocked()) {
+			if (amp.getBody().getLinearVelocity().y >= .001f) {
+				amp.changeCollisionFilters(Units.ENTITY_FLAG, (short)0);
+				// player.changeCollisionGroup((short) 2);
+			} else {
+				amp.changeCollisionFilters(Units.ENTITY_FLAG, Units.GROUND_FLAG);
+				// player.changeCollisionGroup((short) 1);
+			}
+		}
+
 		player.changeCollisionGroup(player.getBody().getLinearVelocity().y >= .001f
 				|| player.getBody().getPosition().y < amp.getBody().getPosition().y + .6f
 				? (short) 2 : (short) 1);
 		
 		if (player.isDebugging())
 			debugRenderer.render(world, camera.combined);
-//		if (Gdx.input.isKeyJustPressed(Keys.K))
-//			amp.kick(player.getBody().getPosition().x < amp.getBody().getPosition().x ? 1 : -1);
 	}
 
 	public void update(float delta) {
@@ -201,10 +220,6 @@ public class GameWorld {
 		world.destroyJoint(cable.getJoint());
 	}
 
-	public float getTimestsep() {
-		return 1 / 10f;
-	}
-
 	public void dispose() {
 		info.dispose();
 		world.dispose();
@@ -212,5 +227,42 @@ public class GameWorld {
 		map.dispose();
 		debugRenderer.dispose();
 		playerAtlas.dispose();
+	}
+
+	private class PlayerAxe extends Sprite {
+		private float stateTime = 1f;
+		private TextureAtlas atlas;
+
+		private Animation<TextureRegion> animation;
+
+		public PlayerAxe(TextureAtlas atlas) {
+			super(atlas.findRegion("axe", 1));
+			this.atlas = atlas;
+			setSize(152/96f, 152/96f);
+
+			animation = new Animation<TextureRegion>(.05f, atlas.findRegions("axe"));
+			animation.setPlayMode(Animation.PlayMode.NORMAL);
+		}
+
+		public void draw(Batch batch, float delta) {
+			if (stateTime >= animation.getKeyFrames().length * animation.getFrameDuration())
+				return;
+
+			flip(player.isFlipX(), false);
+			setRegion(animation.getKeyFrame(stateTime));
+			setPosition(player.getX() + (player.getWidth() / 2f) - getWidth()/2f, player.getY());
+
+			stateTime += delta;
+			draw(batch);
+			update(delta);
+		}
+
+		public float getHalf() {
+			return (player.getWidth() / 2f) - (getWidth() / 2f);
+		}
+
+		public void dispose() {
+			atlas.dispose();
+		}
 	}
 }

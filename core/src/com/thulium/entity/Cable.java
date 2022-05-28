@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 
 public class Cable {
 	private RopeJoint joint;
+
 	public Cable() {
 	}
 	
@@ -31,7 +32,6 @@ public class Cable {
 		ropeDef.localAnchorA.set(bodyA.getLocalCenter());
 		ropeDef.localAnchorB.set(bodyB.getLocalCenter());
 		ropeDef.collideConnected = true;
-
 		ropeDef.type = JointType.RopeJoint;
 		return ropeDef;
 	}
