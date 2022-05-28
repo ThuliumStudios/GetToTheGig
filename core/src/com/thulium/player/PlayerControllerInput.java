@@ -25,18 +25,24 @@ public class PlayerControllerInput implements ControllerListener {
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
 		switch (buttonCode) {
-		case 0:
-			input.keyDown(Keys.W);
-			break;
-		case 2:
-			input.keyDown(Keys.K);
-			break;
-		case 13:
-			input.keyDown(Keys.A);
-			break;
-		case 14:
-			input.keyDown(Keys.D);
-			break;
+			case 0:
+				input.keyDown(Keys.W);
+				break;
+			case 1:
+				input.keyDown(Keys.P);
+				break;
+			case 2:
+				input.keyDown(Keys.K);
+				break;
+			case 13:
+				input.keyDown(Keys.A);
+				break;
+			case 14:
+				input.keyDown(Keys.D);
+				break;
+			case 10:
+				input.keyDown(Keys.O);
+				break;
 		}
 		System.out.println(buttonCode);
 		return false;
@@ -45,12 +51,15 @@ public class PlayerControllerInput implements ControllerListener {
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
 		switch (buttonCode) {
-		case 13:
-			input.keyUp(Keys.A);
-			break;
-		case 14:
-			input.keyUp(Keys.D);
-			break;
+			case 10:
+				input.keyDown(Keys.O);
+				break;
+			case 13:
+				input.keyUp(Keys.A);
+				break;
+			case 14:
+				input.keyUp(Keys.D);
+				break;
 		}
 		return false;
 	}
