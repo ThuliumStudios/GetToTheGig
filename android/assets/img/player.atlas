@@ -1,6 +1,6 @@
 
 player.png
-size: 1024, 256
+size: 2048, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
@@ -11,100 +11,93 @@ amp
   orig: 108, 108
   offset: 0, 0
   index: -1
-climb
-  rotate: false
-  xy: 636, 148
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: 1
-climb
-  rotate: false
-  xy: 308, 14
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: 0
 idle
   rotate: false
-  xy: 270, 112
-  size: 132, 132
-  orig: 132, 132
+  xy: 1288, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
-  index: 0
+  index: -1
+idle_axe
+  rotate: false
+  xy: 1190, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
 jump_down
+  rotate: false
+  xy: 1092, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+jump_up
   rotate: false
   xy: 406, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
-  index: 0
-jump_up
+  index: -1
+kick
   rotate: false
-  xy: 112, 14
+  xy: 210, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
 kick
   rotate: false
-  xy: 2, 112
-  size: 132, 132
-  orig: 132, 132
-  offset: 0, 0
-  index: 0
-kick
-  rotate: false
-  xy: 136, 112
-  size: 132, 132
-  orig: 132, 132
+  xy: 504, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 2
 kick
   rotate: false
-  xy: 404, 112
-  size: 132, 132
-  orig: 132, 132
+  xy: 896, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 538, 148
+  xy: 112, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 4
 run
   rotate: false
-  xy: 210, 14
+  xy: 308, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 734, 148
+  xy: 602, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 3
 run
   rotate: false
-  xy: 832, 148
+  xy: 700, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 0
 run
   rotate: false
-  xy: 538, 50
+  xy: 798, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 636, 50
+  xy: 994, 14
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
