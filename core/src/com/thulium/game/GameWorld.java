@@ -43,7 +43,6 @@ public class GameWorld {
 	private Box2DDebugRenderer debugRenderer;
 	
 	// TODO: Delete
-	private PlayerAxe axe;
 	private PlayerInfo info;
 	private ShapeRenderer shapes;
 	
@@ -77,9 +76,6 @@ public class GameWorld {
 		playerAtlas = new TextureAtlas(Gdx.files.internal("img/player.atlas"));
 		player = new Player(playerAtlas);
 		// TODO: Delete
-		axe = new PlayerAxe(new TextureAtlas(Gdx.files.internal("img/axe.atlas")));
-		axe.setPosition(player.getX(), player.getY());
-		
 		addEntity(player, .6f, .2f, 0, -.4f);
 
 		// Testing 1/4 cable 
@@ -106,9 +102,6 @@ public class GameWorld {
 	}
 
 	public void render(Batch batch, float delta) {
-		if (Gdx.input.isKeyJustPressed(Keys.K))
-			axe.stateTime = 0f;
-
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		map.renderBG(batch, camera);
@@ -120,8 +113,6 @@ public class GameWorld {
 		batch.begin();
 		amp.render(batch);
 		player.render(batch);
-		// TODO: Delete
-		axe.draw(batch, delta);
 
 		map.renderFG(batch, camera);
 		batch.end();
@@ -227,42 +218,5 @@ public class GameWorld {
 		map.dispose();
 		debugRenderer.dispose();
 		playerAtlas.dispose();
-	}
-
-	private class PlayerAxe extends Sprite {
-		private float stateTime = 1f;
-		private TextureAtlas atlas;
-
-		private Animation<TextureRegion> animation;
-
-		public PlayerAxe(TextureAtlas atlas) {
-			super(atlas.findRegion("axe", 1));
-			this.atlas = atlas;
-			setSize(152/96f, 152/96f);
-
-			animation = new Animation<TextureRegion>(.05f, atlas.findRegions("axe"));
-			animation.setPlayMode(Animation.PlayMode.NORMAL);
-		}
-
-		public void draw(Batch batch, float delta) {
-			if (stateTime >= animation.getKeyFrames().length * animation.getFrameDuration())
-				return;
-
-			flip(player.isFlipX(), false);
-			setRegion(animation.getKeyFrame(stateTime));
-			setPosition(player.getX() + (player.getWidth() / 2f) - getWidth()/2f, player.getY());
-
-			stateTime += delta;
-			draw(batch);
-			update(delta);
-		}
-
-		public float getHalf() {
-			return (player.getWidth() / 2f) - (getWidth() / 2f);
-		}
-
-		public void dispose() {
-			atlas.dispose();
-		}
 	}
 }
