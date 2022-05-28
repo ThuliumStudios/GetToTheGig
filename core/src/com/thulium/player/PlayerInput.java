@@ -24,6 +24,7 @@ public class PlayerInput implements InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
+		// TODO: Push/pull amp
 		switch (keycode) {
 			case Keys.LEFT:
 			case Keys.A:
@@ -69,7 +70,11 @@ public class PlayerInput implements InputProcessor {
 				}
 				break;
 			case Keys.P:
-				cable.disconnect();
+				if (cable.isConnected()) {
+					cable.setConnected(false);
+				} else if (player.getBody().getPosition().dst(amp.getBody().getPosition()) < 1) {
+					cable.setConnected(true);
+				}
 				break;
 			case Keys.K:
 				// player.attack(false);

@@ -21,8 +21,8 @@ public class Cable {
 		
 	}
 
-	public void disconnect() {
-		isConnected = false;
+	public void setConnected(boolean isConnected) {
+		this.isConnected = isConnected;
 	}
 
 	public boolean isConnected() {

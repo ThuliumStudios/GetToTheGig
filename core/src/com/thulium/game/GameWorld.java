@@ -145,6 +145,10 @@ public class GameWorld {
 		// TODO: Delet dis -.-
 		if (!cable.isConnected() && cable.getState() == 0)
 			cutCable();
+		else if (cable.getState() == 1 && cable.isConnected()) {
+			cable.setState(0);
+			cable.setJoint(world.createJoint(cable.getBodyDef(amp.getBody(), player.getBody())));
+		}
 
 		// TODO: Change collisioin filters for all entities in loop
 		if (player.getBody().getLinearVelocity().y >= .001f) {
