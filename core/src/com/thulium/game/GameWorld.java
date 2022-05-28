@@ -152,9 +152,8 @@ public class GameWorld {
 		}
 
 		// TODO: Delet dis -.-
-		if (Gdx.input.isKeyJustPressed(Keys.P)) {
+		if (!cable.isConnected() && cable.getState() == 0)
 			cutCable();
-		}
 
 		// TODO: Change collisioin filters for all entities in loop
 		if (player.getBody().getLinearVelocity().y >= .001f) {
@@ -218,6 +217,7 @@ public class GameWorld {
 
 	public void cutCable() {
 		world.destroyJoint(cable.getJoint());
+		cable.setState(1);
 	}
 
 	public void dispose() {

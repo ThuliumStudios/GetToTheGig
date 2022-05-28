@@ -69,6 +69,7 @@ public class PlayerInput implements InputProcessor {
 				}
 				break;
 			case Keys.P:
+				cable.disconnect();
 				break;
 			case Keys.K:
 				// player.attack(false);

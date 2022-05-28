@@ -8,12 +8,34 @@ import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 
 public class Cable {
 	private RopeJoint joint;
+	private boolean isConnected;
+
+	// TODO: Delete
+	private int cutState;
 
 	public Cable() {
+		isConnected = true;
 	}
 	
 	public void update() {
 		
+	}
+
+	public void disconnect() {
+		isConnected = false;
+	}
+
+	public boolean isConnected() {
+		return isConnected;
+
+	}
+
+	public int getState() {
+		return cutState;
+	}
+
+	public void setState(int cutState) {
+		this.cutState = cutState;
 	}
 
 	public RopeJoint getJoint() {
