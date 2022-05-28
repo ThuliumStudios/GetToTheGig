@@ -61,6 +61,9 @@ public class PlayerControllerInput implements ControllerListener {
 			case 14:
 				input.keyUp(Keys.D);
 				break;
+			case 2:
+				input.keyUp(Keys.K);
+				break;
 		}
 		return false;
 	}
