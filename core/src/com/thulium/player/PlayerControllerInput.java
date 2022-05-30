@@ -5,11 +5,20 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PlayerControllerInput implements ControllerListener {
+	private Map<Integer, Integer> buttonMap;
 	private PlayerInput input;
-	
+
 	public PlayerControllerInput(PlayerInput input) {
 		this.input = input;
+		buttonMap = new HashMap<>();
+		int[] keys = {Keys.W, Keys.P, Keys.K, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1,
+				Keys.NUM_1, Keys.NUM_1, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT};
+		for (int i = 0; i < keys.length; i++)
+			buttonMap.put(i, keys[i]);
 	}
 
 	@Override
@@ -25,48 +34,14 @@ public class PlayerControllerInput implements ControllerListener {
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		switch (buttonCode) {
-			case 0:
-				input.keyDown(Keys.W);
-				break;
-			case 1:
-				input.keyDown(Keys.P);
-				break;
-			case 2:
-				input.keyDown(Keys.K);
-				break;
-			case 13:
-				input.keyDown(Keys.A);
-				break;
-			case 14:
-				input.keyDown(Keys.D);
-				break;
-			case 10:
-				input.keyDown(Keys.O);
-				break;
-		}
+		input.keyDown(buttonMap.get(buttonCode));
 		System.out.println(buttonCode);
 		return false;
 	}
 
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
-		switch (buttonCode) {
-			case 0:
-				break;
-			case 10:
-				input.keyUp(Keys.O);
-				break;
-			case 13:
-				input.keyUp(Keys.A);
-				break;
-			case 14:
-				input.keyUp(Keys.D);
-				break;
-			case 2:
-				input.keyUp(Keys.K);
-				break;
-		}
+		input.keyUp(buttonMap.get(buttonCode));
 		return false;
 	}
 
