@@ -27,6 +27,8 @@ import com.thulium.player.PlayerInput;
 import com.thulium.util.MyContactListener;
 import com.thulium.util.Units;
 
+import java.util.Arrays;
+
 public class GameWorld {
 	private OrthographicCamera camera;
 	private OrthographicCamera textCamera;
@@ -71,12 +73,14 @@ public class GameWorld {
 		map = new GameMap(game, game.getBatch());
 		map.createBox2dObjects(world, groundBodyDef, groundDef);
 
-		spawn = new Vector2(2.5f, 12.5f);
+		spawn = new Vector2(2.5f, 2.5f);
 
 		playerAtlas = new TextureAtlas(Gdx.files.internal("img/player.atlas"));
 		player = new Player(playerAtlas);
+
 		// TODO: Delete
 		addEntity(player, .3f, .2f, 0, -.4f);
+		player.setMass(5);
 
 		// Testing 1/4 cable 
 		amp = new Amp(playerAtlas.findRegion("amp"));
@@ -95,6 +99,36 @@ public class GameWorld {
 		PlayerInput pIn = new PlayerInput(player);
 		pIn.setAmp(amp);
 		pIn.setCable(cable);
+
+		// TODO: Delete
+		int mapWidth = map.getProperty("width", Integer.class);
+		int mapHeight = map.getProperty("height", Integer.class);
+
+		BodyDef bodyDef = new BodyDef();
+		PolygonShape box = new PolygonShape();
+		FixtureDef fixtureDef = new FixtureDef();
+
+		box.setAsBox(mapWidth / 2f, mapHeight / 2f, new Vector2(mapWidth / 2f, mapHeight / 2f), 0);
+
+		ChainShape cs = new ChainShape();
+		Vector2[] csPts = new Vector2[5];
+		csPts[0] = new Vector2(0, 0);
+		csPts[1] = new Vector2(mapWidth, 0);
+		csPts[2] = new Vector2(mapWidth, mapHeight);
+		csPts[3] = new Vector2(0, mapHeight);
+		csPts[4] = new Vector2(0, 0);
+		Arrays.asList(csPts).forEach(csp -> csp.scl(.5f));
+		cs.createChain(csPts);
+
+		fixtureDef.shape = cs; //box;
+		fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
+		fixtureDef.filter.maskBits = Units.ENTITY_FLAG | Units.ALL_FLAG;
+
+		bodyDef.type = BodyDef.BodyType.StaticBody;
+		bodyDef.position.set(0, 0);
+
+		world.createBody(bodyDef).createFixture(fixtureDef);
+		// TODO: End delete
 
 		debugRenderer = new Box2DDebugRenderer();
 		Gdx.input.setInputProcessor(new InputMultiplexer(pIn, info.getStage()));
@@ -179,9 +213,11 @@ public class GameWorld {
 
 	public void update(float delta) {
 		camera.position.set(MathUtils.clamp(player.getBody().getPosition().x, camera.viewportWidth / 2f,
-				map.getProperty("width", Integer.class) - camera.viewportWidth/2f),
-				MathUtils.clamp(player.getBody().getPosition().y, 0,
+				map.getProperty("width", Integer.class)/2f - camera.viewportWidth/2f),
+				MathUtils.clamp(player.getBody().getPosition().y, camera.viewportHeight / 2f,
 						map.getProperty("height", Integer.class)), 0);
+		System.out.println(camera.position.x);
+		// camera.position.set(player.getBody().getPosition().x, player.getBody().getPosition().y, 0);
 		textCamera.position.set(camera.position.x * (cameraScale(true)), camera.position.y * (cameraScale(false)), 0);
 
 		player.setOnGround(cl.isOnGround());
