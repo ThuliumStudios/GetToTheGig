@@ -3,11 +3,13 @@ package com.thulium.main;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.thulium.screen.GameScreen;
+import com.thulium.util.Jukebox;
 
 import java.util.Arrays;
 
@@ -16,11 +18,14 @@ public class MainGame extends Game {
 	private Skin skin;
 	private Batch batch;
 
+	private Jukebox jukebox;
+
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
 		
 		skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+		jukebox = new Jukebox();
 
 		loadAssets();
 		setScreen(new GameScreen(this));
@@ -46,8 +51,13 @@ public class MainGame extends Game {
 	public void loadAssets() {
 		assets = new AssetManager();
 
+		// Load backgrounds
 		String[] mapBg = { "BG_Decor", "Ground", "Middle_Decor", "snowymountains", "trees_fg", "whiteclouds"};
 		Arrays.asList(mapBg).forEach(img -> assets.load("maps/" + img + ".png", Texture.class));
+
+		// Load music
+		String[] music = { "level_1" };
+		Arrays.asList(music).forEach(m -> assets.load("raw/" + m + ".ogg", Music.class));
 
 		assets.finishLoading();
 	}

@@ -15,10 +15,11 @@ public class PlayerControllerInput implements ControllerListener {
 	public PlayerControllerInput(PlayerInput input) {
 		this.input = input;
 		buttonMap = new HashMap<>();
-		int[] keys = {Keys.W, Keys.P, Keys.K, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1,
+		int[] keys = {Keys.W, Keys.P, Keys.K, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1, Keys.ESCAPE, Keys.NUM_1, Keys.NUM_1,
 				Keys.NUM_1, Keys.O, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT};
 		for (int i = 0; i < keys.length; i++)
 			buttonMap.put(i, keys[i]);
+
 	}
 
 	@Override
@@ -47,7 +48,17 @@ public class PlayerControllerInput implements ControllerListener {
 
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
-		// TODO Auto-generated method stub
+		if (Math.abs(value) < .1f)
+			return input.keyUp( Keys.A);
+
+		System.out.println(value);
+		switch (axisCode) {
+			case 0:
+				return value > 0 ? input.keyDown(Keys.D) : input.keyDown(Keys.A);
+			case 1:
+				return value > 0 ? input.keyDown(Keys.DOWN) : input.keyDown(Keys.UP);
+		}
+		// 0 - LR. 1 - UP/DOWN
 		return false;
 	}
 
