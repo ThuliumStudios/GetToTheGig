@@ -62,9 +62,8 @@ public class PlayerInput implements InputProcessor {
 				player.setDebugging();
 				break;
 			case Keys.O:
-				// player.changeCollisionGroup((short) 2);
 				cable.getJoint().setMaxLength(Math.abs(player.getBody().getPosition().dst(amp.getBody().getPosition())));
-				if (player.getBody().getPosition().y > amp.getBody().getPosition().y + 1) {
+				if (player.getBody().getPosition().y > amp.getBody().getPosition().y + 1 && player.canPullAmp()) {
 					player.pullAmp(true);
 					amp.changeCollisionFilters(Units.ALL_FLAG, (short) 0);
 					amp.changeCollisionGroup((short) 1);

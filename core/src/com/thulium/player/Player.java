@@ -29,13 +29,18 @@ public class Player extends Entity {
 	public void render(Batch batch) {
 		super.render(batch);
 		axe.draw(batch, Gdx.graphics.getDeltaTime());
-		update(Gdx.graphics.getDeltaTime());
-		updateAnimation();
 	}
 
 	public void update(float delta) {
 		super.update(delta);
+		updateAnimation();
+
 		chargeTime += delta;
+
+		if (isPositionLocked()) {
+			setPosition((getBody().getPosition().x) - (getWidth() / 2f),
+					(getBody().getPosition().y) - (getHeight() / 2f));
+		}
 	}
 	
 	public void attack(boolean attack) {
@@ -51,6 +56,12 @@ public class Player extends Entity {
 	public void animate(String animationName, float speed, boolean looping) {
 		super.animate(animationName, speed, looping);
 		axe.animate(animationName, speed, looping);
+	}
+
+	@Override
+	public void setPosition(float x, float y) {
+		super.setPosition(x, y);
+		axe.setPosition(x, y);
 	}
 
 	public void jump() {
@@ -81,8 +92,13 @@ public class Player extends Entity {
 			jumped = false;
 	}
 
+	public boolean canPullAmp() {
+		return isOnGround;
+	}
+
 	public void pullAmp(boolean isPullingAmp) {
-		setMass(isPullingAmp && isOnGround ? 100 : 1);
+		// setMass(isPullingAmp && isOnGround ? 100 : 1);
+		setPositionLocked(isPullingAmp);
 		this.isPullingAmp = (isPullingAmp && isOnGround);
 	}
 
@@ -157,6 +173,10 @@ public class Player extends Entity {
 		public void animate(String name, float speed, boolean looping) {
 			animation = new Animation<TextureRegion>(speed, atlas.findRegions(name));
 			animation.setPlayMode(looping ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL);
+		}
+
+		public void setPosition(float x, float y) {
+			sprite.setPosition(x, y);
 		}
 
 		public void flip(boolean flip) {
