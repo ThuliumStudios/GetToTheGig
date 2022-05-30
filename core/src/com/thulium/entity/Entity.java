@@ -10,11 +10,17 @@ import com.thulium.util.Units;
 public class Entity extends BaseEntity {
 	private Body body;
 	private Vector2 velocity;
+	private Vector2 lockedPosition;
+	private boolean isPositionLocked;
 	private float originalMass;
+
+	// TODO: Delete
+	private final String[] priorityAnimations = {"rare", "attack"};
 
 	public Entity(TextureAtlas atlas) {
 		super(atlas);
 		velocity = new Vector2();
+		lockedPosition = new Vector2();
 	}
 
 	public void render(Batch batch) {
@@ -25,15 +31,23 @@ public class Entity extends BaseEntity {
 
 	public void update(float delta) {
 		super.update(delta);
-		if (Math.abs(body.getLinearVelocity().x) <= Units.MAX_VELOCITY) 
-		body.applyForceToCenter(velocity, true);
+		if (Math.abs(body.getLinearVelocity().x) <= Units.MAX_VELOCITY && !isPositionLocked)
+			body.applyForceToCenter(velocity, true);
+		if (isPositionLocked) {
+			body.setAwake(false);
+			body.setTransform(lockedPosition, 0);
+			body.setLinearVelocity(Vector2.Zero);
+		}
 	}
 	
 	public void updateAnimation() {
+		if (overrideAnimation())
+			return;
+
 		// Process jump animations
-		if (body.getLinearVelocity().y > .01f)
+		if (body.getLinearVelocity().y > .1f)
 			animate("jump_up", 1, true);
-		else if (body.getLinearVelocity().y < -.01f)
+		else if (body.getLinearVelocity().y < - 1f)
 			animate("jump_down", 1, true);
 		else if (getAnimationName().equals("jump_down") || getAnimationName().equals("jump_up")) {
 			animate("idle", .3f, true);
@@ -44,6 +58,23 @@ public class Entity extends BaseEntity {
 			animate("run", .3f, true);
 		else if (inMargin(body.getLinearVelocity().x) && getAnimationName().equals("run"))
 			animate("idle", .3f, true);
+	}
+
+	public boolean overrideAnimation() {
+		for (String s : priorityAnimations) {
+			if (getAnimationName().equals(s))
+				return true;
+		}
+		return false;
+	}
+
+	public void setPositionLocked(boolean isPositionLocked) {
+		this.isPositionLocked = isPositionLocked;
+		lockedPosition.set(body.getPosition());
+	}
+
+	public boolean isPositionLocked() {
+		return isPositionLocked;
 	}
 
 	public BodyDef getBodyDef(float x, float y) {
@@ -67,7 +98,7 @@ public class Entity extends BaseEntity {
 	}
 	
 	public void setXVelocity(float x) {
-		velocity.x = x;
+		velocity.x = x * 1.5f;
 	}
 
 	public void applyOpposingForce() {
