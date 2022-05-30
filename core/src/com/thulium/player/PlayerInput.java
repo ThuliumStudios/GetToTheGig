@@ -39,6 +39,7 @@ public class PlayerInput implements InputProcessor {
 				player.setFlipState(false);
 				break;
 			case Keys.UP:
+				break;
 			case Keys.W:
 			case Keys.SPACE:
 				if (player.getAnimationName().equals("rare")) {
@@ -110,11 +111,12 @@ public class PlayerInput implements InputProcessor {
 			case Keys.K:
 				player.attack(true);
 				if (player.getBody().getPosition().dst(amp.getBody().getPosition()) < 1.5f) {
-					float xMul = player.isFlipped() ? -1 : 1;
-					float yMul = 1;
+					float chargeMul = MathUtils.clamp(player.getChargeTime(), 0, 2) / 2f;
+					float xMul = (player.isFlipped() ? -1 : 1) * chargeMul;
+					float yMul = chargeMul;
 					if (keyIsDown(Keys.W, Keys.UP)) {
-						yMul *= 1.25f * (MathUtils.clamp(player.getChargeTime(), 0, 2) / 2f);
-						xMul /= 10;
+						yMul *= 1.25f * chargeMul;
+						xMul = 0;
 					}
 					amp.kick(xMul, yMul);
 				}
