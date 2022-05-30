@@ -6,56 +6,56 @@ filter: Nearest, Nearest
 repeat: none
 attack
   rotate: false
-  xy: 156, 96
+  xy: 310, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
   index: 1
 attack
   rotate: false
-  xy: 310, 96
+  xy: 464, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
   index: 3
 attack
   rotate: false
-  xy: 772, 96
+  xy: 926, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
   index: 0
 rare
   rotate: false
-  xy: 772, 96
+  xy: 926, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
   index: 0
 attack
   rotate: false
-  xy: 926, 96
+  xy: 1080, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
   index: 2
 axe_projectile
   rotate: false
-  xy: 1234, 215
+  xy: 1388, 215
   size: 94, 33
   orig: 94, 33
   offset: 0, 0
   index: -1
 idle
   rotate: false
-  xy: 1080, 96
+  xy: 1234, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
   index: -1
 rare
   rotate: false
-  xy: 618, 96
+  xy: 772, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
@@ -87,21 +87,14 @@ run
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
-  index: 2
-run
-  rotate: false
-  xy: 2, 96
-  size: 152, 152
-  orig: 152, 152
-  offset: 0, 0
-  index: 1
-run
-  rotate: false
-  xy: 2, 96
-  size: 152, 152
-  orig: 152, 152
-  offset: 0, 0
   index: 3
+run
+  rotate: false
+  xy: 2, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: 2
 run
   rotate: false
   xy: 2, 96
@@ -111,7 +104,14 @@ run
   index: 5
 run
   rotate: false
-  xy: 464, 96
+  xy: 156, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: 1
+run
+  rotate: false
+  xy: 618, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
