@@ -10,6 +10,7 @@ import com.thulium.entity.Entity;
 import com.thulium.util.Units;
 
 public class Player extends Entity {
+	private boolean isPaused;
 	private boolean isOnGround;
 	private boolean isDebugging;
 	private boolean isPullingAmp;
@@ -35,8 +36,8 @@ public class Player extends Entity {
 		super.update(delta);
 		updateAnimation();
 
-		chargeTime += delta;
-
+		if (getAnimationName().equals("rare"))
+			chargeTime += delta;
 		if (isPositionLocked()) {
 			setPosition((getBody().getPosition().x) - (getWidth() / 2f),
 					(getBody().getPosition().y) - (getHeight() / 2f));
@@ -44,12 +45,13 @@ public class Player extends Entity {
 	}
 	
 	public void attack(boolean attack) {
+		chargeTime = 0;
 		if (attack) {
 			animate("attack", .25f, false);
 		} else {
-			chargeTime = 0;
 			animate("rare", .75f, true);
 		}
+		setPositionLocked(!attack);
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public class Player extends Entity {
 	public void jump() {
 		if (!isOnGround && noJump) {
 			System.out.println("cant jump because");
-			System.out.println(isOnGround + " and " + noJump);
+			System.out.println("is on ground: " + isOnGround + " and has jump? " + !noJump);
 			System.out.println();
 			return;
 		}
@@ -90,6 +92,9 @@ public class Player extends Entity {
 		this.isOnGround = isOnGround;
 		if (isOnGround)
 			jumped = false;
+//
+//		if (isOnGround && overrideAnimation())
+//			setPositionLocked(true);
 	}
 
 	public boolean canPullAmp() {
@@ -107,7 +112,6 @@ public class Player extends Entity {
 	}
 
 	public float getChargeTime() {
-		System.out.println("Charge: " + chargeTime);
 		return chargeTime;
 	}
 
@@ -130,6 +134,14 @@ public class Player extends Entity {
 
 	public void setDebugging() {
 		isDebugging = !isDebugging;
+	}
+
+	public boolean isPaused() {
+		return isPaused;
+	}
+
+	public void setPaused() {
+		isPaused = !isPaused;
 	}
 
 	public void dispose() {

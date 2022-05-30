@@ -35,12 +35,13 @@ public class Entity extends BaseEntity {
 			body.applyForceToCenter(velocity, true);
 		if (isPositionLocked) {
 			body.setAwake(false);
-			body.setTransform(lockedPosition, 0);
-			body.setLinearVelocity(Vector2.Zero);
+			body.setTransform(lockedPosition.x, body.getPosition().y, 0);
+			body.setLinearVelocity(0, body.getLinearVelocity().y);
 		}
 	}
 	
 	public void updateAnimation() {
+
 		if (overrideAnimation())
 			return;
 

@@ -27,12 +27,14 @@ public class PlayerInput implements InputProcessor {
 		switch (keycode) {
 			case Keys.LEFT:
 			case Keys.A:
-				player.setXVelocity(-Units.MAX_VELOCITY);
+				if (!player.isPositionLocked())
+					player.setXVelocity(-Units.MAX_VELOCITY);
 				player.setFlipState(true);
 				break;
 			case Keys.RIGHT:
 			case Keys.D:
-				player.setXVelocity(Units.MAX_VELOCITY);
+				if (!player.isPositionLocked())
+					player.setXVelocity(Units.MAX_VELOCITY);
 				player.setFlipState(false);
 				break;
 			case Keys.UP:
@@ -57,6 +59,9 @@ public class PlayerInput implements InputProcessor {
 			case Keys.TAB:
 				break;
 			case Keys.ENTER:
+				break;
+			case Keys.ESCAPE:
+				player.setPaused();
 				break;
 			case Keys.F12:
 				player.setDebugging();
@@ -105,9 +110,10 @@ public class PlayerInput implements InputProcessor {
 				player.applyOpposingForce();
 				break;
 			case Keys.K:
+				float force = player.getChargeTime();
 				player.attack(true);
 				if (player.getBody().getPosition().dst(amp.getBody().getPosition()) < 1.5f) {
-					float chargeMul = MathUtils.clamp(player.getChargeTime(), 0, 2) / 2f;
+					float chargeMul = MathUtils.clamp(force, 0, 2) / 2f;
 					float xMul = (player.isFlipped() ? -1 : 1) * chargeMul;
 					float yMul = chargeMul;
 					if (keyIsDown(Keys.W, Keys.UP)) {
