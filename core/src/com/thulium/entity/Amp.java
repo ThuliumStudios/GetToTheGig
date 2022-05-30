@@ -49,6 +49,13 @@ public class Amp {
 		getBody().setMassData(massData);
 	}
 
+	public void setOriginalMass(float mass) {
+		originalMass *= mass;
+		MassData massData = getBody().getMassData();
+		massData.mass = originalMass;
+		getBody().setMassData(massData);
+	}
+
 	public void setStateLocked(boolean isStateLocked) {
 		this.isStateLocked = isStateLocked;
 	}
@@ -68,6 +75,7 @@ public class Amp {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(x, y);
+		bodyDef.fixedRotation = true; // TODO: Decide if this is how we want it
 		return bodyDef;
 	}
 	
