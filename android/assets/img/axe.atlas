@@ -34,21 +34,21 @@ rare
   index: 0
 attack
   rotate: false
-  xy: 1080, 96
+  xy: 1234, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
   index: 2
 axe_projectile
   rotate: false
-  xy: 1388, 215
+  xy: 1542, 215
   size: 94, 33
   orig: 94, 33
   offset: 0, 0
   index: -1
 idle
   rotate: false
-  xy: 1234, 96
+  xy: 1388, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
@@ -94,13 +94,6 @@ run
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
-  index: 2
-run
-  rotate: false
-  xy: 2, 96
-  size: 152, 152
-  orig: 152, 152
-  offset: 0, 0
   index: 5
 run
   rotate: false
@@ -116,6 +109,13 @@ run
   orig: 152, 152
   offset: 0, 0
   index: 0
+run
+  rotate: false
+  xy: 1080, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: 2
 sprite_item
   rotate: false
   xy: 2, 2
