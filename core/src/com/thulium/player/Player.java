@@ -15,6 +15,7 @@ public class Player extends Entity {
 	private boolean isPullingAmp;
 	private boolean jumped;
 	private boolean noJump = true;
+	private float chargeTime;
 
 	private PlayerAxe axe;
 
@@ -34,12 +35,14 @@ public class Player extends Entity {
 
 	public void update(float delta) {
 		super.update(delta);
+		chargeTime += delta;
 	}
 	
 	public void attack(boolean attack) {
 		if (attack) {
 			animate("attack", .25f, false);
 		} else {
+			chargeTime = 0;
 			animate("rare", .75f, true);
 		}
 	}
@@ -87,10 +90,22 @@ public class Player extends Entity {
 		return isPullingAmp;
 	}
 
+	public float getChargeTime() {
+		System.out.println("Charge: " + chargeTime);
+		return chargeTime;
+	}
+
 	public void setMass(float massMul) {
 		MassData massData = getBody().getMassData();
 		massData.mass = getOriginalMass() * massMul;
 		getBody().setMassData(massData);
+	}
+
+	public void setOriginalMass(float mass) {
+		MassData massData = getBody().getMassData();
+		massData.mass = getOriginalMass() * mass;
+		getBody().setMassData(massData);
+		super.setOriginalMass(getOriginalMass() * mass);
 	}
 	
 	public boolean isDebugging() {

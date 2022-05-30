@@ -30,8 +30,8 @@ public class Amp {
 		sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 	}
 	
-	public void kick(float val, float xMul, float yMul) {
-		body.applyLinearImpulse(new Vector2(Units.ATTACK_FORCE).scl(val, 1), body.getWorldCenter(), true);
+	public void kick(float xMul, float yMul) {
+		body.applyLinearImpulse(new Vector2(Units.ATTACK_FORCE).scl(xMul, yMul), body.getWorldCenter(), true);
 	}
 
 	public void pullPlayer(boolean isPullingPlayer) {
