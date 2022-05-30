@@ -80,7 +80,7 @@ public class GameWorld {
 
 		// TODO: Delete
 		addEntity(player, .3f, .2f, 0, -.4f);
-		player.setMass(5);
+		player.setOriginalMass(5);
 
 		// Testing 1/4 cable 
 		amp = new Amp(playerAtlas.findRegion("amp"));

@@ -81,6 +81,10 @@ public class Entity extends BaseEntity {
 
 	public float getOriginalMass() { return originalMass; }
 
+	public void setOriginalMass(float originalMass) {
+		this.originalMass = originalMass;
+	}
+
 	public void createBody(Body body, float width, float height) {
 		createBody(body, "entity", width, height, width, height, true);
 	}

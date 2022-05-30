@@ -2,12 +2,14 @@ package com.thulium.player;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.thulium.entity.Amp;
 import com.thulium.entity.Cable;
 import com.thulium.util.Units;
 
+import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.IntStream;
@@ -39,7 +41,11 @@ public class PlayerInput implements InputProcessor {
 			case Keys.UP:
 			case Keys.W:
 			case Keys.SPACE:
-				player.jump();
+				if (player.getAnimationName().equals("rare")) {
+
+				} else {
+					player.jump();
+				}
 				break;
 			case Keys.SHIFT_LEFT:
 			case Keys.SHIFT_RIGHT:
@@ -103,8 +109,15 @@ public class PlayerInput implements InputProcessor {
 				break;
 			case Keys.K:
 				player.attack(true);
-				if (player.getBody().getPosition().dst(amp.getBody().getPosition()) < 1.5f)
-					amp.kick(player.isFlipped() ? -1 : 1, 0, 0);
+				if (player.getBody().getPosition().dst(amp.getBody().getPosition()) < 1.5f) {
+					float xMul = player.isFlipped() ? -1 : 1;
+					float yMul = 1;
+					if (keyIsDown(Keys.W, Keys.UP)) {
+						yMul *= 1.25f * (MathUtils.clamp(player.getChargeTime(), 0, 2) / 2f);
+						xMul /= 10;
+					}
+					amp.kick(xMul, yMul);
+				}
 				break;
 			case Keys.O:
 				cable.getJoint().setMaxLength(5);

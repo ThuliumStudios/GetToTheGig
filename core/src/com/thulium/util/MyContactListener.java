@@ -36,14 +36,13 @@ public class MyContactListener implements ContactListener {
 				|| (b.getUserData() != null && b.getUserData().equals(o)));
 	}
 
-
-
 	public boolean isOnGround() {
-		System.out.println(numFootContacts);
+		// System.out.println(numFootContacts);
 		return numFootContacts > 0;
 	}
 
 	public void preSolve(Contact contact, Manifold oldManifold) {
+
 	}
 
 	public void postSolve(Contact contact, ContactImpulse impulse) {
