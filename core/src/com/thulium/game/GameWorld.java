@@ -24,6 +24,7 @@ import com.thulium.player.Player;
 import com.thulium.player.PlayerControllerInput;
 import com.thulium.player.PlayerInfo;
 import com.thulium.player.PlayerInput;
+import com.thulium.util.Jukebox;
 import com.thulium.util.MyContactListener;
 import com.thulium.util.Units;
 
@@ -50,8 +51,13 @@ public class GameWorld {
 	
 	private TextureAtlas playerAtlas;
 
+	private Jukebox jukebox;
+
 	public GameWorld(MainGame game) {
 		Box2D.init();
+
+		jukebox = new Jukebox();
+		jukebox.playMusic(1);
 
 		viewport = new StretchViewport(Units.WIDTH, Units.HEIGHT);
 		camera = new OrthographicCamera();
@@ -160,6 +166,13 @@ public class GameWorld {
 		joints.forEach(j -> {
 			shapes.rectLine(j.getAnchorA(), j.getAnchorB(), .025f);
 		});
+		// Draw player's charge under player
+		if (player.getChargeTime() > 0) {
+			shapes.setColor(Color.RED);
+			shapes.rect(player.getX(), player.getY() - .25F, player.getWidth(), .1f);
+			shapes.setColor(Color.GREEN);
+			shapes.rect(player.getX(), player.getY() - .25F, Math.min(player.getChargeTime() / 2f, 1), .1f);
+		}
 		shapes.end();
 
 		map.render(camera, 4);
@@ -224,6 +237,8 @@ public class GameWorld {
 		player.update(Gdx.graphics.getDeltaTime());
 		textCamera.update();
 		camera.update();
+
+		jukebox.setVolume(player.isPaused() ? 0 : 1);
 
 		world.step(/**1 / 60f**/Math.min(1 / 60f, delta), 6, 2);
 	}
