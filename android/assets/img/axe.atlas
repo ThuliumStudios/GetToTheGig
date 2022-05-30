@@ -1,125 +1,160 @@
 
 axe.png
-size: 2048, 256
+size: 2048, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+amp
+  rotate: false
+  xy: 2, 2
+  size: 108, 108
+  orig: 108, 108
+  offset: 0, 0
+  index: -1
 attack
   rotate: false
-  xy: 310, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 700, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 1
+rare
+  rotate: false
+  xy: 700, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 1
 attack
   rotate: false
-  xy: 464, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 994, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 3
 attack
   rotate: false
-  xy: 926, 96
-  size: 152, 152
-  orig: 152, 152
-  offset: 0, 0
-  index: 0
-rare
-  rotate: false
-  xy: 926, 96
-  size: 152, 152
-  orig: 152, 152
-  offset: 0, 0
-  index: 0
-attack
-  rotate: false
-  xy: 1234, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 994, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 2
-axe_projectile
+attack
   rotate: false
-  xy: 1542, 215
-  size: 94, 33
-  orig: 94, 33
+  xy: 1386, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
-  index: -1
-idle
-  rotate: false
-  xy: 1388, 96
-  size: 152, 152
-  orig: 152, 152
-  offset: 0, 0
-  index: -1
+  index: 0
 rare
   rotate: false
-  xy: 772, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 1386, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 0
+climb
+  rotate: false
+  xy: 308, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 1
-run
+climb
   rotate: false
-  xy: 2, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 1092, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
-  index: 4
+  index: 0
+idle
+  rotate: false
+  xy: 1778, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
 jump_down
   rotate: false
-  xy: 2, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 1582, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: -1
 jump_up
   rotate: false
-  xy: 2, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 602, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: -1
-run
+push
   rotate: false
-  xy: 2, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 210, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 3
-run
+push
   rotate: false
-  xy: 2, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 504, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
-  index: 5
-run
+  index: 0
+push
   rotate: false
-  xy: 156, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 896, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 2
+push
+  rotate: false
+  xy: 1680, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 618, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 112, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 4
+run
+  rotate: false
+  xy: 406, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 1
+run
+  rotate: false
+  xy: 798, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 3
+run
+  rotate: false
+  xy: 1190, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 0
 run
   rotate: false
-  xy: 1080, 96
-  size: 152, 152
-  orig: 152, 152
+  xy: 1288, 14
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 5
+run
+  rotate: false
+  xy: 1484, 14
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: 2
-sprite_item
-  rotate: false
-  xy: 2, 2
-  size: 92, 92
-  orig: 92, 92
-  offset: 0, 0
-  index: -1
