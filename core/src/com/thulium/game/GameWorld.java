@@ -242,7 +242,7 @@ public class GameWorld {
 
 	public void pullAmp(float delta) {
 		// amp.changeCollisionFilters(Units.ENTITY_FLAG, Units.ALL_FLAG);
-		cable.getJoint().setMaxLength(cable.getJoint().getMaxLength() - delta);
+		cable.getJoint().setMaxLength(cable.getJoint().getMaxLength() - (delta * 2f));
 	}
 
 	public void cutCable() {
