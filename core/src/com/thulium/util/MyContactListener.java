@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class MyContactListener implements ContactListener {
-	private int numFootontacts;
+	private int numFootContacts;
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -15,7 +15,7 @@ public class MyContactListener implements ContactListener {
 		final Fixture b = contact.getFixtureB();
 
 		if (collisionContains("foot", a, b)) {
-			numFootontacts++;
+			numFootContacts++;
 		}
 	}
 
@@ -25,7 +25,7 @@ public class MyContactListener implements ContactListener {
 		Fixture b = contact.getFixtureB();
 
 		if (collisionContains("foot", a, b))
-			numFootontacts--;
+			numFootContacts--;
 	}
 
 	/*
@@ -39,7 +39,8 @@ public class MyContactListener implements ContactListener {
 
 
 	public boolean isOnGround() {
-		return numFootontacts > 0;
+		System.out.println(numFootContacts);
+		return numFootContacts > 0;
 	}
 
 	public void preSolve(Contact contact, Manifold oldManifold) {

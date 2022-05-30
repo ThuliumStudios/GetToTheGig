@@ -51,8 +51,12 @@ public class Player extends Entity {
 	}
 
 	public void jump() {
-		if (!isOnGround && noJump)
+		if (!isOnGround && noJump) {
+			System.out.println("cant jump because");
+			System.out.println(isOnGround + " and " + noJump);
+			System.out.println();
 			return;
+		}
 
 		float modifier = 1;
 		getBody().setLinearVelocity(getBody().getLinearVelocity().x, Units.JUMP * modifier);

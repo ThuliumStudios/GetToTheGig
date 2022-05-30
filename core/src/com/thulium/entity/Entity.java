@@ -41,7 +41,7 @@ public class Entity extends BaseEntity {
 		
 		// Process run/stop animations
 		if (body.getLinearVelocity().y == 0 && Math.abs(body.getLinearVelocity().x) > .01f)
-			animate("run", .15f, true);
+			animate("run", .3f, true);
 		else if (inMargin(body.getLinearVelocity().x) && getAnimationName().equals("run"))
 			animate("idle", .3f, true);
 	}

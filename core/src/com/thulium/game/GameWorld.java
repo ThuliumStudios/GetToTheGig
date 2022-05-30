@@ -216,7 +216,6 @@ public class GameWorld {
 				map.getProperty("width", Integer.class)/2f - camera.viewportWidth/2f),
 				MathUtils.clamp(player.getBody().getPosition().y, camera.viewportHeight / 2f,
 						map.getProperty("height", Integer.class)), 0);
-		System.out.println(camera.position.x);
 		// camera.position.set(player.getBody().getPosition().x, player.getBody().getPosition().y, 0);
 		textCamera.position.set(camera.position.x * (cameraScale(true)), camera.position.y * (cameraScale(false)), 0);
 
