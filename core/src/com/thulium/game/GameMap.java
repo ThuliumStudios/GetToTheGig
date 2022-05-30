@@ -38,11 +38,9 @@ public class GameMap {
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f / 2f, batch);
 
 		parallax = new ParallaxScene();
-		parallax.addBackgrounds(game.getAsset("maps/snowymountains.png", Texture.class),
-				game.getAsset("maps/BG_Decor.png", Texture.class),
+		parallax.addBackgrounds(game.getAsset("maps/BG_Decor.png", Texture.class),
 				game.getAsset("maps/Middle_Decor.png", Texture.class));
-//		parallax.addForegrounds(game.getAsset("maps/trees_fg.png", Texture.class),
-//				game.getAsset("maps/Ground.png", Texture.class));
+		// parallax.addForegrounds(game.getAsset("maps/whiteclouds.png", Texture.class));
 	}
 	
 	public void render(OrthographicCamera camera) {
@@ -140,6 +138,10 @@ public class GameMap {
 		public void renderFG(Batch batch, OrthographicCamera camera) {
 			fgs.forEach(fg -> {
 				int i = fgs.indexOf(fg, true);
+				fg.setRegionX((int) (camera.position.x * mul) % fg.getTexture().getWidth());
+				fg.setRegionWidth((int) (fg.getTexture().getWidth()));
+
+				// TODO: Delete
 				fg.setRegionX((int) (camera.position.x * mul) % fg.getTexture().getWidth());
 				fg.setRegionWidth((int) (fg.getTexture().getWidth()));
 

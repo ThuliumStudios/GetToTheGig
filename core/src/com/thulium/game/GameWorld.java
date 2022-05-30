@@ -85,7 +85,8 @@ public class GameWorld {
 		// Testing 1/4 cable 
 		amp = new Amp(playerAtlas.findRegion("amp"));
 		amp.createBody(world.createBody(amp.getBodyDef(spawn.x + 2, spawn.y)), "amp", .4f, .4f, true);
-		
+		amp.setOriginalMass(1.1f);
+
 		cable = new Cable();
 		cable.setJoint(world.createJoint(cable.getBodyDef(amp.getBody(), player.getBody())));
 		
