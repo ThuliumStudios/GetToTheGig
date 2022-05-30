@@ -1,59 +1,122 @@
 
 axe.png
-size: 1024, 256
+size: 2048, 256
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-axe
-  rotate: false
-  xy: 2, 96
-  size: 152, 152
-  orig: 152, 152
-  offset: 0, 0
-  index: 1
-axe
+attack
   rotate: false
   xy: 156, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
-  index: 3
-axe
+  index: 1
+attack
   rotate: false
   xy: 310, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: 3
+attack
+  rotate: false
+  xy: 772, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
   index: 0
 rare
   rotate: false
-  xy: 310, 96
+  xy: 772, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
   index: 0
-axe
+attack
   rotate: false
-  xy: 618, 96
+  xy: 926, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
   index: 2
 axe_projectile
   rotate: false
-  xy: 772, 215
+  xy: 1234, 215
   size: 94, 33
   orig: 94, 33
   offset: 0, 0
   index: -1
+idle
+  rotate: false
+  xy: 1080, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: -1
 rare
+  rotate: false
+  xy: 618, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: 1
+run
+  rotate: false
+  xy: 2, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: 4
+jump_down
+  rotate: false
+  xy: 2, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: -1
+jump_up
+  rotate: false
+  xy: 2, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: -1
+run
+  rotate: false
+  xy: 2, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: 2
+run
+  rotate: false
+  xy: 2, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: 1
+run
+  rotate: false
+  xy: 2, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: 3
+run
+  rotate: false
+  xy: 2, 96
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: 5
+run
   rotate: false
   xy: 464, 96
   size: 152, 152
   orig: 152, 152
   offset: 0, 0
-  index: 1
-sprite_axe
+  index: 0
+sprite_item
   rotate: false
   xy: 2, 2
   size: 92, 92
