@@ -16,7 +16,7 @@ public class PlayerControllerInput implements ControllerListener {
 		this.input = input;
 		buttonMap = new HashMap<>();
 		int[] keys = {Keys.W, Keys.P, Keys.K, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1,
-				Keys.NUM_1, Keys.NUM_1, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT};
+				Keys.NUM_1, Keys.O, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT};
 		for (int i = 0; i < keys.length; i++)
 			buttonMap.put(i, keys[i]);
 	}

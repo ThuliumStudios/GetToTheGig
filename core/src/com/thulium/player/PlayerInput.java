@@ -9,9 +9,6 @@ import com.thulium.entity.Amp;
 import com.thulium.entity.Cable;
 import com.thulium.util.Units;
 
-import java.time.YearMonth;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.IntStream;
 
 public class PlayerInput implements InputProcessor {
