@@ -76,7 +76,7 @@ public class GameWorld {
 		playerAtlas = new TextureAtlas(Gdx.files.internal("img/player.atlas"));
 		player = new Player(playerAtlas);
 		// TODO: Delete
-		addEntity(player, .6f, .2f, 0, -.4f);
+		addEntity(player, .3f, .2f, 0, -.4f);
 
 		// Testing 1/4 cable 
 		amp = new Amp(playerAtlas.findRegion("amp"));

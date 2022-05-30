@@ -52,6 +52,8 @@ public class PlayerControllerInput implements ControllerListener {
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
 		switch (buttonCode) {
+			case 0:
+				break;
 			case 10:
 				input.keyUp(Keys.O);
 				break;
