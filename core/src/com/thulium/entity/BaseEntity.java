@@ -36,14 +36,6 @@ public class BaseEntity extends Sprite{
 		stateTime += delta;
 	}
 	
-	public void animate(String animationName) {
-		animate(animationName, .15f);
-	}
-
-	public void animate(String animationName, float speed) {
-		animate(animationName, speed, Units.isLooping(animationName));
-	}
-	
 	public void animate(String animationName, float speed, boolean looping) {
 		if (this.animationName.equals(animationName))
 			return;

@@ -77,8 +77,8 @@ public class PlayerInput implements InputProcessor {
 				}
 				break;
 			case Keys.K:
-				// player.attack(false);
-				player.attack(true);
+				player.attack(false);
+				// player.attack(true);
 				break;
 			default:
 				break;
@@ -102,8 +102,9 @@ public class PlayerInput implements InputProcessor {
 				player.applyOpposingForce();
 				break;
 			case Keys.K:
-				// player.attack(true);
-				amp.kick(player.isFlipped() ? -1 : 1, 0, 0);
+				player.attack(true);
+				if (player.getBody().getPosition().dst(amp.getBody().getPosition()) < 1.5f)
+					amp.kick(player.isFlipped() ? -1 : 1, 0, 0);
 				break;
 			case Keys.O:
 				cable.getJoint().setMaxLength(5);

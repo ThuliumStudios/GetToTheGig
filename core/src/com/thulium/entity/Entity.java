@@ -32,16 +32,16 @@ public class Entity extends BaseEntity {
 	public void updateAnimation() {
 		// Process jump animations
 		if (body.getLinearVelocity().y > .01f)
-			animate("jump_up");
+			animate("jump_up", 1, true);
 		else if (body.getLinearVelocity().y < -.01f)
-			animate("jump_down");
+			animate("jump_down", 1, true);
 		else if (getAnimationName().equals("jump_down") || getAnimationName().equals("jump_up")) {
 			animate("idle", .3f, true);
 		}
 		
 		// Process run/stop animations
 		if (body.getLinearVelocity().y == 0 && Math.abs(body.getLinearVelocity().x) > .01f)
-			animate("run");
+			animate("run", .15f, true);
 		else if (inMargin(body.getLinearVelocity().x) && getAnimationName().equals("run"))
 			animate("idle", .3f, true);
 	}

@@ -27,8 +27,7 @@ public class Player extends Entity {
 
 	public void render(Batch batch) {
 		super.render(batch);
-		if (getAnimationName().equals("kick"))
-			axe.draw(batch, Gdx.graphics.getDeltaTime());
+		axe.draw(batch, Gdx.graphics.getDeltaTime());
 		update(Gdx.graphics.getDeltaTime());
 		updateAnimation();
 	}
@@ -39,10 +38,16 @@ public class Player extends Entity {
 	
 	public void attack(boolean attack) {
 		if (attack) {
-			animate("kick", .25f, false);
+			animate("attack", .25f, false);
 		} else {
-			animate("idle", 1, false);
+			animate("rare", .75f, true);
 		}
+	}
+
+	@Override
+	public void animate(String animationName, float speed, boolean looping) {
+		super.animate(animationName, speed, looping);
+		axe.animate(animationName, speed, looping);
 	}
 
 	public void jump() {
@@ -96,16 +101,23 @@ public class Player extends Entity {
 		super.dispose();
 	}
 
+	@Override
+	public void setFlipState(boolean isFlipped) {
+		super.setFlipState(isFlipped);
+		axe.flip(isFlipped);
+	}
+
 	// TODO: Delete
 	private class PlayerAxe {
 		private TextureAtlas atlas;
 		private Sprite sprite;
+		private boolean flip;
 
 		private Animation<TextureRegion> animation;
 
 		public PlayerAxe() {
 			atlas = new TextureAtlas(Gdx.files.internal("img/axe.atlas"));
-			sprite = new Sprite(atlas.findRegion("axe", 1));
+			sprite = new Sprite(atlas.findRegion("attack", 1));
 			this.atlas = atlas;
 			sprite.setSize(152/96f, 152/96f);
 
@@ -114,16 +126,22 @@ public class Player extends Entity {
 		}
 
 		public void draw(Batch batch, float delta) {
-			if (getStateTime() >= animation.getKeyFrames().length * animation.getFrameDuration())
-				return;
-
 			sprite.setOriginCenter();
-			sprite.setFlip(isFlipX(), false);
 			sprite.setRegion(animation.getKeyFrame(getStateTime()));
 			sprite.setPosition(getX() + (getWidth() / 2f) - sprite.getWidth()/2f, getY());
+			sprite.flip(flip, false);
 
 			sprite.draw(batch);
 			update(delta);
+		}
+
+		public void animate(String name, float speed, boolean looping) {
+			animation = new Animation<TextureRegion>(speed, atlas.findRegions(name));
+			animation.setPlayMode(looping ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL);
+		}
+
+		public void flip(boolean flip) {
+			this.flip = flip;
 		}
 
 		public void dispose() {
