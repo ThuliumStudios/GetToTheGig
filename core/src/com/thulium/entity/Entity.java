@@ -34,9 +34,9 @@ public class Entity extends BaseEntity {
 		if (Math.abs(body.getLinearVelocity().x) <= Units.MAX_VELOCITY && !isPositionLocked)
 			body.applyForceToCenter(velocity, true);
 		if (isPositionLocked) {
-			body.setAwake(false);
-			body.setTransform(lockedPosition.x, body.getPosition().y, 0);
-			body.setLinearVelocity(0, body.getLinearVelocity().y);
+//			body.setAwake(false);
+//			body.setTransform(lockedPosition.x, body.getPosition().y, 0);
+//			body.setLinearVelocity(0, body.getLinearVelocity().y);
 		}
 	}
 	
@@ -51,14 +51,14 @@ public class Entity extends BaseEntity {
 		else if (body.getLinearVelocity().y < - 1f)
 			animate("jump_down", 1, true);
 		else if (getAnimationName().equals("jump_down") || getAnimationName().equals("jump_up")) {
-			animate("idle", .3f, true);
+			animate("idle", .15f, true);
 		}
 		
 		// Process run/stop animations
 		if (body.getLinearVelocity().y == 0 && Math.abs(body.getLinearVelocity().x) > .01f)
-			animate("run", .3f, true);
+			animate("run", .15f, true);
 		else if (inMargin(body.getLinearVelocity().x) && getAnimationName().equals("run"))
-			animate("idle", .3f, true);
+			animate("idle", .15f, true);
 	}
 
 	public boolean overrideAnimation() {
@@ -99,7 +99,7 @@ public class Entity extends BaseEntity {
 	}
 	
 	public void setXVelocity(float x) {
-		velocity.x = x * 1.5f;
+		velocity.x = x * 3f;
 	}
 
 	public void applyOpposingForce() {

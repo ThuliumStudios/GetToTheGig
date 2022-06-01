@@ -90,6 +90,7 @@ public class Amp {
 		fixtureDef.filter.maskBits = Units.GROUND_FLAG | Units.ALL_FLAG;
 		fixtureDef.filter.groupIndex = 1;
 		fixtureDef.density = 1;
+		fixtureDef.friction = 1;
 		body.createFixture(fixtureDef).setUserData(name);
 		originalMass = body.getMass();
 

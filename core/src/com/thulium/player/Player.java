@@ -47,9 +47,9 @@ public class Player extends Entity {
 	public void attack(boolean attack) {
 		chargeTime = 0;
 		if (attack) {
-			animate("attack", .25f, false);
+			animate("attack", .125f, false);
 		} else {
-			animate("rare", .75f, true);
+			animate("rare", .5f, true);
 		}
 		setPositionLocked(!attack);
 	}
@@ -104,6 +104,7 @@ public class Player extends Entity {
 	public void pullAmp(boolean isPullingAmp) {
 		// setMass(isPullingAmp && isOnGround ? 100 : 1);
 		setPositionLocked(isPullingAmp);
+		setFriction(isPullingAmp && isOnGround ? 10000 : 1);
 		this.isPullingAmp = (isPullingAmp && isOnGround);
 	}
 
@@ -115,10 +116,13 @@ public class Player extends Entity {
 		return chargeTime;
 	}
 
-	public void setMass(float massMul) {
-		MassData massData = getBody().getMassData();
-		massData.mass = getOriginalMass() * massMul;
-		getBody().setMassData(massData);
+	public void setFriction(float friction) {
+		getBody().getFixtureList().forEach(f -> {
+			f.setFriction(friction);
+		});
+//		MassData massData = getBody().getMassData();
+//		massData.mass = getOriginalMass() * massMul;
+//		getBody().setMassData(massData);
 	}
 
 	public void setOriginalMass(float mass) {
@@ -179,7 +183,7 @@ public class Player extends Entity {
 			sprite.flip(flip, false);
 
 			sprite.draw(batch);
-			update(delta);
+			// update(delta);
 		}
 
 		public void animate(String name, float speed, boolean looping) {

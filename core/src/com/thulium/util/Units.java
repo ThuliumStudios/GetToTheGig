@@ -12,8 +12,6 @@ public final class Units {
 	public static final short GROUND_FLAG = 1 << 2;
 	public static final short ENTITY_FLAG = 1 << 3;
 
-	public static final float AMP_MASS = 0;
-
 	public static final Vector2 POWER_SLIDE = new Vector2(5, 0);
 	public static final Vector2 ATTACK_FORCE = new Vector2(5, 8);
 

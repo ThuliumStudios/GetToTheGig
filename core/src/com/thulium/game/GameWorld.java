@@ -52,12 +52,15 @@ public class GameWorld {
 	private TextureAtlas playerAtlas;
 
 	private Jukebox jukebox;
+	private PauseMenu pause;
 
 	public GameWorld(MainGame game) {
 		Box2D.init();
 
 		jukebox = new Jukebox();
 		jukebox.playMusic(1);
+
+		pause = new PauseMenu(game.getSkin());
 
 		viewport = new StretchViewport(Units.WIDTH, Units.HEIGHT);
 		camera = new OrthographicCamera();
@@ -183,6 +186,31 @@ public class GameWorld {
 		batch.end();
 
 		info.render(delta);
+		
+		if (player.isDebugging())
+			debugRenderer.render(world, camera.combined);
+	}
+
+	public void update(float delta) {
+		/// TODO: Consider moving this to a player state
+		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
+			pause.show();
+		if (pause.isShowing())
+			return;
+
+		camera.position.set(MathUtils.clamp(player.getBody().getPosition().x, camera.viewportWidth / 2f,
+				map.getProperty("width", Integer.class)/2f - camera.viewportWidth/2f),
+				MathUtils.clamp(player.getBody().getPosition().y, camera.viewportHeight / 2f,
+						map.getProperty("height", Integer.class)), 0);
+		// camera.position.set(player.getBody().getPosition().x, player.getBody().getPosition().y, 0);
+		textCamera.position.set(camera.position.x * (cameraScale(true)), camera.position.y * (cameraScale(false)), 0);
+
+		player.setOnGround(cl.isOnGround());
+		player.update(Gdx.graphics.getDeltaTime());
+		textCamera.update();
+		camera.update();
+
+		jukebox.setVolume(player.isPaused() ? 0 : 1);
 
 		if (player.isPullingAmp() || amp.isPullingPlayer()) {
 			if (cable.getJoint().getMaxLength() > 0) {
@@ -220,25 +248,6 @@ public class GameWorld {
 		player.changeCollisionGroup(player.getBody().getLinearVelocity().y >= .001f
 				|| player.getBody().getPosition().y < amp.getBody().getPosition().y + .6f
 				? (short) 2 : (short) 1);
-		
-		if (player.isDebugging())
-			debugRenderer.render(world, camera.combined);
-	}
-
-	public void update(float delta) {
-		camera.position.set(MathUtils.clamp(player.getBody().getPosition().x, camera.viewportWidth / 2f,
-				map.getProperty("width", Integer.class)/2f - camera.viewportWidth/2f),
-				MathUtils.clamp(player.getBody().getPosition().y, camera.viewportHeight / 2f,
-						map.getProperty("height", Integer.class)), 0);
-		// camera.position.set(player.getBody().getPosition().x, player.getBody().getPosition().y, 0);
-		textCamera.position.set(camera.position.x * (cameraScale(true)), camera.position.y * (cameraScale(false)), 0);
-
-		player.setOnGround(cl.isOnGround());
-		player.update(Gdx.graphics.getDeltaTime());
-		textCamera.update();
-		camera.update();
-
-		jukebox.setVolume(player.isPaused() ? 0 : 1);
 
 		world.step(/**1 / 60f**/Math.min(1 / 60f, delta), 6, 2);
 	}
@@ -273,5 +282,6 @@ public class GameWorld {
 		map.dispose();
 		debugRenderer.dispose();
 		playerAtlas.dispose();
+		pause.dispose();
 	}
 }
