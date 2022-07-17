@@ -6,6 +6,7 @@ public final class Units {
 	public static final int WIDTH = 8;
 	public static final int HEIGHT = 5;
 	public static final int JUMP = 10;
+	public static final float MAX_CHARGE = 1.2f;
 	public static final float MAX_VELOCITY = 5;
 	public static final short ALL_FLAG = 1 << 0;
 	public static final short NONE_FLAG = Short.MAX_VALUE;

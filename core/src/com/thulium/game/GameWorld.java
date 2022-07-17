@@ -174,7 +174,7 @@ public class GameWorld {
 			shapes.setColor(Color.RED);
 			shapes.rect(player.getX(), player.getY() - .25F, player.getWidth(), .1f);
 			shapes.setColor(Color.GREEN);
-			shapes.rect(player.getX(), player.getY() - .25F, Math.min(player.getChargeTime() / 2f, 1), .1f);
+			shapes.rect(player.getX(), player.getY() - .25F, Math.min(player.getChargeTime() / Units.MAX_CHARGE, 1), .1f);
 		}
 		shapes.end();
 

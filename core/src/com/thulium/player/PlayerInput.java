@@ -113,7 +113,7 @@ public class PlayerInput implements InputProcessor {
 				float force = player.getChargeTime();
 				player.attack(true);
 				if (player.getBody().getPosition().dst(amp.getBody().getPosition()) < 1.5f) {
-					float chargeMul = MathUtils.clamp(force, 0, 2) / 2f;
+					float chargeMul = MathUtils.clamp(force, 0, Units.MAX_CHARGE) / Units.MAX_CHARGE;
 					float xMul = (player.isFlipped() ? -1 : 1) * chargeMul;
 					float yMul = chargeMul;
 					if (keyIsDown(Keys.W, Keys.UP)) {
@@ -193,13 +193,9 @@ public class PlayerInput implements InputProcessor {
 		return false;
 	}
 
-	public boolean keyIsDown(int keycode) {
-		return keysDown.contains(keycode, true);
-	}
-
 	public boolean keyIsDown(int... keycodes) {
 		for (int key : keysDown) {
-			if (IntStream.of(keycodes).parallel().filter(i -> i == key).findAny().isPresent()) {
+			if (IntStream.of(keycodes).filter(i -> i == key).findAny().isPresent()) {
 				return true;
 			}
 		}
