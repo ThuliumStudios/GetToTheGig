@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.physics.box2d.World;
+import com.thulium.game.GameWorld;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,20 +13,26 @@ import java.util.Map;
 public class PlayerControllerInput implements ControllerListener {
 	private Map<Integer, Integer> buttonMap;
 	private PlayerInput input;
+	private GameWorld world;
 
-	public PlayerControllerInput(PlayerInput input) {
+	public PlayerControllerInput(PlayerInput input, GameWorld world) {
 		this.input = input;
+		this.world = world;
 		buttonMap = new HashMap<>();
 		int[] keys = {Keys.W, Keys.P, Keys.K, Keys.NUM_1, Keys.NUM_1, Keys.NUM_1, Keys.ESCAPE, Keys.NUM_1, Keys.NUM_1,
 				Keys.NUM_1, Keys.O, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT};
 		for (int i = 0; i < keys.length; i++)
 			buttonMap.put(i, keys[i]);
-
 	}
 
 	@Override
 	public void connected(Controller controller) {
 		// TODO Auto-generated method stub
+		if (controller.getPlayerIndex() < 1)
+			world.addPlayer();
+		System.out.println("Controller ");
+		System.out.println(controller.getPlayerIndex() + " connected.");
+		System.out.println();
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -31,6 +30,7 @@ import com.thulium.util.Units;
 import java.util.Arrays;
 
 public class GameWorld {
+	private Array<Player> players = new Array<>();
 	private OrthographicCamera camera;
 	private OrthographicCamera textCamera;
 	private Viewport viewport;
@@ -50,6 +50,9 @@ public class GameWorld {
 	private ShapeRenderer shapes;
 	
 	private TextureAtlas playerAtlas;
+	private TextureAtlas atlas2;
+
+	private InputMultiplexer input;
 
 	private Jukebox jukebox;
 	private PauseMenu pause;
@@ -86,6 +89,8 @@ public class GameWorld {
 
 		playerAtlas = new TextureAtlas(Gdx.files.internal("img/player.atlas"));
 		player = new Player(playerAtlas);
+
+		atlas2.add(new TextureAtlas(Gdx.files.internal("img/player2.atlas")));
 
 		// TODO: Delete
 		addEntity(player, .3f, .2f, 0, -.4f);
@@ -141,8 +146,10 @@ public class GameWorld {
 		// TODO: End delete
 
 		debugRenderer = new Box2DDebugRenderer();
-		Gdx.input.setInputProcessor(new InputMultiplexer(pIn, info.getStage()));
-		Controllers.addListener(new PlayerControllerInput(pIn));
+
+		input = new InputMultiplexer(pIn, info.getStage());
+		Gdx.input.setInputProcessor(input);
+		Controllers.addListener(new PlayerControllerInput(pIn, this));
 	}
 
 	public void render(Batch batch, float delta) {
@@ -155,6 +162,7 @@ public class GameWorld {
 		
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+		players.forEach(p -> p.render(batch));
 		amp.render(batch);
 		player.render(batch);
 
@@ -176,6 +184,16 @@ public class GameWorld {
 			shapes.setColor(Color.GREEN);
 			shapes.rect(player.getX(), player.getY() - .25F, Math.min(player.getChargeTime() / Units.MAX_CHARGE, 1), .1f);
 		}
+
+		// TODO: Fix multiplayer
+		players.forEach(player -> {
+			if (player.getChargeTime() > 0) {
+				shapes.setColor(Color.RED);
+				shapes.rect(player.getX(), player.getY() - .25F, player.getWidth(), .1f);
+				shapes.setColor(Color.GREEN);
+				shapes.rect(player.getX(), player.getY() - .25F, Math.min(player.getChargeTime() / Units.MAX_CHARGE, 1), .1f);
+			}
+		});
 		shapes.end();
 
 		map.render(camera, 4);
@@ -207,6 +225,13 @@ public class GameWorld {
 
 		player.setOnGround(cl.isOnGround());
 		player.update(Gdx.graphics.getDeltaTime());
+
+		// TODO: Fix Multiplayer
+		players.forEach(p -> {
+			p.setOnGround(cl.isOnGround());
+			p.update(Gdx.graphics.getDeltaTime());
+		});
+
 		textCamera.update();
 		camera.update();
 
@@ -275,7 +300,20 @@ public class GameWorld {
 		cable.setState(1);
 	}
 
+	public void addPlayer() {
+		Player newPlayer = new Player(atlas2);
+
+		PlayerInput playerInput = new PlayerInput(newPlayer);
+		input.addProcessor(playerInput);
+		Controllers.addListener(new PlayerControllerInput(playerInput, this));
+
+		// TODO: Delete
+		addEntity(newPlayer, .3f, .2f, 0, -.4f);
+		newPlayer.setOriginalMass(5);
+	}
+
 	public void dispose() {
+		players.forEach(Player::dispose);
 		info.dispose();
 		world.dispose();
 		player.dispose();
