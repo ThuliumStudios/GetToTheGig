@@ -90,7 +90,7 @@ public class GameWorld {
 		playerAtlas = new TextureAtlas(Gdx.files.internal("img/player.atlas"));
 		player = new Player(playerAtlas);
 
-		atlas2.add(new TextureAtlas(Gdx.files.internal("img/player2.atlas")));
+		atlas2 = new TextureAtlas(Gdx.files.internal("img/player2.atlas"));
 
 		// TODO: Delete
 		addEntity(player, .3f, .2f, 0, -.4f);
