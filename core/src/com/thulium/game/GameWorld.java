@@ -302,6 +302,7 @@ public class GameWorld {
 
 	public void addPlayer() {
 		Player newPlayer = new Player(atlas2);
+		newPlayer.setPosition(4,3);
 
 		PlayerInput playerInput = new PlayerInput(newPlayer);
 		input.addProcessor(playerInput);
@@ -310,6 +311,7 @@ public class GameWorld {
 		// TODO: Delete
 		addEntity(newPlayer, .3f, .2f, 0, -.4f);
 		newPlayer.setOriginalMass(5);
+		players.add(newPlayer);
 	}
 
 	public void dispose() {

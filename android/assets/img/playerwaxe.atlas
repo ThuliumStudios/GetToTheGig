@@ -1,5 +1,5 @@
 
-player.png
+playerwaxe.png
 size: 1024, 512
 format: RGBA8888
 filter: Nearest, Nearest
@@ -18,13 +18,6 @@ attack
   orig: 150, 150
   offset: 0, 0
   index: 1
-rare
-  rotate: false
-  xy: 306, 306
-  size: 150, 150
-  orig: 150, 150
-  offset: 0, 0
-  index: 1
 attack
   rotate: false
   xy: 458, 306
@@ -34,35 +27,35 @@ attack
   index: 3
 attack
   rotate: false
-  xy: 458, 306
-  size: 150, 150
-  orig: 150, 150
-  offset: 0, 0
-  index: 2
-attack
-  rotate: false
-  xy: 610, 306
+  xy: 458, 2
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 0
 rare
   rotate: false
-  xy: 610, 306
+  xy: 458, 2
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 0
+attack
+  rotate: false
+  xy: 762, 154
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 2
 idle
   rotate: false
-  xy: 610, 2
+  xy: 762, 2
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: -1
 jump_down
   rotate: false
-  xy: 610, 154
+  xy: 762, 306
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
@@ -97,7 +90,14 @@ push
   index: 2
 push
   rotate: false
-  xy: 762, 306
+  xy: 610, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 1
+rare
+  rotate: false
+  xy: 458, 154
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
@@ -132,14 +132,14 @@ run
   index: 0
 run
   rotate: false
-  xy: 458, 154
+  xy: 610, 306
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 458, 2
+  xy: 610, 154
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
