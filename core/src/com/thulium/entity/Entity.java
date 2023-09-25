@@ -78,6 +78,10 @@ public class Entity extends BaseEntity {
 		return isPositionLocked;
 	}
 
+	public Vector2 getLockedPosition() {
+		return lockedPosition;
+	}
+
 	public BodyDef getBodyDef(float x, float y) {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
@@ -121,15 +125,15 @@ public class Entity extends BaseEntity {
 		createBody(body, "entity", width, height, width, height, true);
 	}
 
-	public void createBody(Body body, float width, float height, float x, float y) {
-		createBody(body, "entity", width, height, x, y, true);
+	public Body createBody(Body body, float width, float height, float x, float y) {
+		return createBody(body, "entity", width, height, x, y, true);
 	}
 
 	public void createBody(Body body, Object name, float width, float height, boolean hasFoot) {
 		createBody(body, "entity", width, height, width, height, hasFoot);
 	}
 
-	public void createBody(Body body, Object name, float width, float height, float x, float y, boolean hasFoot) {
+	public Body createBody(Body body, Object name, float width, float height, float x, float y, boolean hasFoot) {
 		this.body = body;
 
 		PolygonShape box = new PolygonShape();
@@ -153,6 +157,7 @@ public class Entity extends BaseEntity {
 		}
 
 		box.dispose();
+		return body;
 	}
 
 	// TODO: Possibly delete and replace

@@ -2,6 +2,8 @@ package com.thulium.util;
 
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.List;
+
 public final class Units {
 	public static final int WIDTH = 8;
 	public static final int HEIGHT = 5;
@@ -13,15 +15,12 @@ public final class Units {
 	public static final short GROUND_FLAG = 1 << 2;
 	public static final short ENTITY_FLAG = 1 << 3;
 
-	public static final Vector2 POWER_SLIDE = new Vector2(5, 0);
+	//public static final Vector2 POWER_SLIDE = new Vector2(1.5f, 0);
 	public static final Vector2 ATTACK_FORCE = new Vector2(5, 8);
 
-	public static final String[] animations = { "idle", "run", "jump_up", "jump_down" };
+	public static final List<String> animations = List.of("idle", "run", "jump_up", "jump_down");
 
 	public static boolean isLooping(String animation) {
-		for (String anims : animations)
-			if (animation.equals(anims))
-				return true;
-		return false;
+		return animation.contains(animation);
 	}
 }
