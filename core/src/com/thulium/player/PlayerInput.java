@@ -93,9 +93,9 @@ public class PlayerInput implements InputProcessor {
 		}
 
 		keysDown.add(keycode);
-		System.out.print("Key down: " + keycode + ". Keys still down: ");
-		keysDown.forEach(k -> System.out.print(k + ", "));
-		System.out.println();
+//		System.out.print("Key down: " + keycode + ". Keys still down: ");
+//		keysDown.forEach(k -> System.out.print(k + ", "));
+//		System.out.println();
 		return false;
 	}
 

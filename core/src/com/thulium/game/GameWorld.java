@@ -296,7 +296,7 @@ public class GameWorld {
 		world.destroyJoint(cable.getJoint());
 		cable.setState(1);
 	}
-
+	
 	public void dispose() {
 		players.forEach(Player::dispose);
 		info.dispose();
