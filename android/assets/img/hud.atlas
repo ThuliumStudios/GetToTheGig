@@ -1,0 +1,48 @@
+
+HUD.png
+size: 256, 64
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+hp
+  rotate: false
+  xy: 2, 2
+  size: 18, 20
+  orig: 18, 20
+  offset: 0, 0
+  index: -1
+hudface
+  rotate: false
+  xy: 2, 24
+  size: 43, 38
+  orig: 43, 38
+  offset: 0, 0
+  index: 3
+hudface
+  rotate: false
+  xy: 47, 24
+  size: 43, 38
+  orig: 43, 38
+  offset: 0, 0
+  index: 0
+hudface
+  rotate: false
+  xy: 92, 24
+  size: 43, 38
+  orig: 43, 38
+  offset: 0, 0
+  index: 2
+hudface
+  rotate: false
+  xy: 137, 24
+  size: 43, 38
+  orig: 43, 38
+  offset: 0, 0
+  index: 4
+hudface
+  rotate: false
+  xy: 182, 24
+  size: 43, 38
+  orig: 43, 38
+  offset: 0, 0
+  index: 1
