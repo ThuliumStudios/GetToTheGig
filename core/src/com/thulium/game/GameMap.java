@@ -90,7 +90,7 @@ public class GameMap {
 				Arrays.asList(v).forEach(vec -> vec.scl(.5f));
 				
 				cs.createChain(v);
-				fixtureDef.friction = .5f;
+				fixtureDef.friction = .1f;//.5f;
 				fixtureDef.shape = cs;
 				fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
 				fixtureDef.filter.maskBits = Units.ENTITY_FLAG | Units.ALL_FLAG;

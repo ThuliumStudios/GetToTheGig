@@ -42,6 +42,9 @@ public class Player extends Entity {
 			setPosition((getBody().getPosition().x) - (getWidth() / 2f),
 					(getBody().getPosition().y) - (getHeight() / 2f));
 		}
+		if (isPullingAmp) {
+			getBody().setTransform(getLockedPosition(), 0);
+		}
 	}
 	
 	public void attack(boolean attack) {
@@ -80,8 +83,12 @@ public class Player extends Entity {
 		jumped = !isOnGround;
 	}
 
+	public void push() {
+
+	}
+
 	public void powerslide() {
-		Vector2 force = new Vector2(5 / getBody().getLinearVelocity().x, 0);
+		Vector2 force = getBody().getLinearVelocity().scl(1.5f, 1);//new Vector2(5 / getBody().getLinearVelocity().x, 0);
 		setXVelocity(0);
 
 		getBody().applyLinearImpulse(force, getBody().getWorldCenter(), true);
@@ -104,7 +111,7 @@ public class Player extends Entity {
 	public void pullAmp(boolean isPullingAmp) {
 		// setMass(isPullingAmp && isOnGround ? 100 : 1);
 		setPositionLocked(isPullingAmp);
-		setFriction(isPullingAmp && isOnGround ? 10000 : 1);
+		setFriction(isPullingAmp && isOnGround ? Float.MAX_VALUE : 1);
 		this.isPullingAmp = (isPullingAmp && isOnGround);
 	}
 

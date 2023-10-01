@@ -9,7 +9,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.android.tools.build:gradle:7.0.2'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.12'
         
 
@@ -79,52 +79,22 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         api "com.badlogicgames.gdx-controllers:gdx-controllers-android:$gdxControllersVersion"
-        
+
     }
-}
-
-project(":ios") {
-    apply plugin: "java-library"
-    apply plugin: "robovm"
 
 
-    dependencies {
-        implementation project(":core")
-        api "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
-        api "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
-        api "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
-        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
-        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
-        api "com.badlogicgames.gdx-controllers:gdx-controllers-ios:$gdxControllersVersion"
-        
-    }
-}
-
-project(":core") {
-    apply plugin: "java-library"
+    project(":core") {
+        apply plugin: "java-library"
 
 
-    dependencies {
-        implementation 'org.mini2Dx:universal-tween-engine:6.3.3'
-        api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
-        
-    }
-}
+        dependencies {
+            implementation 'org.mini2Dx:universal-tween-engine:6.3.3'
+            api "com.badlogicgames.gdx:gdx:$gdxVersion"
+            api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+            api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+            api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+            api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
 
-project(":server") {
-    apply plugin: "java-library"
-
-    dependencies {
-        implementation project(":core")
-        implementation "com.esotericsoftware:kryonet:2.22.0-RC1"
-    	implementation "org.mini2Dx:universal-tween-engine:6.3.3"
-    	// https://mvnrepository.com/artifact/com.google.code.gson/gson
-		implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
-
+        }
     }
 }

@@ -50,7 +50,6 @@ public class GameWorld {
 	private ShapeRenderer shapes;
 	
 	private TextureAtlas playerAtlas;
-	private TextureAtlas atlas2;
 
 	private InputMultiplexer input;
 
@@ -90,10 +89,8 @@ public class GameWorld {
 		playerAtlas = new TextureAtlas(Gdx.files.internal("img/player.atlas"));
 		player = new Player(playerAtlas);
 
-		atlas2 = new TextureAtlas(Gdx.files.internal("img/player2.atlas"));
-
 		// TODO: Delete
-		addEntity(player, .3f, .2f, 0, -.4f);
+		addEntity(player, .3f, .2f, 0, -.4f).setLinearDamping(.5f);
 		player.setOriginalMass(5);
 
 		// Testing 1/4 cable 
@@ -281,8 +278,8 @@ public class GameWorld {
 		e.createBody(world.createBody(e.getBodyDef(spawn.x, spawn.y)), width / 2f, height / 2f);
 	}
 
-	public void addEntity(Entity e, float width, float height, float x, float y) {
-		e.createBody(world.createBody(e.getBodyDef(spawn.x, spawn.y)), width / 2f, height / 2f, x, y);
+	public Body addEntity(Entity e, float width, float height, float x, float y) {
+		return e.createBody(world.createBody(e.getBodyDef(spawn.x, spawn.y)), width / 2f, height / 2f, x, y);
 	}
 
 	public float cameraScale(boolean width) {
@@ -299,21 +296,7 @@ public class GameWorld {
 		world.destroyJoint(cable.getJoint());
 		cable.setState(1);
 	}
-
-	public void addPlayer() {
-		Player newPlayer = new Player(atlas2);
-		newPlayer.setPosition(4,3);
-
-		PlayerInput playerInput = new PlayerInput(newPlayer);
-		input.addProcessor(playerInput);
-		Controllers.addListener(new PlayerControllerInput(playerInput, this));
-
-		// TODO: Delete
-		addEntity(newPlayer, .3f, .2f, 0, -.4f);
-		newPlayer.setOriginalMass(5);
-		players.add(newPlayer);
-	}
-
+	
 	public void dispose() {
 		players.forEach(Player::dispose);
 		info.dispose();

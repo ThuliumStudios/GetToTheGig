@@ -50,7 +50,7 @@ public class PlayerInput implements InputProcessor {
 			case Keys.SHIFT_LEFT:
 			case Keys.SHIFT_RIGHT:
 				if (keyIsDown(Keys.A, Keys.D))
-					// player.powerslide();
+					player.powerslide();
 				break;
 			case Keys.PLUS:
 				break;
@@ -113,13 +113,15 @@ public class PlayerInput implements InputProcessor {
 				float force = player.getChargeTime();
 				player.attack(true);
 				if (player.getBody().getPosition().dst(amp.getBody().getPosition()) < 1.5f) {
+					int sign = player.isFlipped() ? -1 : 1;
 					float chargeMul = MathUtils.clamp(force, 0, Units.MAX_CHARGE) / Units.MAX_CHARGE;
-					float xMul = (player.isFlipped() ? -1 : 1) * chargeMul;
+					float xMul = sign * chargeMul;
 					float yMul = chargeMul;
 					if (keyIsDown(Keys.W, Keys.UP)) {
 						yMul *= 1.25f * chargeMul;
 						xMul = 0;
 					}
+					xMul *= (1 / force);
 					amp.kick(xMul, yMul);
 				}
 				break;
@@ -137,8 +139,6 @@ public class PlayerInput implements InputProcessor {
 					amp.pullPlayer(false);
 					player.getBody().applyLinearImpulse(impulse.scl(.25f), player.getBody().getWorldCenter(), true);
 				}
-
-
 //				if (player.isPullingAmp()) {
 //					player.pullAmp(false);
 //					amp.setStateLocked(false);
@@ -149,6 +149,9 @@ public class PlayerInput implements InputProcessor {
 //				}
 				// player.changeCollisionGroup((short) 1);
 				// amp.getBody().applyAngularImpulse(5, true);
+				break;
+			case Keys.L:
+				player.push();
 				break;
 			default:
 				break;
