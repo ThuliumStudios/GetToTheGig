@@ -7,11 +7,13 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.thulium.screen.GameScreen;
 import com.thulium.util.Jukebox;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class MainGame extends Game {
 	private AssetManager assets;
@@ -52,12 +54,16 @@ public class MainGame extends Game {
 		assets = new AssetManager();
 
 		// Load backgrounds
-		String[] mapBg = { "BG_Decor", "Ground", "Middle_Decor", "snowymountains", "trees_fg", "whiteclouds"};
-		Arrays.asList(mapBg).forEach(img -> assets.load("maps/" + img + ".png", Texture.class));
+		List.of("BG_Decor", "Ground", "Middle_Decor", "snowymountains", "trees_fg", "whiteclouds")
+				.forEach(img -> assets.load("maps/" + img + ".png", Texture.class));
+
+		// Load atlas files
+		List.of("hud", "squirrel")
+				.forEach(atlas -> assets.load("img/" + atlas + ".atlas", TextureAtlas.class));
 
 		// Load music
-		String[] music = { "level_1" };
-		Arrays.asList(music).forEach(m -> assets.load("raw/" + m + ".ogg", Music.class));
+		List.of("level_1")
+				.forEach(m -> assets.load("raw/" + m + ".ogg", Music.class));
 
 		assets.finishLoading();
 	}
@@ -65,6 +71,7 @@ public class MainGame extends Game {
 	@Override
 	public void dispose() {
 		super.dispose();
+		assets.dispose();
 		batch.dispose();
 		skin.dispose();
 	}

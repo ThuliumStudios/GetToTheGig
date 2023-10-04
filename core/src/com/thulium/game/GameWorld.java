@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thulium.entity.Amp;
 import com.thulium.entity.Cable;
+import com.thulium.entity.Enemy;
 import com.thulium.entity.Entity;
 import com.thulium.main.MainGame;
 import com.thulium.player.Player;
@@ -44,6 +45,8 @@ public class GameWorld {
 	private MyContactListener cl;
 
 	private Box2DDebugRenderer debugRenderer;
+
+	public Array<Enemy> enemies = new Array<>();
 	
 	// TODO: Delete
 	private PlayerInfo info;
@@ -89,8 +92,10 @@ public class GameWorld {
 		playerAtlas = new TextureAtlas(Gdx.files.internal("img/player.atlas"));
 		player = new Player(playerAtlas);
 
+		cl.setPlayer(player);
+
 		// TODO: Delete
-		addEntity(player, .3f, .2f, 0, -.4f).setLinearDamping(.5f);
+		addEntity(player, .3f, .2f, spawn.x, spawn.y, 0, -.4f).setLinearDamping(.5f);
 		player.setOriginalMass(5);
 
 		// Testing 1/4 cable 
@@ -100,9 +105,19 @@ public class GameWorld {
 
 		cable = new Cable();
 		cable.setJoint(world.createJoint(cable.getBodyDef(amp.getBody(), player.getBody())));
+
+		// Generate enemies from map
+		for (int i = 0; i < map.getEnemies().size; i++) {
+			SpawnProperties properties = map.getEnemies().get(i);
+			Enemy enemy = new Enemy( game.getAsset("img/" + properties.getName() + ".atlas", TextureAtlas.class), properties);
+			addEntity(enemy, .3f, .2f, properties.getX(), properties.getY() - .5f, 0, -.4f);
+			enemy.changeCollisionGroup((short) 3);
+			enemy.setVelocity(-2, 0);
+			enemies.add(enemy);
+		}
 		
 		// Test rendering game info
-		info = new PlayerInfo(player, game.getSkin());
+		info = new PlayerInfo(player, game.getAsset("img/hud.atlas", TextureAtlas.class), game.getSkin());
 	
 		shapes = new ShapeRenderer();
 
@@ -139,7 +154,7 @@ public class GameWorld {
 		bodyDef.type = BodyDef.BodyType.StaticBody;
 		bodyDef.position.set(0, 0);
 
-		world.createBody(bodyDef).createFixture(fixtureDef);
+		// world.createBody(bodyDef).createFixture(fixtureDef);
 		// TODO: End delete
 
 		debugRenderer = new Box2DDebugRenderer();
@@ -156,9 +171,10 @@ public class GameWorld {
 		batch.end();
 
 		map.render(camera, 0, 1, 2, 3);
-		
+
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+		enemies.forEach(e -> e.render(batch));
 		players.forEach(p -> p.render(batch));
 		amp.render(batch);
 		player.render(batch);
@@ -181,16 +197,6 @@ public class GameWorld {
 			shapes.setColor(Color.GREEN);
 			shapes.rect(player.getX(), player.getY() - .25F, Math.min(player.getChargeTime() / Units.MAX_CHARGE, 1), .1f);
 		}
-
-		// TODO: Fix multiplayer
-		players.forEach(player -> {
-			if (player.getChargeTime() > 0) {
-				shapes.setColor(Color.RED);
-				shapes.rect(player.getX(), player.getY() - .25F, player.getWidth(), .1f);
-				shapes.setColor(Color.GREEN);
-				shapes.rect(player.getX(), player.getY() - .25F, Math.min(player.getChargeTime() / Units.MAX_CHARGE, 1), .1f);
-			}
-		});
 		shapes.end();
 
 		map.render(camera, 4);
@@ -202,8 +208,9 @@ public class GameWorld {
 
 		info.render(delta);
 		
-		if (player.isDebugging())
+		if (player.isDebugging()) {
 			debugRenderer.render(world, camera.combined);
+		}
 	}
 
 	public void update(float delta) {
@@ -220,6 +227,12 @@ public class GameWorld {
 		// camera.position.set(player.getBody().getPosition().x, player.getBody().getPosition().y, 0);
 		textCamera.position.set(camera.position.x * (cameraScale(true)), camera.position.y * (cameraScale(false)), 0);
 
+		enemies.forEach(e -> {
+			e.update(delta);
+		});
+
+
+		info.update(delta);
 		player.setOnGround(cl.isOnGround());
 		player.update(Gdx.graphics.getDeltaTime());
 
@@ -248,7 +261,7 @@ public class GameWorld {
 			cable.setJoint(world.createJoint(cable.getBodyDef(amp.getBody(), player.getBody())));
 		}
 
-		// TODO: Change collisioin filters for all entities in loop
+		// TODO: Change collision filters for all entities in loop
 		if (player.getBody().getLinearVelocity().y >= .001f) {
 			player.changeCollisionFilters(Units.ENTITY_FLAG, (short)0);
 			// player.changeCollisionGroup((short) 2);
@@ -271,15 +284,15 @@ public class GameWorld {
 				|| player.getBody().getPosition().y < amp.getBody().getPosition().y + .6f
 				? (short) 2 : (short) 1);
 
-		world.step(/**1 / 60f**/Math.min(1 / 60f, delta), 6, 2);
+		world.step(Math.min(1 / 60f, delta), 6, 2);
 	}
 
 	public void addEntity(Entity e, float width, float height) {
 		e.createBody(world.createBody(e.getBodyDef(spawn.x, spawn.y)), width / 2f, height / 2f);
 	}
 
-	public Body addEntity(Entity e, float width, float height, float x, float y) {
-		return e.createBody(world.createBody(e.getBodyDef(spawn.x, spawn.y)), width / 2f, height / 2f, x, y);
+	public Body addEntity(Entity e, float width, float height, float spawnX, float spawnY, float x, float y) {
+		return e.createBody(world.createBody(e.getBodyDef(spawnX, spawnY)), width / 2f, height / 2f, x, y);
 	}
 
 	public float cameraScale(boolean width) {

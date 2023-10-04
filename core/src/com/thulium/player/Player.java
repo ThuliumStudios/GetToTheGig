@@ -2,6 +2,7 @@ package com.thulium.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -17,24 +18,22 @@ public class Player extends Entity {
 	private boolean jumped;
 	private boolean noJump = true;
 	private float chargeTime;
-
-	private PlayerAxe axe;
+	private int HP;
 
 	public Player(TextureAtlas atlas) {
 		super(atlas);
 
-		axe = new PlayerAxe();
+		HP = 4;
 		animate("idle", 1, true);
 	}
 
 	public void render(Batch batch) {
 		super.render(batch);
-		axe.draw(batch, Gdx.graphics.getDeltaTime());
 	}
 
 	public void update(float delta) {
 		super.update(delta);
-		updateAnimation();
+		// updateAnimation();
 
 		if (getAnimationName().equals("rare"))
 			chargeTime += delta;
@@ -60,13 +59,20 @@ public class Player extends Entity {
 	@Override
 	public void animate(String animationName, float speed, boolean looping) {
 		super.animate(animationName, speed, looping);
-		axe.animate(animationName, speed, looping);
+	}
+
+	@Override
+	public void updateAnimation() {
+		super.updateAnimation();
+		if (getBody().getLinearVelocity().y > .1f)
+			animate("jump_up", 1, true);
+		else if (getBody().getLinearVelocity().y < - 1f)
+			animate("jump_down", 1, true);
 	}
 
 	@Override
 	public void setPosition(float x, float y) {
 		super.setPosition(x, y);
-		axe.setPosition(x, y);
 	}
 
 	public void jump() {
@@ -138,6 +144,18 @@ public class Player extends Entity {
 		getBody().setMassData(massData);
 		super.setOriginalMass(getOriginalMass() * mass);
 	}
+
+	public void damage(int damage) {
+		HP = MathUtils.clamp(HP - damage, 0, 4);
+	}
+
+	public int getHP() {
+		return HP;
+	}
+
+	public void setHP(int HP) {
+		this.HP = HP;
+	}
 	
 	public boolean isDebugging() {
 		return isDebugging;
@@ -162,52 +180,5 @@ public class Player extends Entity {
 	@Override
 	public void setFlipState(boolean isFlipped) {
 		super.setFlipState(isFlipped);
-		axe.flip(isFlipped);
-	}
-
-	// TODO: Delete
-	private class PlayerAxe {
-		private TextureAtlas atlas;
-		private Sprite sprite;
-		private boolean flip;
-
-		private Animation<TextureRegion> animation;
-
-		public PlayerAxe() {
-			atlas = new TextureAtlas(Gdx.files.internal("img/axe.atlas"));
-			sprite = new Sprite(atlas.findRegion("attack", 1));
-			this.atlas = atlas;
-			sprite.setSize(152/96f, 152/96f);
-
-			animation = new Animation<TextureRegion>(.25f, atlas.findRegions("axe"));
-			animation.setPlayMode(Animation.PlayMode.NORMAL);
-		}
-
-		public void draw(Batch batch, float delta) {
-			sprite.setOriginCenter();
-			sprite.setRegion(animation.getKeyFrame(getStateTime()));
-			sprite.setPosition(getX() + (getWidth() / 2f) - sprite.getWidth()/2f, getY());
-			sprite.flip(flip, false);
-
-			sprite.draw(batch);
-			// update(delta);
-		}
-
-		public void animate(String name, float speed, boolean looping) {
-			animation = new Animation<TextureRegion>(speed, atlas.findRegions(name));
-			animation.setPlayMode(looping ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL);
-		}
-
-		public void setPosition(float x, float y) {
-			sprite.setPosition(x, y);
-		}
-
-		public void flip(boolean flip) {
-			this.flip = flip;
-		}
-
-		public void dispose() {
-			atlas.dispose();
-		}
 	}
 }

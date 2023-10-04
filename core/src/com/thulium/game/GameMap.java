@@ -29,7 +29,7 @@ public class GameMap {
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private TiledMap map;
 	private TmxMapLoader loader;
-	
+
 	private ParallaxScene parallax;
 
 	public GameMap(MainGame game, Batch batch) {
@@ -99,6 +99,24 @@ public class GameMap {
 				cs.dispose();
 			}
 		}
+	}
+
+	public Array<SpawnProperties> getEnemies() {
+		Array<SpawnProperties> spawn_properties = new Array<>();
+		TiledMapTileLayer spawns = (TiledMapTileLayer) map.getLayers().get("spawns");
+		for (int y = 0; y < spawns.getHeight(); y++) {
+			for (int x = 0; x < spawns.getWidth(); x++) {
+				Cell cell = spawns.getCell(x, y);
+				if (cell != null) {
+					SpawnProperties spawn = new SpawnProperties();
+					spawn.setName(cell.getTile().getProperties().get("spawn", String.class));
+					spawn.setX(x);
+					spawn.setY(y);
+					spawn_properties.add(spawn);
+				}
+			}
+		}
+		return spawn_properties;
 	}
 
 	public <T> T getProperty(String property, Class<T> classType) {

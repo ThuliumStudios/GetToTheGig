@@ -104,6 +104,7 @@ public class Amp {
 	public void changeCollisionFilters(short categoryBits, short maskBits) {
 		if (isStateLocked)
 			return;
+
 		body.getFixtureList().forEach(f -> {
 			Filter filter = f.getFilterData();
 			filter.categoryBits = categoryBits;

@@ -53,8 +53,12 @@ public class PlayerInput implements InputProcessor {
 					player.powerslide();
 				break;
 			case Keys.PLUS:
+			case Keys.NUMPAD_ADD:
+				player.damage(-1);
 				break;
 			case Keys.MINUS:
+			case Keys.NUMPAD_SUBTRACT:
+				player.damage(1);
 				break;
 			case Keys.TAB:
 				break;
@@ -87,6 +91,20 @@ public class PlayerInput implements InputProcessor {
 			case Keys.K:
 				player.attack(false);
 				// player.attack(true);
+				break;
+			case Keys.NUM_0:
+			case Keys.NUM_1:
+			case Keys.NUM_2:
+			case Keys.NUM_3:
+			case Keys.NUM_4:
+				player.setHP(keycode - 7);
+				break;
+			case Keys.NUMPAD_0:
+			case Keys.NUMPAD_1:
+			case Keys.NUMPAD_2:
+			case Keys.NUMPAD_3:
+			case Keys.NUMPAD_4:
+				player.setHP(keycode - 144);
 				break;
 			default:
 				break;

@@ -11,6 +11,13 @@ hp
   orig: 18, 20
   offset: 0, 0
   index: -1
+hp_empty
+  rotate: false
+  xy: 22, 2
+  size: 18, 20
+  orig: 18, 20
+  offset: 0, 0
+  index: -1
 hudface
   rotate: false
   xy: 2, 24

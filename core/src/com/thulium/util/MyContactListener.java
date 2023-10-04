@@ -5,9 +5,11 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.thulium.player.Player;
 
 public class MyContactListener implements ContactListener {
 	private int numFootContacts;
+	private Player player;
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -16,6 +18,10 @@ public class MyContactListener implements ContactListener {
 
 		if (collisionContains("foot", a, b)) {
 			numFootContacts++;
+		} if (collisionContains("squirrel", a, b) && collisionContains("entity", a, b)) { // TODO: Rename player's user data
+			// System.out.println("Maybe colliding");
+			System.out.println(a.getUserData() + ", " + b.getUserData());
+			player.damage(1);
 		}
 	}
 
@@ -39,6 +45,10 @@ public class MyContactListener implements ContactListener {
 	public boolean isOnGround() {
 		// System.out.println(numFootContacts);
 		return numFootContacts > 0;
+	}
+
+	public void setPlayer(Player player ) {
+		this.player = player;
 	}
 
 	public void preSolve(Contact contact, Manifold oldManifold) {

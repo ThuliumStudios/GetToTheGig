@@ -1,8 +1,10 @@
 package com.thulium.util;
 
 import com.badlogic.gdx.math.Vector2;
+import com.thulium.entity.Enemy;
 
 import java.util.List;
+import java.util.Map;
 
 public final class Units {
 	public static final int WIDTH = 8;
