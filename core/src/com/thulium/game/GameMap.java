@@ -141,7 +141,7 @@ public class GameMap {
 		}
 
 		public void renderBG(Batch batch, OrthographicCamera camera) {
-			batch.setColor(1, 1, 1, .25f);
+			batch.setColor(1, 1, 1, 1f); // .25f alpha
 			bgs.forEach(bg -> {
 				int i = bgs.indexOf(bg, true);
 				bg.setRegionX((int) (camera.position.x * Math.sqrt(mul) * i) % bg.getTexture().getWidth());
