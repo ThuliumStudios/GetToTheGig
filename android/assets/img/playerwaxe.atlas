@@ -1,51 +1,58 @@
 
 playerwaxe.png
-size: 1024, 512
+size: 2048, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 amp
   rotate: false
-  xy: 914, 348
+  xy: 914, 196
   size: 108, 108
   orig: 108, 108
   offset: 0, 0
   index: -1
 attack
   rotate: false
-  xy: 306, 306
+  xy: 154, 2
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 1
 attack
   rotate: false
-  xy: 458, 306
+  xy: 306, 2
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 3
 attack
   rotate: false
-  xy: 458, 2
+  xy: 610, 154
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 0
 rare
   rotate: false
-  xy: 458, 2
+  xy: 610, 154
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 0
 attack
   rotate: false
-  xy: 762, 154
+  xy: 914, 306
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 2
+equipaxe
+  rotate: false
+  xy: 154, 306
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 0
 idle
   rotate: false
   xy: 762, 2
@@ -55,14 +62,14 @@ idle
   index: -1
 jump_down
   rotate: false
-  xy: 762, 306
+  xy: 610, 2
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: -1
 jump_up
   rotate: false
-  xy: 154, 154
+  xy: 306, 306
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
@@ -76,28 +83,28 @@ push
   index: 3
 push
   rotate: false
-  xy: 2, 2
+  xy: 154, 154
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 0
 push
   rotate: false
-  xy: 306, 154
+  xy: 458, 306
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 2
 push
   rotate: false
-  xy: 610, 2
+  xy: 762, 154
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 1
 rare
   rotate: false
-  xy: 458, 154
+  xy: 610, 306
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
@@ -111,35 +118,35 @@ run
   index: 4
 run
   rotate: false
-  xy: 154, 306
+  xy: 2, 2
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 154, 2
+  xy: 306, 154
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 3
 run
   rotate: false
-  xy: 306, 2
+  xy: 458, 154
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 0
 run
   rotate: false
-  xy: 610, 306
+  xy: 458, 2
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 610, 154
+  xy: 762, 306
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
