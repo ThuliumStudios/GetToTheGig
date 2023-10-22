@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
  <tileset firstgid="1" source="woods_background.tsx"/>
  <tileset firstgid="1981" source="woods_bg trees.tsx"/>
  <tileset firstgid="5581" source="woods_foreground.tsx"/>
@@ -17,12 +17,12 @@
  </layer>
  <layer id="3" name="collision" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3aSw6DIBAAUC7iie3/Kq09X2fjpiFpq0gxvJfMYlYqDAMkpgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOvdh5QeEVPEc9hPDt/4VE9sYzK21RlzejfGGjhEHCNOna8HZyWA9Ur20q3uxPY8anCuYO/OUb+XiGvEbWEtu2sA/5A7B+pDzN73pl/zXowdfWtpNWpmfgbk9Nq3aJv9lhzzDrRMj4K+tPJf95K8pXcpldOWF1VYfsBAnAAA
+   H4sIAAAAAAAACu3aSw6CQAwAUC7CXV2L/8TEe/g5n2XBhiAI8hnDe0kXdSPpQKdMyDIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPjdPc+yR8Qz4pX/Tw7f6LqfmMYxantQ31kVUe/th5pf4/eb9ZiVms+vfAZ2EXv9x6wEMIJixF5adLyTDM3XtOfFXLUxWy3DXJEWz0J/5fnEKeIccRlYO+8awBKa5kB9iEp9b+qbr0XbmTntprhn6mfm1X+QhnJ9IjZLX0dlrX2LtNlvaWLdgZTpUbAuqXzXPSRP6VrGyknLG/uNxlZAnAAA
   </data>
  </layer>
  <layer id="6" name="platforms" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3ay1LUQBgG0LwID6yDCoKIgmwQcKOieBe5qA/mt8mCGmLNpWfSMzmn6lt0VSqVdPf83T2VpgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgPmNNppmM/mcfEkukk8Ttqe5tnR7XT3Lu+0l18lN8iu5mrA9zbWl27Xqmt+PkscVP/eq6/qNds3v58m+8ZjLSP8xcG29V9+b5kHe/2HPfdDWe/W9aXby/rsD74OavMpYHBmPapxlLN5UOh7tulLyXqXPxaXXvA+518dKx6Okec7c/2uXXvN+5l6XFYxHO+9gVT3J/N1KtpOnM85lZ41yXqT/XiYHyeGMfemsUc5x+u91cpKc6svevc0YvEveJ+cd+0B1aHm+pp+/Jd+THx37wD7r0KxnjFWdQ7d55t/Jn+TvFM+/rP/MZz1j1LyWLWP/U/Lcve6GuP+xB6/LEOfgfSZdf83b5Zh0/V30vFWv6qJewV1qVF3UKBatz2+5tcfbfX7LrT3e/gf4lw9mQJwAAA==
+   H4sIAAAAAAAACu3a2W7TQBgGUL9IH5gGugClZWlvWMpNSze2Al2AB+PjIhdVMXKSSTyJz5G+i5Esy54Z/TNjuWkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGB2o7WmeZh8TD4l58lFx/Yk15Zur6qdvNuz5Dq5SX4kVx3bk1xbul2rtvn9KNmo+LmX3WZL37bN791kz3jMZKT/GLhxvVffm+ZB3n+95z4Y13v1vWme5P2fDrwParKfsTgwHtU4zFi8r3Q8xutKyXuVPheXXvNOc6+zSsejpFnO3P9rl17zvuVe3ysYj/G8g2X19/vEVrKdPJ5yLjtrlPM8/fcieZm8mrIvnTXKeZ3+e5O8Td7py94dZQyOkw/JScs+UB1anM/p5y/J1+SyZR/YZx2a9oyxrHPoNs/8M/mV/J7g+Rf1zXzaM0bNa9ki9j8lz92rboj7H3vwugxxDv5L1/XXvF2MruvvvOetelUX9QruUqPqokYxb33+y619v93nv9za99t/ANX3C+9AnAAA
   </data>
  </layer>
  <layer id="7" name="spawns" width="100" height="100" visible="0">
