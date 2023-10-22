@@ -18,7 +18,7 @@ public class Enemy extends Entity {
     private SpawnProperties properties;
 
     public Enemy(TextureAtlas atlas, SpawnProperties properties) {
-        super(atlas, .5f, .5f);
+        super(atlas, properties.getWidth(), properties.getHeight());
         this.properties = properties;
 
         force = new Vector2();
@@ -48,11 +48,10 @@ public class Enemy extends Entity {
         super.update(delta);
         // updateAnimation();
 
-
-        if (getBody().getPosition().x < properties.getX() - limit) {
+        if (getBody().getPosition().x < properties.getX() / 2f - limit) {
             left = false;
         }
-        if (getBody().getPosition().x > properties.getX() + limit) {
+        if (getBody().getPosition().x > properties.getX() / 2f + limit) {
             left = true;
         }
         setFlipState(!left);

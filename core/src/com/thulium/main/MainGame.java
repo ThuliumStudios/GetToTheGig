@@ -64,7 +64,7 @@ public class MainGame extends Game {
 				.forEach(img -> assets.load("maps/" + img + ".png", Texture.class));
 
 		// Load atlas files
-		List.of("hud", "squirrel")
+		List.of("coon", "hud", "squirrel")
 				.forEach(atlas -> assets.load("img/" + atlas + ".atlas", TextureAtlas.class));
 
 		// Load music

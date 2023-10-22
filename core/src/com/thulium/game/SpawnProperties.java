@@ -2,8 +2,8 @@ package com.thulium.game;
 
 public class SpawnProperties {
     public String name;
-    public int x;
-    public int y;
+    public int x, y;
+    public float width, height;
 
     public String getName() {
         return name;
@@ -27,5 +27,21 @@ public class SpawnProperties {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 }

@@ -4,28 +4,35 @@ size: 256, 64
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-coon
-  rotate: false
-  xy: 2, 2
-  size: 60, 60
-  orig: 60, 60
-  offset: 0, 0
-  index: 3
-coon
+idle
   rotate: false
   xy: 64, 2
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
   index: 0
-coon
+run
+  rotate: false
+  xy: 2, 2
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: 3
+run
+  rotate: false
+  xy: 64, 2
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: 0
+run
   rotate: false
   xy: 126, 2
   size: 60, 60
   orig: 60, 60
   offset: 0, 0
   index: 2
-coon
+run
   rotate: false
   xy: 188, 2
   size: 60, 60
