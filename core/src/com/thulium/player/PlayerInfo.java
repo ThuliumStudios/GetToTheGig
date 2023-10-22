@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 public class PlayerInfo {
 	private Label fps;
 	private Label velocity;
+	private Label status;
 
 	// HUD objects
 	private Table hudTable;
@@ -32,6 +33,10 @@ public class PlayerInfo {
 		fps = new Label("" + Gdx.graphics.getFramesPerSecond(), skin);
 		velocity = new Label("" + player.getBody().getLinearVelocity(), skin);
 
+		status = new Label("", skin);
+		status.setFontScale(5);
+		status.setPosition(stage.getWidth() / 4f, stage.getHeight() / 2f);
+
 		hearts = player.getHP();
 		face = new Image(hudAtlas.findRegion("hudface", player.getHP()));
 		plectrum = new Image(hudAtlas.findRegion("hp"));
@@ -51,6 +56,7 @@ public class PlayerInfo {
 		table.add(velocity);
 
 		stage.addActor(table);
+		stage.addActor(status);
 	}
 	
 	public void render(float delta) {
@@ -76,6 +82,10 @@ public class PlayerInfo {
 		IntStream.range(1, player.getHP() + 1)
 				.forEach(i -> hudTable.getCells().get(i).setActor(new Image(hudAtlas.findRegion("hp"))));
 		hearts = player.getHP();
+	}
+
+	public void setStatus(String status) {
+		this.status.setText(status);
 	}
 	
 	public String roundedText() {

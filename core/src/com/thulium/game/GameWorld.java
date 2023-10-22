@@ -55,6 +55,7 @@ public class GameWorld {
 	
 	// TODO: Delete
 	private PlayerInfo info;
+	private PlayerInput pIn;
 	private ShapeRenderer shapes;
 	
 	private TextureAtlas playerAtlas;
@@ -135,7 +136,7 @@ public class GameWorld {
 
 		groundBox.dispose();
 
-		PlayerInput pIn = new PlayerInput(player, camera);
+		pIn = new PlayerInput(player, camera);
 		pIn.setAmp(amp);
 		pIn.setCable(cable);
 
@@ -166,7 +167,7 @@ public class GameWorld {
 		bodyDef.type = BodyDef.BodyType.StaticBody;
 		bodyDef.position.set(0, 0);
 
-		// world.createBody(bodyDef).createFixture(fixtureDef);
+		world.createBody(bodyDef).createFixture(fixtureDef);
 		// TODO: End delete
 
 		debugRenderer = new Box2DDebugRenderer();
@@ -231,11 +232,11 @@ public class GameWorld {
 
 	public void flicker() {
 		if (flickerHP > player.getHP())
-		Timeline.createSequence()
-				.push(Tween.to(player, SpriteAccessor.OPACITY, 0).target(0))
-				.push(Tween.to(player, SpriteAccessor.OPACITY, .1f).target(1))
-				.repeat(5, .1f)
-				.start(tweenManager);
+			Timeline.createSequence()
+					.push(Tween.to(player, SpriteAccessor.OPACITY, 0).target(0))
+					.push(Tween.to(player, SpriteAccessor.OPACITY, .1f).target(1))
+					.repeat(5, .1f)
+					.start(tweenManager);
 		flickerHP = player.getHP();
 	}
 
@@ -312,6 +313,15 @@ public class GameWorld {
 				|| player.getBody().getPosition().y < amp.getBody().getPosition().y + .6f
 				? (short) 2 : (short) 1);
 
+		// TODO: Delete
+		if (player.getHP() == 0) {
+			input.clear();
+			info.setStatus("Press R to respawn");
+			player.setVelocity(0, 0);
+			if (Gdx.input.isKeyJustPressed(Keys.R))
+				respawn();
+		}
+
 		world.step(Math.min(1 / 60f, delta), 6, 2);
 	}
 
@@ -336,6 +346,17 @@ public class GameWorld {
 	public void cutCable() {
 		world.destroyJoint(cable.getJoint());
 		cable.setState(1);
+	}
+
+	// TODO: Delete
+	public void respawn() {
+		player.setHP(4);
+		player.getBody().setTransform(spawn, 0);
+		player.setVelocity(0, 0);
+		input.addProcessor(pIn);
+		input.addProcessor(info.getStage());
+		info.setStatus("");
+		flicker();
 	}
 	
 	public void dispose() {

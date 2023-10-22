@@ -67,7 +67,6 @@ public class Player extends Entity {
 
 	// @Override
 	public void updateAnimation() {
-		System.out.println(getStateTime());
 		if (overrideAnimation() && getStateTime() < 1)
 			return;
 
@@ -76,7 +75,7 @@ public class Player extends Entity {
 //			animate("jump_up", 1, true);
 //		else if (body.getLinearVelocity().y < - 1f)
 //			animate("jump_down", 1, true);
-		else if (getAnimationName().equals("jump_down") || getAnimationName().equals("jump_up")) {
+		if (getAnimationName().equals("jump_down") || getAnimationName().equals("jump_up")) {
 			animate("idle", .15f, true);
 		}
 
@@ -91,6 +90,10 @@ public class Player extends Entity {
 			animate("jump_up", 1, true);
 		else if (getBody().getLinearVelocity().y < - 1f)
 			animate("jump_down", 1, true);
+
+		if (getStateTime() > 1 && !Units.isLooping(getAnimationName())) {
+			animate("idle", .15f, true);
+		}
 	}
 
 	@Override

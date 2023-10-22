@@ -23,6 +23,6 @@ public final class Units {
 	public static final List<String> animations = List.of("idle", "run", "jump_up", "jump_down");
 
 	public static boolean isLooping(String animation) {
-		return animation.contains(animation);
+		return animations.contains(animation);
 	}
 }
