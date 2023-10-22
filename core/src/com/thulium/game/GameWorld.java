@@ -122,7 +122,7 @@ public class GameWorld {
 		for (int i = 0; i < map.getEnemies().size; i++) {
 			SpawnProperties properties = map.getEnemies().get(i);
 			Enemy enemy = new Enemy( game.getAsset("img/" + properties.getName() + ".atlas", TextureAtlas.class), properties);
-			addEntity(enemy, enemy.getWidth() * .3f, enemy.getHeight() * .2f, properties.getX(),
+			addEntity(enemy, enemy.getWidth() * .3f, enemy.getHeight() * .2f, properties.getX() / 2f,
 					(properties.getY() / 2f) + enemy.getHeight() / 2f, 0, enemy.getHeight() * -.5f);
 			enemy.changeCollisionGroup((short) 3);
 			enemy.setVelocity(-2, 0);

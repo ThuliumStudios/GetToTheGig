@@ -109,9 +109,17 @@ public class GameMap {
 				Cell cell = spawns.getCell(x, y);
 				if (cell != null) {
 					SpawnProperties spawn = new SpawnProperties();
+
+					System.out.println("Properties:");
+					cell.getTile().getProperties().getKeys().forEachRemaining(str -> {
+						System.out.println(str + ": " + cell.getTile().getProperties().get(str));
+					});
+
 					spawn.setName(cell.getTile().getProperties().get("spawn", String.class));
 					spawn.setX(x);
 					spawn.setY(y);
+					spawn.setWidth(cell.getTile().getProperties().get("width", Float.class));
+					spawn.setHeight(cell.getTile().getProperties().get("height", Float.class));
 					spawn_properties.add(spawn);
 				}
 			}
