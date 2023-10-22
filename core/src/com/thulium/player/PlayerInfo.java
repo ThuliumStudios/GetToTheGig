@@ -38,9 +38,9 @@ public class PlayerInfo {
 
 		hudTable = new Table(skin);
 		hudTable.defaults().size(stage.getWidth() / 16f, stage.getWidth() / 16f).grow();
-		hudTable.add(face);
+		hudTable.add(face).pad(stage.getHeight() / 32f);
 		for (int i = 0; i < player.getHP(); i++)
-			hudTable.add(new Image(hudAtlas.findRegion("hp")));
+			hudTable.add(new Image(hudAtlas.findRegion("hp"))).size(Value.percentWidth(3));
 
 		Table table = new Table(skin);
 		table.setFillParent(true);
@@ -49,7 +49,7 @@ public class PlayerInfo {
 		table.add(hudTable).expand().row();
 		table.add(fps).expand().row();
 		table.add(velocity);
-		
+
 		stage.addActor(table);
 	}
 	

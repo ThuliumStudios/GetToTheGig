@@ -2,6 +2,7 @@ package com.thulium.player;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -16,9 +17,11 @@ public class PlayerInput implements InputProcessor {
 	private Player player;
 	private Cable cable;
 	private Amp amp;
+	private OrthographicCamera camera;
 
-	public PlayerInput(Player player) {
+	public PlayerInput(Player player, OrthographicCamera camera) {
 		this.player = player;
+		this.camera = camera;
 	}
 
 	@Override
@@ -216,6 +219,7 @@ public class PlayerInput implements InputProcessor {
 
 	@Override
 	public boolean scrolled(float amountX, float amountY) {
+		camera.zoom = MathUtils.clamp(camera.zoom += -amountY * .1f, .1f, 10f);
 		return false;
 	}
 

@@ -18,7 +18,7 @@ public class Enemy extends Entity {
     private SpawnProperties properties;
 
     public Enemy(TextureAtlas atlas, SpawnProperties properties) {
-        super(atlas, 1, 1);
+        super(atlas, .5f, .5f);
         this.properties = properties;
 
         force = new Vector2();

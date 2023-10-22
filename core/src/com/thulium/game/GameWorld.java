@@ -104,7 +104,8 @@ public class GameWorld {
 		cl.setPlayer(player);
 
 		// TODO: Delete
-		addEntity(player, player.getWidth() * .3f, player.getHeight() * .2f, spawn.x, spawn.y, 0, -.8f)
+		addEntity(player, player.getWidth() * .3f, player.getHeight() * .2f, spawn.x, spawn.y, 0,
+				player.getHeight() * -.4f)
 				.setLinearDamping(.5f);
 		player.setOriginalMass(5);
 
@@ -120,7 +121,8 @@ public class GameWorld {
 		for (int i = 0; i < map.getEnemies().size; i++) {
 			SpawnProperties properties = map.getEnemies().get(i);
 			Enemy enemy = new Enemy( game.getAsset("img/" + properties.getName() + ".atlas", TextureAtlas.class), properties);
-			addEntity(enemy, .3f, .2f, properties.getX(), properties.getY() - .5f, 0, -.4f);
+			addEntity(enemy, enemy.getWidth() * .3f, enemy.getHeight() * .2f, properties.getX(),
+					(properties.getY() / 2f) + enemy.getHeight() / 2f, 0, enemy.getHeight() * -.5f);
 			enemy.changeCollisionGroup((short) 3);
 			enemy.setVelocity(-2, 0);
 			enemies.add(enemy);
@@ -133,7 +135,7 @@ public class GameWorld {
 
 		groundBox.dispose();
 
-		PlayerInput pIn = new PlayerInput(player);
+		PlayerInput pIn = new PlayerInput(player, camera);
 		pIn.setAmp(amp);
 		pIn.setCable(cable);
 
@@ -219,7 +221,7 @@ public class GameWorld {
 		batch.end();
 
 		info.render(delta);
-		if (flickerHP > player.getHP())
+		if (flickerHP != player.getHP())
 			flicker();
 		
 		if (player.isDebugging()) {
@@ -228,6 +230,7 @@ public class GameWorld {
 	}
 
 	public void flicker() {
+		if (flickerHP > player.getHP())
 		Timeline.createSequence()
 				.push(Tween.to(player, SpriteAccessor.OPACITY, 0).target(0))
 				.push(Tween.to(player, SpriteAccessor.OPACITY, .1f).target(1))

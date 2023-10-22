@@ -58,7 +58,11 @@ public class BaseEntity extends Sprite{
 	public float getStateTime() {
 		return stateTime;
 	}
-	
+
+	public void setStateTime(float stateTime) {
+		this.stateTime = stateTime;
+	}
+
 	public boolean isFlipped() {
 		return flip;
 	}

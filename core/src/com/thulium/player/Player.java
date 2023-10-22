@@ -24,7 +24,7 @@ public class Player extends Entity {
 	private int HP;
 
 	public Player(TextureAtlas atlas) {
-		super(atlas, 2, 2);
+		super(atlas, 3, 3);
 		setOriginCenter();
 
 		HP = 4;
@@ -67,7 +67,8 @@ public class Player extends Entity {
 
 	// @Override
 	public void updateAnimation() {
-		if (overrideAnimation())
+		System.out.println(getStateTime());
+		if (overrideAnimation() && getStateTime() < 1)
 			return;
 
 			// Process jump animations

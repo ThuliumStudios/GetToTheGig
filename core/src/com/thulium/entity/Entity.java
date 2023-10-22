@@ -103,7 +103,7 @@ public class Entity extends BaseEntity {
 	}
 
 	public void applyOpposingForce() {
-		body.applyLinearImpulse(new Vector2(-body.getLinearVelocity().x / 2f * body.getMass() * 1.25f, 0),
+		body.applyLinearImpulse(new Vector2(-body.getLinearVelocity().x / 2f * body.getMass() * 1.5f, 0),
 				body.getWorldCenter(), true);
 	}
 
