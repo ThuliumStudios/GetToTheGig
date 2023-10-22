@@ -89,7 +89,7 @@ public class GameWorld {
 
 		spawn = new Vector2(2.5f, 2.5f);
 
-		playerAtlas = new TextureAtlas(Gdx.files.internal("img/player.atlas"));
+		playerAtlas = new TextureAtlas(Gdx.files.internal("img/playerwaxe.atlas"));
 		player = new Player(playerAtlas);
 
 		cl.setPlayer(player);

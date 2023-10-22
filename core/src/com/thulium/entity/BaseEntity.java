@@ -31,8 +31,8 @@ public class BaseEntity extends Sprite{
 	}
 
 	public void update(float delta) {
-		if (animation.isAnimationFinished(stateTime) && !looping)
-			animate("idle", 1, true);
+//		if (animation.isAnimationFinished(stateTime) && !looping)
+//			animate("idle", 1, true);
 		stateTime += delta;
 	}
 	

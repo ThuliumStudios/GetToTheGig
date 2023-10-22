@@ -44,6 +44,8 @@ public class Player extends Entity {
 		if (isPullingAmp) {
 			getBody().setTransform(getLockedPosition(), 0);
 		}
+
+		updateAnimation();
 	}
 	
 	public void attack(boolean attack) {
@@ -61,9 +63,27 @@ public class Player extends Entity {
 		super.animate(animationName, speed, looping);
 	}
 
-	@Override
+	// @Override
 	public void updateAnimation() {
-		super.updateAnimation();
+		if (overrideAnimation())
+			return;
+
+			// Process jump animations
+//		if (body.getLinearVelocity().y > .1f)
+//			animate("jump_up", 1, true);
+//		else if (body.getLinearVelocity().y < - 1f)
+//			animate("jump_down", 1, true);
+		else if (getAnimationName().equals("jump_down") || getAnimationName().equals("jump_up")) {
+			animate("idle", .15f, true);
+		}
+
+		// Process run/stop animations
+		if (getBody().getLinearVelocity().y == 0 && Math.abs(getBody().getLinearVelocity().x) > .01f)
+			animate("run", .1f, true);
+		else if (inMargin(getBody().getLinearVelocity().x) && getAnimationName().equals("run"))
+			animate("idle", .15f, true);
+
+		//super.updateAnimation();
 		if (getBody().getLinearVelocity().y > .1f)
 			animate("jump_up", 1, true);
 		else if (getBody().getLinearVelocity().y < - 1f)
