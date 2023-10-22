@@ -1,5 +1,7 @@
 package com.thulium.player;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.equations.Elastic;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.MathUtils;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.thulium.entity.Entity;
+import com.thulium.util.SpriteAccessor;
 import com.thulium.util.Units;
 
 public class Player extends Entity {
@@ -21,7 +24,8 @@ public class Player extends Entity {
 	private int HP;
 
 	public Player(TextureAtlas atlas) {
-		super(atlas);
+		super(atlas, 2, 2);
+		setOriginCenter();
 
 		HP = 4;
 		animate("idle", 1, true);
@@ -33,7 +37,7 @@ public class Player extends Entity {
 
 	public void update(float delta) {
 		super.update(delta);
-		// updateAnimation();
+		updateAnimation();
 
 		if (getAnimationName().equals("rare"))
 			chargeTime += delta;
@@ -44,8 +48,6 @@ public class Player extends Entity {
 		if (isPullingAmp) {
 			getBody().setTransform(getLockedPosition(), 0);
 		}
-
-		updateAnimation();
 	}
 	
 	public void attack(boolean attack) {

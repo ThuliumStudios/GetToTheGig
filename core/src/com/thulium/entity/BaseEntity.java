@@ -16,12 +16,12 @@ public class BaseEntity extends Sprite{
 	private boolean looping;
 	private float stateTime;
 
-	public BaseEntity(TextureAtlas atlas) {
+	public BaseEntity(TextureAtlas atlas, float width, float height) {
 		super(atlas.getRegions().first());
 		this.atlas = atlas;
-		setSize(1, 1);
+		setSize(width, height);
 		
-		animation = new Animation<TextureRegion>(1f, atlas.findRegions("idle"));
+		animation = new Animation<>(1f, atlas.findRegions("idle"));
 	}
 
 	public void render(Batch batch) {

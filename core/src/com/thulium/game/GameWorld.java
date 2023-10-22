@@ -1,5 +1,9 @@
 package com.thulium.game;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
+import aurelienribon.tweenengine.equations.Elastic;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
@@ -26,6 +30,7 @@ import com.thulium.player.PlayerInfo;
 import com.thulium.player.PlayerInput;
 import com.thulium.util.Jukebox;
 import com.thulium.util.MyContactListener;
+import com.thulium.util.SpriteAccessor;
 import com.thulium.util.Units;
 
 import java.util.Arrays;
@@ -58,6 +63,9 @@ public class GameWorld {
 
 	private Jukebox jukebox;
 	private PauseMenu pause;
+	private TweenManager tweenManager;
+
+	private int flickerHP;
 
 	public GameWorld(MainGame game) {
 		Box2D.init();
@@ -91,11 +99,13 @@ public class GameWorld {
 
 		playerAtlas = new TextureAtlas(Gdx.files.internal("img/playerwaxe.atlas"));
 		player = new Player(playerAtlas);
+		flickerHP = player.getHP();
 
 		cl.setPlayer(player);
 
 		// TODO: Delete
-		addEntity(player, .3f, .2f, spawn.x, spawn.y, 0, -.4f).setLinearDamping(.5f);
+		addEntity(player, player.getWidth() * .3f, player.getHeight() * .2f, spawn.x, spawn.y, 0, -.8f)
+				.setLinearDamping(.5f);
 		player.setOriginalMass(5);
 
 		// Testing 1/4 cable 
@@ -162,6 +172,8 @@ public class GameWorld {
 		input = new InputMultiplexer(pIn, info.getStage());
 		Gdx.input.setInputProcessor(input);
 		Controllers.addListener(new PlayerControllerInput(pIn, this));
+
+		tweenManager = new TweenManager();
 	}
 
 	public void render(Batch batch, float delta) {
@@ -207,13 +219,26 @@ public class GameWorld {
 		batch.end();
 
 		info.render(delta);
+		if (flickerHP > player.getHP())
+			flicker();
 		
 		if (player.isDebugging()) {
 			debugRenderer.render(world, camera.combined);
 		}
 	}
 
+	public void flicker() {
+		Timeline.createSequence()
+				.push(Tween.to(player, SpriteAccessor.OPACITY, 0).target(0))
+				.push(Tween.to(player, SpriteAccessor.OPACITY, .1f).target(1))
+				.repeat(5, .1f)
+				.start(tweenManager);
+		flickerHP = player.getHP();
+	}
+
 	public void update(float delta) {
+		tweenManager.update(delta);
+
 		/// TODO: Consider moving this to a player state
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			pause.show();

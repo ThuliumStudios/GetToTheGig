@@ -1,16 +1,20 @@
 package com.thulium.main;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.thulium.screen.GameScreen;
 import com.thulium.util.Jukebox;
+import com.thulium.util.SpriteAccessor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +32,8 @@ public class MainGame extends Game {
 		
 		skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 		jukebox = new Jukebox();
+
+		Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 
 		loadAssets();
 		setScreen(new GameScreen(this));

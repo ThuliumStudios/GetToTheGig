@@ -17,8 +17,8 @@ public class Entity extends BaseEntity {
 	// TODO: Delete
 	private final String[] priorityAnimations = {"rare", "attack"};
 
-	public Entity(TextureAtlas atlas) {
-		super(atlas);
+	public Entity(TextureAtlas atlas, float width, float height) {
+		super(atlas, width, height);
 		velocity = new Vector2();
 		lockedPosition = new Vector2();
 	}
@@ -99,11 +99,11 @@ public class Entity extends BaseEntity {
 	}
 	
 	public void setXVelocity(float x) {
-		velocity.x = x * 3f;
+		velocity.x = x * 10f;
 	}
 
 	public void applyOpposingForce() {
-		body.applyLinearImpulse(new Vector2(-body.getLinearVelocity().x / 2f * body.getMass(), 0),
+		body.applyLinearImpulse(new Vector2(-body.getLinearVelocity().x / 2f * body.getMass() * 1.25f, 0),
 				body.getWorldCenter(), true);
 	}
 
