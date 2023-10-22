@@ -25,9 +25,9 @@
    H4sIAAAAAAAACu3a2W7TQBgGUL9IH5gGugClZWlvWMpNSze2Al2AB+PjIhdVMXKSSTyJz5G+i5Esy54Z/TNjuWkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGB2o7WmeZh8TD4l58lFx/Yk15Zur6qdvNuz5Dq5SX4kVx3bk1xbul2rtvn9KNmo+LmX3WZL37bN791kz3jMZKT/GLhxvVffm+ZB3n+95z4Y13v1vWme5P2fDrwParKfsTgwHtU4zFi8r3Q8xutKyXuVPheXXvNOc6+zSsejpFnO3P9rl17zvuVe3ysYj/G8g2X19/vEVrKdPJ5yLjtrlPM8/fcieZm8mrIvnTXKeZ3+e5O8Td7py94dZQyOkw/JScs+UB1anM/p5y/J1+SyZR/YZx2a9oyxrHPoNs/8M/mV/J7g+Rf1zXzaM0bNa9ki9j8lz92rboj7H3vwugxxDv5L1/XXvF2MruvvvOetelUX9QruUqPqokYxb33+y619v93nv9za99t/ANX3C+9AnAAA
   </data>
  </layer>
- <layer id="7" name="spawns" width="100" height="100" visible="0">
+ <layer id="7" name="spawns" width="100" height="100">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3OAQ0AAAgDoBexfybbGMPpIAEJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPzUtT0ALhpXDZIFQJwAAA==
+   H4sIAAAAAAAACu3MAQ0AAAQAMEX0z0QaKcxmf4BHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMBPlbt/L//AjQEkatycQJwAAA==
   </data>
  </layer>
  <layer id="2" name="fg" width="100" height="100" visible="0">
