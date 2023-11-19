@@ -25,6 +25,13 @@ attack
   orig: 175, 175
   offset: 0, 0
   index: 15
+attack_idle
+  rotate: false
+  xy: 179, 837
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 0
 attack
   rotate: false
   xy: 2, 483
@@ -34,28 +41,28 @@ attack
   index: 4
 attack
   rotate: false
-  xy: 2, 306
+  xy: 356, 837
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 9
 attack
   rotate: false
-  xy: 356, 660
+  xy: 179, 483
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 1
 attack
   rotate: false
-  xy: 356, 660
+  xy: 179, 483
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 6
 attack
   rotate: false
-  xy: 533, 837
+  xy: 356, 660
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -67,6 +74,13 @@ attack
   orig: 175, 175
   offset: 0, 0
   index: 11
+attack_idle
+  rotate: false
+  xy: 179, 306
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 1
 attack
   rotate: false
   xy: 356, 483
@@ -109,9 +123,9 @@ attack
   orig: 175, 175
   offset: 0, 0
   index: 7
-equipaxe
+equip_axe
   rotate: false
-  xy: 179, 660
+  xy: 2, 129
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -132,7 +146,7 @@ jump_down
   index: -1
 jump_up
   rotate: false
-  xy: 179, 483
+  xy: 2, 306
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -202,14 +216,14 @@ run
   index: 4
 run
   rotate: false
-  xy: 356, 837
+  xy: 179, 660
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 2, 129
+  xy: 533, 837
   size: 175, 175
   orig: 175, 175
   offset: 0, 0

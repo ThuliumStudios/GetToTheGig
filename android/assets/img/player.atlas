@@ -20,39 +20,32 @@ attack
   index: 4
 attack
   rotate: false
-  xy: 533, 289
+  xy: 533, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 1
 attack
   rotate: false
-  xy: 533, 289
+  xy: 533, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 6
 attack
   rotate: false
-  xy: 710, 112
+  xy: 887, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 3
 attack
   rotate: false
-  xy: 710, 112
+  xy: 887, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 5
-attack
-  rotate: false
-  xy: 1064, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 0
 attack
   rotate: false
   xy: 1418, 112
@@ -60,6 +53,20 @@ attack
   orig: 175, 175
   offset: 0, 0
   index: 2
+attack_idle
+  rotate: false
+  xy: 179, 112
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 0
+attack
+  rotate: false
+  xy: 179, 112
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 0
 idle
   rotate: false
   xy: 1595, 289
@@ -76,7 +83,7 @@ jump_down
   index: -1
 jump_up
   rotate: false
-  xy: 356, 112
+  xy: 533, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -90,14 +97,14 @@ push
   index: 3
 push
   rotate: false
-  xy: 356, 289
+  xy: 356, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 0
 push
   rotate: false
-  xy: 710, 289
+  xy: 710, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -111,7 +118,7 @@ push
   index: 1
 rare
   rotate: false
-  xy: 887, 112
+  xy: 1064, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -132,28 +139,28 @@ run
   index: 4
 run
   rotate: false
-  xy: 179, 112
+  xy: 356, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 533, 112
+  xy: 710, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 3
 run
   rotate: false
-  xy: 887, 289
+  xy: 887, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 0
 run
   rotate: false
-  xy: 1064, 289
+  xy: 1064, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
