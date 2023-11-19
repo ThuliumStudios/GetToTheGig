@@ -1,146 +1,167 @@
 
 player.png
-size: 1024, 512
+size: 2048, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 amp
   rotate: false
-  xy: 914, 348
+  xy: 2, 2
   size: 108, 108
   orig: 108, 108
   offset: 0, 0
   index: -1
 attack
   rotate: false
-  xy: 306, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 179, 289
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
-  index: 1
-rare
+  index: 4
+attack
   rotate: false
-  xy: 306, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 533, 289
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 1
 attack
   rotate: false
-  xy: 458, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 533, 289
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 6
+attack
+  rotate: false
+  xy: 710, 112
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 3
 attack
   rotate: false
-  xy: 458, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 710, 112
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
-  index: 2
+  index: 5
 attack
   rotate: false
-  xy: 610, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 1064, 112
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 0
-rare
+attack
   rotate: false
-  xy: 610, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 1418, 112
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
-  index: 0
+  index: 2
 idle
   rotate: false
-  xy: 610, 2
-  size: 150, 150
-  orig: 150, 150
+  xy: 1595, 289
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: -1
 jump_down
   rotate: false
-  xy: 610, 154
-  size: 150, 150
-  orig: 150, 150
+  xy: 1241, 112
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: -1
 jump_up
   rotate: false
-  xy: 154, 154
-  size: 150, 150
-  orig: 150, 150
+  xy: 356, 112
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: -1
 push
   rotate: false
-  xy: 2, 154
-  size: 150, 150
-  orig: 150, 150
+  xy: 2, 112
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 3
 push
   rotate: false
-  xy: 2, 2
-  size: 150, 150
-  orig: 150, 150
+  xy: 356, 289
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 0
 push
   rotate: false
-  xy: 306, 154
-  size: 150, 150
-  orig: 150, 150
+  xy: 710, 289
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 2
 push
   rotate: false
-  xy: 762, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 1418, 289
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 1
-run
+rare
   rotate: false
-  xy: 2, 306
-  size: 150, 150
-  orig: 150, 150
-  offset: 0, 0
-  index: 4
-run
-  rotate: false
-  xy: 154, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 887, 112
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 1
-run
+rare
   rotate: false
-  xy: 154, 2
-  size: 150, 150
-  orig: 150, 150
-  offset: 0, 0
-  index: 3
-run
-  rotate: false
-  xy: 306, 2
-  size: 150, 150
-  orig: 150, 150
+  xy: 1595, 112
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 0
 run
   rotate: false
-  xy: 458, 154
-  size: 150, 150
-  orig: 150, 150
+  xy: 2, 289
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 4
+run
+  rotate: false
+  xy: 179, 112
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 1
+run
+  rotate: false
+  xy: 533, 112
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 3
+run
+  rotate: false
+  xy: 887, 289
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 0
+run
+  rotate: false
+  xy: 1064, 289
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 458, 2
-  size: 150, 150
-  orig: 150, 150
+  xy: 1241, 289
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 2

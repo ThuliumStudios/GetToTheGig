@@ -1,153 +1,237 @@
 
 playerwaxe.png
-size: 2048, 512
+size: 1024, 1024
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 amp
   rotate: false
-  xy: 914, 196
+  xy: 2, 19
   size: 108, 108
   orig: 108, 108
   offset: 0, 0
   index: -1
 attack
   rotate: false
-  xy: 154, 2
-  size: 150, 150
-  orig: 150, 150
+  xy: 179, 837
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 12
+attack
+  rotate: false
+  xy: 179, 837
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 15
+attack
+  rotate: false
+  xy: 2, 483
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 4
+attack
+  rotate: false
+  xy: 2, 306
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 9
+attack
+  rotate: false
+  xy: 356, 660
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 1
 attack
   rotate: false
-  xy: 306, 2
-  size: 150, 150
-  orig: 150, 150
+  xy: 356, 660
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 6
+attack
+  rotate: false
+  xy: 533, 837
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 14
+attack
+  rotate: false
+  xy: 179, 306
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 11
+attack
+  rotate: false
+  xy: 356, 483
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 3
 attack
   rotate: false
-  xy: 610, 154
-  size: 150, 150
-  orig: 150, 150
+  xy: 710, 837
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
-  index: 0
-rare
-  rotate: false
-  xy: 610, 154
-  size: 150, 150
-  orig: 150, 150
-  offset: 0, 0
-  index: 0
+  index: 8
 attack
   rotate: false
-  xy: 914, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 533, 483
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 13
+attack
+  rotate: false
+  xy: 533, 306
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 10
+attack
+  rotate: false
+  xy: 710, 483
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 2
+attack
+  rotate: false
+  xy: 533, 129
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 7
 equipaxe
   rotate: false
-  xy: 154, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 179, 660
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 0
 idle
   rotate: false
-  xy: 762, 2
-  size: 150, 150
-  orig: 150, 150
+  xy: 710, 306
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: -1
 jump_down
   rotate: false
-  xy: 610, 2
-  size: 150, 150
-  orig: 150, 150
+  xy: 356, 129
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: -1
 jump_up
   rotate: false
-  xy: 306, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 179, 483
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: -1
 push
   rotate: false
-  xy: 2, 154
+  xy: 710, 154
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 3
 push
   rotate: false
-  xy: 154, 154
+  xy: 710, 2
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 0
 push
   rotate: false
-  xy: 458, 306
+  xy: 862, 154
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 2
 push
   rotate: false
-  xy: 762, 154
+  xy: 862, 2
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 1
 rare
   rotate: false
-  xy: 610, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 2, 837
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 0
+attack
+  rotate: false
+  xy: 2, 837
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 0
+attack
+  rotate: false
+  xy: 2, 837
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 5
+rare
+  rotate: false
+  xy: 179, 129
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 2, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 2, 660
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 4
 run
   rotate: false
-  xy: 2, 2
-  size: 150, 150
-  orig: 150, 150
+  xy: 356, 837
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 306, 154
-  size: 150, 150
-  orig: 150, 150
+  xy: 2, 129
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 3
 run
   rotate: false
-  xy: 458, 154
-  size: 150, 150
-  orig: 150, 150
+  xy: 533, 660
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 0
 run
   rotate: false
-  xy: 458, 2
-  size: 150, 150
-  orig: 150, 150
+  xy: 356, 306
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 762, 306
-  size: 150, 150
-  orig: 150, 150
+  xy: 710, 660
+  size: 175, 175
+  orig: 175, 175
   offset: 0, 0
   index: 2
