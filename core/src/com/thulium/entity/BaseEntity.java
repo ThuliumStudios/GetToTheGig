@@ -7,68 +7,68 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.thulium.util.Units;
 
-public class BaseEntity extends Sprite{
-	private Animation<TextureRegion> animation;
-	private TextureAtlas atlas;
-	private String animationName = "";
+import java.util.HashMap;
+import java.util.Map;
 
+public class BaseEntity extends Sprite{
+	private TextureAtlas atlas;
 	private boolean flip;
-	private boolean looping;
-	private float stateTime;
+	private Map<String, AnimationWrapper> animations;
+	private AnimationWrapper animation;
 
 	public BaseEntity(TextureAtlas atlas, float width, float height) {
 		super(atlas.getRegions().first());
 		this.atlas = atlas;
 		setSize(width, height);
-		
-		animation = new Animation<>(1f, atlas.findRegions("idle"));
+
+		animations = new HashMap<>();
+		addAnimation("idle", new AnimationWrapper("idle", 1f, atlas, Priority.Bottom));
+		animation = animations.get("idle");
 	}
 
 	public void render(Batch batch) {
-		setRegion(animation.getKeyFrame(stateTime, looping));
+		setRegion(animation.get());
 		flip(flip, false);
 		draw(batch);
 	}
 
 	public void update(float delta) {
+		animation.update(delta);
 //		if (animation.isAnimationFinished(stateTime) && !looping)
 //			animate("idle", 1, true);
-		stateTime += delta;
 	}
 	
-	public void animate(String animationName, float speed, boolean looping) {
-		if (this.animationName.equals(animationName))
+	public void animate(String animationName) {
+		if (animation.getName().equals(animationName))
 			return;
-		
-		this.animationName = animationName;
-		this.looping = looping;
-		stateTime = 0f;
 
-		animation = new Animation<TextureRegion>(speed, atlas.findRegions(animationName));
+		animation = animations.get(animationName);
+		animation.start();
 	}
 	
 	public String getAnimationName() {
-		return animationName;
+		return animation.getName();
 	}
-	
+
+	// TODO: Possibly delete
 	public void setFlipState(boolean isFlipped) {
 		this.flip = isFlipped;
-	}
-
-	public float getStateTime() {
-		return stateTime;
-	}
-
-	public void setStateTime(float stateTime) {
-		this.stateTime = stateTime;
 	}
 
 	public boolean isFlipped() {
 		return flip;
 	}
 
-	public boolean isLooping() {
-		return looping;
+	public boolean isAnmationFinished() {
+		return animation.isFinished();
+	}
+
+	public Priority getPriority() {
+		return animation.getPriority();
+	}
+
+	public void addAnimation(String name, AnimationWrapper anim) {
+		animations.put(name, anim);
 	}
 
 	public void dispose() {

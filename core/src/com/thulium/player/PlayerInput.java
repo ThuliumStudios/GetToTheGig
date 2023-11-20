@@ -19,6 +19,8 @@ public class PlayerInput implements InputProcessor {
 	private Amp amp;
 	private OrthographicCamera camera;
 
+	private int timeSinceAttack;
+
 	public PlayerInput(Player player, OrthographicCamera camera) {
 		this.player = player;
 		this.camera = camera;

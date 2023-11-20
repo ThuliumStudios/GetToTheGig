@@ -9,6 +9,7 @@ public class GetToTheGigDesktop {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 1280;
 		config.height = 720;
+		// config.fullscreen = true;
 		// config.foregroundFPS = config.backgroundFPS = 165;
 		config.title = "Get to the Gig";
 		new LwjglApplication(new MainGame(), config);

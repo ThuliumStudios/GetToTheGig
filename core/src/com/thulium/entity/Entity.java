@@ -31,38 +31,8 @@ public class Entity extends BaseEntity {
 
 	public void update(float delta) {
 		super.update(delta);
-		// updateAnimation();
 		if (Math.abs(body.getLinearVelocity().x) <= Units.MAX_VELOCITY && !isPositionLocked)
 			body.applyForceToCenter(velocity, true);
-	}
-	
-//	public void updateAnimation() {
-//
-//		if (overrideAnimation())
-//			return;
-//
-//		// Process jump animations
-////		if (body.getLinearVelocity().y > .1f)
-////			animate("jump_up", 1, true);
-////		else if (body.getLinearVelocity().y < - 1f)
-////			animate("jump_down", 1, true);
-//		else if (getAnimationName().equals("jump_down") || getAnimationName().equals("jump_up")) {
-//			animate("idle", .15f, true);
-//		}
-//
-//		// Process run/stop animations
-//		if (body.getLinearVelocity().y == 0 && Math.abs(body.getLinearVelocity().x) > .01f)
-//			animate("run", .1f, true);
-//		else if (inMargin(body.getLinearVelocity().x) && getAnimationName().equals("run"))
-//			animate("idle", .15f, true);
-//	}
-
-	public boolean overrideAnimation() {
-		for (String s : priorityAnimations) {
-			if (getAnimationName().equals(s))
-				return true;
-		}
-		return false;
 	}
 
 	public void setPositionLocked(boolean isPositionLocked) {
