@@ -104,9 +104,9 @@ public class GameWorld {
 
 		cl.setPlayer(player);
 
-		// TODO: Delete
-		addEntity(player, player.getWidth() * .3f, player.getHeight() * .2f, spawn.x, spawn.y, 0,
-				player.getHeight() * -.4f)
+		// TODO: Delete - creates player collision body
+		addEntity(player, .6f,  .2f, spawn.x, spawn.y, 0,
+				player.getHeight() * -.5f + (.2f))
 				.setLinearDamping(.5f);
 		player.setOriginalMass(5);
 

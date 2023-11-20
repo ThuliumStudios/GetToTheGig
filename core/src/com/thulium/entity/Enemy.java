@@ -22,7 +22,8 @@ public class Enemy extends Entity {
         this.properties = properties;
 
         force = new Vector2();
-        animate("run", .05f, true);
+        addAnimation("run", new AnimationWrapper("run", .1f, atlas, Priority.High));
+        animate("run");
     }
 
     @Override

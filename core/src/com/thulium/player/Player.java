@@ -9,7 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.MassData;
+import com.thulium.entity.AnimationWrapper;
 import com.thulium.entity.Entity;
+import com.thulium.entity.Priority;
 import com.thulium.util.SpriteAccessor;
 import com.thulium.util.Units;
 
@@ -24,11 +26,23 @@ public class Player extends Entity {
 	private int HP;
 
 	public Player(TextureAtlas atlas) {
-		super(atlas, 3, 3);
+		super(atlas, 1, 1);
 		setOriginCenter();
 
 		HP = 4;
-		animate("idle", 1, true);
+
+		System.out.println("Comparing enums");
+		System.out.println(Priority.High.compareTo(Priority.Low));
+		System.out.println(Priority.Low.compareTo(Priority.High));
+
+		setSize(3, 3);
+		addAnimation("idle", new AnimationWrapper("idle", 1f, atlas, Priority.Bottom));
+		addAnimation("run", new AnimationWrapper("run", 1f, atlas, Priority.Normal));
+		addAnimation("attack", new AnimationWrapper("attack", .1f, atlas, Priority.High));
+		addAnimation("rare", new AnimationWrapper("attack", .5f, atlas, Priority.High));
+		addAnimation("jump_up", new AnimationWrapper("attack", 1f, atlas, Priority.High));
+		addAnimation("jump_down", new AnimationWrapper("attack", 1f, atlas, Priority.High));
+		animate("idle");
 	}
 
 	public void render(Batch batch) {
@@ -52,22 +66,13 @@ public class Player extends Entity {
 	
 	public void attack(boolean attack) {
 		chargeTime = 0;
-		if (attack) {
-			animate("attack", .125f, false);
-		} else {
-			animate("rare", .5f, true);
-		}
+		animate(attack ? "attack" : "rare");
 		setPositionLocked(!attack);
-	}
-
-	@Override
-	public void animate(String animationName, float speed, boolean looping) {
-		super.animate(animationName, speed, looping);
 	}
 
 	// @Override
 	public void updateAnimation() {
-		if (overrideAnimation() && getStateTime() < 1)
+		if (!isAnmationFinished())
 			return;
 
 			// Process jump animations
@@ -76,23 +81,23 @@ public class Player extends Entity {
 //		else if (body.getLinearVelocity().y < - 1f)
 //			animate("jump_down", 1, true);
 		if (getAnimationName().equals("jump_down") || getAnimationName().equals("jump_up")) {
-			animate("idle", .15f, true);
+			animate("idle");
 		}
 
 		// Process run/stop animations
 		if (getBody().getLinearVelocity().y == 0 && Math.abs(getBody().getLinearVelocity().x) > .01f)
-			animate("run", .1f, true);
+			animate("run");
 		else if (inMargin(getBody().getLinearVelocity().x) && getAnimationName().equals("run"))
-			animate("idle", .15f, true);
+			animate("idle");
 
 		//super.updateAnimation();
 		if (getBody().getLinearVelocity().y > .1f)
-			animate("jump_up", 1, true);
+			animate("jump_up");
 		else if (getBody().getLinearVelocity().y < - 1f)
-			animate("jump_down", 1, true);
+			animate("jump_down");
 
-		if (getStateTime() > 1 && !Units.isLooping(getAnimationName())) {
-			animate("idle", .15f, true);
+		if (isAnmationFinished() && !Units.isLooping(getAnimationName())) {
+			animate("idle");
 		}
 	}
 
