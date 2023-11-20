@@ -11,48 +11,41 @@ amp
   orig: 108, 108
   offset: 0, 0
   index: -1
-attack
+attack0
   rotate: false
-  xy: 179, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 4
-attack
-  rotate: false
-  xy: 533, 112
+  xy: 2, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 1
-attack
+attack0
   rotate: false
-  xy: 533, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 6
-attack
-  rotate: false
-  xy: 887, 289
+  xy: 2, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 3
-attack
+attack0
   rotate: false
-  xy: 887, 289
+  xy: 710, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 5
-attack
+  index: 0
+attack0
   rotate: false
-  xy: 1418, 112
+  xy: 1241, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 2
+attack0
+  rotate: false
+  xy: 1595, 289
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 4
 attack_idle
   rotate: false
   xy: 179, 112
@@ -60,58 +53,72 @@ attack_idle
   orig: 175, 175
   offset: 0, 0
   index: 0
-attack
+attack0
   rotate: false
   xy: 179, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 0
+  index: 5
 idle
   rotate: false
-  xy: 1595, 289
+  xy: 356, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: -1
+  index: 1
+idle
+  rotate: false
+  xy: 356, 289
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 3
+idle
+  rotate: false
+  xy: 356, 289
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 0
 jump_down
   rotate: false
-  xy: 1241, 112
+  xy: 1418, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: -1
 jump_up
   rotate: false
-  xy: 533, 289
+  xy: 533, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: -1
 push
   rotate: false
-  xy: 2, 112
+  xy: 179, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 3
 push
   rotate: false
-  xy: 356, 112
+  xy: 533, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 0
 push
   rotate: false
-  xy: 710, 112
+  xy: 887, 289
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 2
 push
   rotate: false
-  xy: 1418, 289
+  xy: 1418, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -139,7 +146,7 @@ run
   index: 4
 run
   rotate: false
-  xy: 356, 289
+  xy: 356, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -167,7 +174,7 @@ run
   index: 5
 run
   rotate: false
-  xy: 1241, 289
+  xy: 1241, 112
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
