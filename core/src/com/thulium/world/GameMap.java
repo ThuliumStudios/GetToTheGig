@@ -1,4 +1,4 @@
-package com.thulium.game;
+package com.thulium.world;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.thulium.game.SpawnProperties;
 import com.thulium.main.MainGame;
 import com.thulium.util.Units;
 
@@ -29,6 +30,10 @@ public class GameMap {
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private TiledMap map;
 	private TmxMapLoader loader;
+
+	// private Array<SpawnProperties> enemies = new Array<>();
+	private Array<SpawnProperties> npcs = new Array<>();
+	private Array<SpawnProperties> items = new Array<>();
 
 	private ParallaxScene parallax;
 
@@ -42,17 +47,18 @@ public class GameMap {
 				game.getAsset("maps/Middle_Decor.png", Texture.class));
 		// parallax.addForegrounds(game.getAsset("maps/whiteclouds.png", Texture.class));
 	}
-	
-	public void render(OrthographicCamera camera) {
+
+	public void render(OrthographicCamera camera, String... layers) {
 		camera.position.set(camera.position.x, camera.position.y, 0);
 		mapRenderer.setView(camera);
-		mapRenderer.render();
+
+		mapRenderer.getBatch().begin();
+		Arrays.stream(layers).forEach(s -> mapRenderer.renderTileLayer(getLayer(s)));
+		mapRenderer.getBatch().end();
 	}
 
-	public void render(OrthographicCamera camera, int... layers) {
-		camera.position.set(camera.position.x, camera.position.y, 0);
-		mapRenderer.setView(camera);
-		mapRenderer.render(layers);
+	public TiledMapTileLayer getLayer(String layer) {
+		return (TiledMapTileLayer) map.getLayers().get(layer);
 	}
 	
 	public void renderBG(Batch batch, OrthographicCamera camera) {
@@ -93,7 +99,7 @@ public class GameMap {
 				fixtureDef.friction = .01f;//.5f;
 				fixtureDef.shape = cs;
 				fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
-				fixtureDef.filter.maskBits = Units.ENTITY_FLAG | Units.ALL_FLAG;
+				fixtureDef.filter.maskBits = Units.ENTITY_FLAG | Units.PLAYER_FLAG | Units.ALL_FLAG;
 				fixtureDef.isSensor = false;
 				world.createBody(bodyDef).createFixture(fixtureDef);
 				cs.dispose();
@@ -102,29 +108,37 @@ public class GameMap {
 	}
 
 	public Array<SpawnProperties> getEnemies() {
-		Array<SpawnProperties> spawn_properties = new Array<>();
+		Array<SpawnProperties> enemies = new Array<>();
 		TiledMapTileLayer spawns = (TiledMapTileLayer) map.getLayers().get("spawns");
 		for (int y = 0; y < spawns.getHeight(); y++) {
 			for (int x = 0; x < spawns.getWidth(); x++) {
 				Cell cell = spawns.getCell(x, y);
 				if (cell != null) {
 					SpawnProperties spawn = new SpawnProperties();
-
-					System.out.println("Properties:");
-					cell.getTile().getProperties().getKeys().forEachRemaining(str -> {
-						System.out.println(str + ": " + cell.getTile().getProperties().get(str));
-					});
-
 					spawn.setName(cell.getTile().getProperties().get("spawn", String.class));
 					spawn.setX(x);
 					spawn.setY(y);
 					spawn.setWidth(cell.getTile().getProperties().get("width", Float.class));
 					spawn.setHeight(cell.getTile().getProperties().get("height", Float.class));
-					spawn_properties.add(spawn);
+
+					switch (cell.getTile().getProperties().get("type", String.class)) {
+						case "enemy":
+							spawn.setType(SpawnProperties.SpawnType.Enemy);
+							enemies.add(spawn);
+							break;
+						case "npc":
+							spawn.setType(SpawnProperties.SpawnType.Npc);
+							break;
+						case "item":
+							spawn.setType(SpawnProperties.SpawnType.Item);
+							break;
+						default:
+							break;
+					}
 				}
 			}
 		}
-		return spawn_properties;
+		return enemies;
 	}
 
 	public <T> T getProperty(String property, Class<T> classType) {
