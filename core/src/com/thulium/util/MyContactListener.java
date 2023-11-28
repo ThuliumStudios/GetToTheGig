@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.thulium.entity.Enemy;
 import com.thulium.player.Player;
 
 public class MyContactListener implements ContactListener {
@@ -18,10 +19,16 @@ public class MyContactListener implements ContactListener {
 
 		if (collisionContains("foot", a, b)) {
 			numFootContacts++;
-		} if (collisionContains("squirrel", a, b) && collisionContains("entity", a, b)) { // TODO: Rename player's user data
-			// System.out.println("Maybe colliding");
+		} if (isType(Enemy.class, a, b)) {
+			if (collisionContains("entity", a, b)) {
+				player.damage(1);
+			} if (collisionContains("hit", a, b)) {
+				System.out.println("Hitbox is hitting enemy~!");
+				Enemy enemy = a.getUserData() instanceof Enemy ? (Enemy) a.getUserData() : (Enemy) b.getUserData();
+				enemy.die();
+			}
+		} if (collisionContains("hit", a, b)) {
 			System.out.println(a.getUserData() + ", " + b.getUserData());
-			player.damage(1);
 		}
 	}
 
@@ -42,8 +49,11 @@ public class MyContactListener implements ContactListener {
 				|| (b.getUserData() != null && b.getUserData().equals(o)));
 	}
 
+	public boolean isType(Class<?> clazz, Fixture a, Fixture b) {
+		return clazz.isInstance(a.getUserData()) || clazz.isInstance(b.getUserData());
+	}
+
 	public boolean isOnGround() {
-		// System.out.println(numFootContacts);
 		return numFootContacts > 0;
 	}
 
@@ -56,5 +66,6 @@ public class MyContactListener implements ContactListener {
 	}
 
 	public void postSolve(Contact contact, ContactImpulse impulse) {
+
 	}
 }

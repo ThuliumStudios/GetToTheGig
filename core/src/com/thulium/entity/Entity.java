@@ -31,6 +31,7 @@ public class Entity extends BaseEntity {
 
 	public void update(float delta) {
 		super.update(delta);
+
 		if (Math.abs(body.getLinearVelocity().x) <= Units.MAX_VELOCITY && !isPositionLocked)
 			body.applyForceToCenter(velocity, true);
 	}
@@ -77,6 +78,10 @@ public class Entity extends BaseEntity {
 				body.getWorldCenter(), true);
 	}
 
+	public void die() {
+
+	}
+
 	public boolean inMargin(float value) {
 		return value < .01f && value > -.01f;
 	}
@@ -95,8 +100,8 @@ public class Entity extends BaseEntity {
 		return createBody(body, "entity", width, height, x, y, true);
 	}
 
-	public void createBody(Body body, Object name, float width, float height, boolean hasFoot) {
-		createBody(body, "entity", width, height, width, height, hasFoot);
+	public Body createBody(Body body, Object name, float width, float height, boolean hasFoot) {
+		return createBody(body, "entity", width, height, width, height, hasFoot);
 	}
 
 	public Body createBody(Body body, Object name, float width, float height, float x, float y, boolean hasFoot) {
@@ -107,7 +112,7 @@ public class Entity extends BaseEntity {
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = box;
 		fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
-		fixtureDef.filter.maskBits = Units.GROUND_FLAG | Units.ALL_FLAG;
+		fixtureDef.filter.maskBits = Units.GROUND_FLAG | Units.PLAYER_FLAG;
 		fixtureDef.filter.groupIndex = 2;
 		fixtureDef.friction = 1;
 		fixtureDef.density = 1.5f;
@@ -117,7 +122,7 @@ public class Entity extends BaseEntity {
 		System.out.println(originalMass);
 
 		if (hasFoot) {
-			box.setAsBox((width * .9f),.05f, new Vector2(x, y - height), 0);
+			box.setAsBox((width * .9f),.15f, new Vector2(x, y - height * 1.5f), 0);
 			fixtureDef.isSensor = true;
 			body.createFixture(fixtureDef).setUserData("foot");
 		}

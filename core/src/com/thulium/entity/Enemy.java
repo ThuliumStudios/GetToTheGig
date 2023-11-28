@@ -11,8 +11,10 @@ import com.thulium.util.Units;
 
 public class Enemy extends Entity {
     private Vector2 force;
-    private int limit = 5;
     private boolean left;
+    private boolean isAlive;
+    private boolean isDestroyed;
+    private int limit = 5;
     private float speed = 3;
 
     private SpawnProperties properties;
@@ -21,8 +23,10 @@ public class Enemy extends Entity {
         super(atlas, properties.getWidth(), properties.getHeight());
         this.properties = properties;
 
+        isAlive = true;
         force = new Vector2();
         addAnimation("run", new AnimationWrapper("run", .1f, atlas, Priority.High));
+        addAnimation("death", new AnimationWrapper("death", .05f, atlas, Priority.Top));
         animate("run");
     }
 
@@ -33,13 +37,13 @@ public class Enemy extends Entity {
         b.getFixtureList().forEach(f -> {
             f.setSensor(true);
             Filter filter = f.getFilterData();
-            filter.categoryBits = Units.GROUND_FLAG;
-            filter.maskBits = Units.ENTITY_FLAG | Units.ALL_FLAG;
+            filter.categoryBits = Units.ENTITY_FLAG;
+            filter.maskBits = Units.PLAYER_FLAG | Units.ALL_FLAG;
         });
 
         b.setType(BodyDef.BodyType.KinematicBody);
         b.setAwake(true);
-        b.getFixtureList().first().setUserData("squirrel");
+        b.getFixtureList().first().setUserData(this);
 
         return b;
     }
@@ -57,8 +61,28 @@ public class Enemy extends Entity {
         }
         setFlipState(!left);
 
-        force.set(left ? -speed : speed, 0);
-
+        force.set(isAlive ? (left ? -speed : speed) : 0, 0);
         getBody().setLinearVelocity(force);
+
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
+    public void destroyBody() {
+        isDestroyed = true;
+    }
+
+    @Override
+    public void die() {
+        super.die();
+
+        isAlive = false;
+        animate("death");
     }
 }
