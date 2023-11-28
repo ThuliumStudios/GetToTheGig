@@ -22,8 +22,9 @@ public class Player extends Entity {
 	private boolean isPullingAmp;
 	private boolean jumped;
 	private boolean noJump = true;
-	private float chargeTime;
 	private int HP;
+
+	private boolean isArmed = false;
 
 	public Player(TextureAtlas atlas) {
 		super(atlas, 1, 1);
@@ -37,11 +38,11 @@ public class Player extends Entity {
 
 		setSize(3, 3);
 		addAnimation("idle", new AnimationWrapper("idle", 1f, atlas, Priority.Bottom));
-		addAnimation("run", new AnimationWrapper("run", 1f, atlas, Priority.Normal));
-		addAnimation("attack", new AnimationWrapper("attack", .1f, atlas, Priority.High));
-		addAnimation("rare", new AnimationWrapper("attack", .5f, atlas, Priority.High));
-		addAnimation("jump_up", new AnimationWrapper("attack", 1f, atlas, Priority.High));
-		addAnimation("jump_down", new AnimationWrapper("attack", 1f, atlas, Priority.High));
+		addAnimation("run", new AnimationWrapper("run", 1/10f, atlas, Priority.Normal));
+		addAnimation("attack", new AnimationWrapper("attack0", 1/13f, atlas, Priority.High));
+		addAnimation("rare", new AnimationWrapper("rare", 1/2f, atlas, Priority.High));
+		addAnimation("jump_up", new AnimationWrapper("jump_up", 1f, atlas, Priority.High));
+		addAnimation("jump_down", new AnimationWrapper("jump_down", 1f, atlas, Priority.High));
 		animate("idle");
 	}
 
@@ -53,8 +54,8 @@ public class Player extends Entity {
 		super.update(delta);
 		updateAnimation();
 
-		if (getAnimationName().equals("rare"))
-			chargeTime += delta;
+//		if (getAnimationName().equals("rare"))
+//			chargeTime += delta;
 		if (isPositionLocked()) {
 			setPosition((getBody().getPosition().x) - (getWidth() / 2f),
 					(getBody().getPosition().y) - (getHeight() / 2f));
@@ -65,40 +66,42 @@ public class Player extends Entity {
 	}
 	
 	public void attack(boolean attack) {
-		chargeTime = 0;
-		animate(attack ? "attack" : "rare");
-		setPositionLocked(!attack);
+		attack = attack || !isArmed;
+
+
+		if (!getAnimationName().contains("attack"))
+			animate(attack || !isArmed ? "attack" : "rare");
+
+		// setPositionLocked(!attack);
+		setXVelocity(0);
+		getBody().setLinearVelocity(0, getBody().getLinearVelocity().y);
+		getBody().setAngularVelocity(0);
 	}
 
 	// @Override
 	public void updateAnimation() {
-		if (!isAnmationFinished())
-			return;
-
-			// Process jump animations
-//		if (body.getLinearVelocity().y > .1f)
-//			animate("jump_up", 1, true);
-//		else if (body.getLinearVelocity().y < - 1f)
-//			animate("jump_down", 1, true);
-		if (getAnimationName().equals("jump_down") || getAnimationName().equals("jump_up")) {
-			animate("idle");
-		}
-
 		// Process run/stop animations
-		if (getBody().getLinearVelocity().y == 0 && Math.abs(getBody().getLinearVelocity().x) > .01f)
+		if (isOnGround && Math.abs(getBody().getLinearVelocity().x) > .01f)
 			animate("run");
 		else if (inMargin(getBody().getLinearVelocity().x) && getAnimationName().equals("run"))
 			animate("idle");
 
-		//super.updateAnimation();
-		if (getBody().getLinearVelocity().y > .1f)
-			animate("jump_up");
-		else if (getBody().getLinearVelocity().y < - 1f)
-			animate("jump_down");
-
-		if (isAnmationFinished() && !Units.isLooping(getAnimationName())) {
-			animate("idle");
+		if (!isOnGround) {
+			if (getBody().getLinearVelocity().y > .1f)
+				animate("jump_up");
+			else if (getBody().getLinearVelocity().y < -1f)
+				animate("jump_down");
 		}
+
+		// Check if player should be idle
+		if (isOnGround) {
+			if ((isAnmationFinished() && !Units.isLooping(getAnimationName())) ||
+					(isAnimation("jump_down") || isAnimation("jump_up"))) {
+				animate("idle");
+			}
+		}
+
+		setPositionLocked(isAnimation("attack") && !isAnmationFinished());
 	}
 
 	@Override
@@ -154,10 +157,6 @@ public class Player extends Entity {
 
 	public boolean isPullingAmp() {
 		return isPullingAmp;
-	}
-
-	public float getChargeTime() {
-		return chargeTime;
 	}
 
 	public void setFriction(float friction) {

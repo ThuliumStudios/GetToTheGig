@@ -34,8 +34,6 @@ public class BaseEntity extends Sprite{
 
 	public void update(float delta) {
 		animation.update(delta);
-//		if (animation.isAnimationFinished(stateTime) && !looping)
-//			animate("idle", 1, true);
 	}
 	
 	public void animate(String animationName) {
@@ -59,8 +57,16 @@ public class BaseEntity extends Sprite{
 		return flip;
 	}
 
+	public boolean isAnimation(String animationName) {
+		return animation.getName().contains(animationName); // TODO: Change to equalsIgnoreCase instead of contains
+	}
+
 	public boolean isAnmationFinished() {
 		return animation.isFinished();
+	}
+
+	public int getCurrentAnimationFrame() {
+		return animation.getCurrentFrame();
 	}
 
 	public Priority getPriority() {
