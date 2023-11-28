@@ -65,12 +65,13 @@ public class Entity extends BaseEntity {
 		return velocity;
 	}
 
-	public void setVelocity(float x, int y) {
+	public void setVelocity(float x, float y) {
 		velocity.set(x, y);
 	}
 	
 	public void setXVelocity(float x) {
 		velocity.x = x * 10f;
+
 	}
 
 	public void applyOpposingForce() {

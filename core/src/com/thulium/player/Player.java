@@ -16,12 +16,14 @@ import com.thulium.util.SpriteAccessor;
 import com.thulium.util.Units;
 
 public class Player extends Entity {
+	private boolean isMoving;
 	private boolean isPaused;
 	private boolean isOnGround;
 	private boolean isDebugging;
 	private boolean isPullingAmp;
 	private boolean jumped;
 	private boolean noJump = true;
+	private float xVel;
 	private int HP;
 
 	private boolean isArmed = false;
@@ -59,6 +61,8 @@ public class Player extends Entity {
 		if (isPositionLocked()) {
 			setPosition((getBody().getPosition().x) - (getWidth() / 2f),
 					(getBody().getPosition().y) - (getHeight() / 2f));
+		} else {
+			setXVelocity(xVel);
 		}
 		if (isPullingAmp) {
 			getBody().setTransform(getLockedPosition(), 0);
@@ -73,7 +77,8 @@ public class Player extends Entity {
 			animate(attack || !isArmed ? "attack" : "rare");
 
 		// setPositionLocked(!attack);
-		setXVelocity(0);
+		// setXVelocity(0);
+		setVelocity(0, getVelocity().y);
 		getBody().setLinearVelocity(0, getBody().getLinearVelocity().y);
 		getBody().setAngularVelocity(0);
 	}
@@ -210,5 +215,11 @@ public class Player extends Entity {
 	@Override
 	public void setFlipState(boolean isFlipped) {
 		super.setFlipState(isFlipped);
+	}
+
+	@Override
+	public void setXVelocity(float x) {
+		super.setXVelocity(x);
+		xVel = x;
 	}
 }

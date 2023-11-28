@@ -126,11 +126,20 @@ public class PlayerInput implements InputProcessor {
 	public boolean keyUp(int keycode) {
 		switch (keycode) {
 			case Keys.A:
-			case Keys.D:
 			case Keys.LEFT:
+				//if (player.getVelocity().x < 0) {
+				if (!keyIsDown(Keys.RIGHT)) {
+					player.setXVelocity(0);
+					player.applyOpposingForce();
+				}
+				break;
+			case Keys.D:
 			case Keys.RIGHT:
-				player.setXVelocity(0);
-				player.applyOpposingForce();
+				//if (player.getVelocity().x > 0) {
+				if (!keyIsDown(Keys.LEFT)) {
+					player.setXVelocity(0);
+					player.applyOpposingForce();
+				}
 				break;
 			case Keys.K:
 				player.attack(true);
