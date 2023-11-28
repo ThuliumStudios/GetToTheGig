@@ -3,7 +3,7 @@ package com.thulium.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.thulium.game.GameWorld;
+import com.thulium.world.GameWorld;
 import com.thulium.main.MainGame;
 
 public class GameScreen implements Screen {

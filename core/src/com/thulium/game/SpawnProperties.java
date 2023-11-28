@@ -1,9 +1,25 @@
 package com.thulium.game;
 
+import com.thulium.entity.Enemy;
+
 public class SpawnProperties {
+    public enum SpawnType {
+        Enemy,
+        Npc,
+        Item;
+    };
     public String name;
+    public SpawnType type;
     public int x, y;
     public float width, height;
+
+    public SpawnType getType() {
+        return type;
+    }
+
+    public void setType(SpawnType type) {
+        this.type = type;
+    }
 
     public String getName() {
         return name;

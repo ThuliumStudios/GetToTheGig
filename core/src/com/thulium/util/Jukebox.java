@@ -10,7 +10,7 @@ public class Jukebox {
 
     }
 
-    public  void playMusic(float volume) {
+    public void playMusic(float volume) {
         music = Gdx.audio.newMusic(Gdx.files.internal("raw/level_1.ogg"));
         music.setLooping(true);
         music.setVolume(volume);

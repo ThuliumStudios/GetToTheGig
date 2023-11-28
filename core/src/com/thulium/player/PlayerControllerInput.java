@@ -1,11 +1,9 @@
 package com.thulium.player;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
-import com.badlogic.gdx.physics.box2d.World;
-import com.thulium.game.GameWorld;
+import com.thulium.world.GameWorld;
 
 import java.util.HashMap;
 import java.util.Map;

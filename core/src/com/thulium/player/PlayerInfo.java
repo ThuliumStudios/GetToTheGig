@@ -10,8 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import java.util.stream.IntStream;
 
 public class PlayerInfo {
-	private Label fps;
-	private Label velocity;
+	private Label infoLabel;
 	private Label status;
 
 	// HUD objects
@@ -22,6 +21,8 @@ public class PlayerInfo {
 
 	private TextureAtlas hudAtlas;
 
+	private boolean debug;
+
 	private int hearts;
 	private Player player;
 
@@ -29,9 +30,8 @@ public class PlayerInfo {
 		this.player = player;
 		this.hudAtlas = hudAtlas;
 		stage = new Stage();
-		
-		fps = new Label("" + Gdx.graphics.getFramesPerSecond(), skin);
-		velocity = new Label("" + player.getBody().getLinearVelocity(), skin);
+
+		infoLabel = new Label("" + Gdx.graphics.getFramesPerSecond(), skin);
 
 		status = new Label("", skin);
 		status.setFontScale(5);
@@ -51,19 +51,15 @@ public class PlayerInfo {
 		table.setFillParent(true);
 		table.defaults().expandX().top().left();
 
-		table.add(hudTable).expand().row();
-		table.add(fps).expand().row();
-		table.add(velocity);
+		table.add(hudTable).row();
+		table.add(infoLabel).expand().row();
 
 		stage.addActor(table);
 		stage.addActor(status);
 	}
 	
 	public void render(float delta) {
-		fps.setText("" + Gdx.graphics.getFramesPerSecond());
-		velocity.setText(roundedText());
-		
-		//stage.act(delta);
+		infoLabel.setText(debug ? getDebugInfo() : "");
 		stage.draw();
 	}
 
@@ -84,13 +80,24 @@ public class PlayerInfo {
 		hearts = player.getHP();
 	}
 
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}
+
+	public String getDebugInfo() {
+		return "FPS: " + Gdx.graphics.getFramesPerSecond() +
+				"\nIs position locked? " + player.isPositionLocked() +
+				"\nVelocity: " + roundedVector(player.getBody().getLinearVelocity()) +
+				"\nPosition: " + roundedVector(player.getBody().getPosition()) +
+				"\nAnimation: " + player.getAnimationName();
+	}
+
 	public void setStatus(String status) {
 		this.status.setText(status);
 	}
 	
-	public String roundedText() {
-		Vector2 vel = player.getBody().getLinearVelocity();
-		return String.format("%.2f", vel.x) + ", " + String.format("%.2f", vel.y);
+	public String roundedVector(Vector2 v) {
+		return String.format("%.2f", v.x) + ", " + String.format("%.2f", v.y);
 	}
 	
 	public Stage getStage() {

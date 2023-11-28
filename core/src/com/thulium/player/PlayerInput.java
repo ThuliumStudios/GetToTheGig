@@ -133,20 +133,7 @@ public class PlayerInput implements InputProcessor {
 				player.applyOpposingForce();
 				break;
 			case Keys.K:
-				float force = player.getChargeTime();
 				player.attack(true);
-				if (player.getBody().getPosition().dst(amp.getBody().getPosition()) < 1.5f) {
-					int sign = player.isFlipped() ? -1 : 1;
-					float chargeMul = MathUtils.clamp(force, 0, Units.MAX_CHARGE) / Units.MAX_CHARGE;
-					float xMul = sign * chargeMul;
-					float yMul = chargeMul;
-					if (keyIsDown(Keys.W, Keys.UP)) {
-						yMul *= 1.25f * chargeMul;
-						xMul = 0;
-					}
-					xMul *= (1 / force);
-					amp.kick(xMul, yMul);
-				}
 				break;
 			case Keys.O:
 				cable.getJoint().setMaxLength(5);

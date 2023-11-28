@@ -63,12 +63,15 @@ public class MainGame extends Game {
 		// Load backgrounds
 		List.of("BG_Decor", "Ground", "Middle_Decor", "snowymountains", "trees_fg", "whiteclouds")
 				.forEach(img -> assets.load("maps/" + img + ".png", Texture.class));
+
 		// Load atlas files
-		List.of("coon", "hud", "squirrel")
+		List.of("coon", "hud", "particles", "squirrel")
 				.forEach(atlas -> assets.load("img/" + atlas + ".atlas", TextureAtlas.class));
+
 		// Load music
 		List.of("level_1")
 				.forEach(m -> assets.load("raw/" + m + ".ogg", Music.class));
+
 		// Load sound effects
 		// List.of().forEach(s -> assets.load("raw/" + s + ".ogg", Sound.class));
 
