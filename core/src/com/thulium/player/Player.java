@@ -28,6 +28,11 @@ public class Player extends Entity {
 
 	private boolean isArmed = false;
 
+	// TODO: Delete all variables below here. For testing purposes only
+	private Sprite blood;
+	private Animation<TextureRegion> bloodAnim;
+	private float bloodStateTime;
+
 	public Player(TextureAtlas atlas) {
 		super(atlas, 1, 1);
 		setOriginCenter();
@@ -46,10 +51,19 @@ public class Player extends Entity {
 		addAnimation("jump_up", new AnimationWrapper("jump_up", 1f, atlas, Priority.High));
 		addAnimation("jump_down", new AnimationWrapper("jump_down", 1f, atlas, Priority.High));
 		animate("idle");
+
+		// TODO: Delete all variable declarations below here. For testing purposes only
+		blood = new Sprite();
+		blood.setBounds(-1, -1, getWidth(), getHeight());
+		blood.setOriginCenter();
+		bloodAnim = new Animation<>(.025f, atlas.findRegions("blood"));
+		bloodStateTime = 1;
 	}
 
 	public void render(Batch batch) {
 		super.render(batch);
+
+		renderBlood(batch);
 	}
 
 	public void update(float delta) {
@@ -81,6 +95,13 @@ public class Player extends Entity {
 		setVelocity(0, getVelocity().y);
 		getBody().setLinearVelocity(0, getBody().getLinearVelocity().y);
 		getBody().setAngularVelocity(0);
+	}
+
+	// TODO: Delete this whole method
+	private void renderBlood(Batch batch) {
+		blood.setRegion(bloodAnim.getKeyFrame(bloodStateTime));
+		blood.draw(batch);
+		bloodStateTime += Gdx.graphics.getDeltaTime();
 	}
 
 	// @Override
@@ -133,7 +154,7 @@ public class Player extends Entity {
 	}
 
 	public void powerslide() {
-		Vector2 force = getBody().getLinearVelocity().scl(1.5f, 1);//new Vector2(5 / getBody().getLinearVelocity().x, 0);
+		Vector2 force = getBody().getLinearVelocity().scl(5f, 1);//new Vector2(5 / getBody().getLinearVelocity().x, 0);
 		setXVelocity(0);
 
 		getBody().applyLinearImpulse(force, getBody().getWorldCenter(), true);
@@ -182,6 +203,12 @@ public class Player extends Entity {
 
 	public void damage(int damage) {
 		HP = MathUtils.clamp(HP - damage, 0, 4);
+
+		if (damage > 0) {
+			bloodStateTime = 0;
+			blood.setRotation(MathUtils.random(360));
+			blood.setPosition(getX(), getY());
+		}
 	}
 
 	public int getHP() {

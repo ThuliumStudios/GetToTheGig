@@ -1,181 +1,123 @@
-
 player.png
-size: 2048, 512
-format: RGBA8888
-filter: Nearest, Nearest
-repeat: none
+size:2048,512
+repeat:none
 amp
-  rotate: false
-  xy: 2, 2
-  size: 108, 108
-  orig: 108, 108
-  offset: 0, 0
-  index: -1
+bounds:2,2,108,108
 attack0
-  rotate: false
-  xy: 2, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 1
+index:1
+bounds:2,112,175,175
 attack0
-  rotate: false
-  xy: 2, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 3
+index:3
+bounds:2,112,175,175
 attack0
-  rotate: false
-  xy: 710, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 0
+index:0
+bounds:710,112,175,175
 attack0
-  rotate: false
-  xy: 1241, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 2
+index:2
+bounds:1241,289,175,175
 attack0
-  rotate: false
-  xy: 1595, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 4
+index:4
+bounds:1595,289,175,175
 attack_idle
-  rotate: false
-  xy: 179, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 0
+index:0
+bounds:179,112,175,175
 attack0
-  rotate: false
-  xy: 179, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 5
+index:5
+bounds:179,112,175,175
+blood
+index:3
+bounds:1772,400,64,64
+blood
+index:14
+bounds:112,46,64,64
+blood
+index:8
+bounds:1772,334,64,64
+blood
+index:0
+bounds:1838,400,64,64
+blood
+index:15
+bounds:1838,400,64,64
+blood
+index:1
+bounds:1838,400,64,64
+blood
+index:11
+bounds:178,46,64,64
+blood
+index:5
+bounds:1772,268,64,64
+blood
+index:2
+bounds:1838,334,64,64
+blood
+index:13
+bounds:1904,400,64,64
+blood
+index:7
+bounds:244,46,64,64
+blood
+index:10
+bounds:1772,202,64,64
+blood
+index:4
+bounds:1838,268,64,64
+blood
+index:9
+bounds:1904,334,64,64
+blood
+index:12
+bounds:1970,400,64,64
+blood
+index:6
+bounds:310,46,64,64
 idle
-  rotate: false
-  xy: 356, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 1
+index:1
+bounds:356,289,175,175
 idle
-  rotate: false
-  xy: 356, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 3
+index:0
+bounds:356,289,175,175
 idle
-  rotate: false
-  xy: 356, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 0
+index:3
+bounds:356,289,175,175
 jump_down
-  rotate: false
-  xy: 1418, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: -1
+bounds:1418,289,175,175
 jump_up
-  rotate: false
-  xy: 533, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: -1
+bounds:533,112,175,175
 push
-  rotate: false
-  xy: 179, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 3
+index:3
+bounds:179,289,175,175
 push
-  rotate: false
-  xy: 533, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 0
+index:0
+bounds:533,289,175,175
 push
-  rotate: false
-  xy: 887, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 2
+index:2
+bounds:887,289,175,175
 push
-  rotate: false
-  xy: 1418, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 1
+index:1
+bounds:1418,112,175,175
 rare
-  rotate: false
-  xy: 1064, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 1
+index:1
+bounds:1064,289,175,175
 rare
-  rotate: false
-  xy: 1595, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 0
+index:0
+bounds:1595,112,175,175
 run
-  rotate: false
-  xy: 2, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 4
+index:4
+bounds:2,289,175,175
 run
-  rotate: false
-  xy: 356, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 1
+index:1
+bounds:356,112,175,175
 run
-  rotate: false
-  xy: 710, 289
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 3
+index:3
+bounds:710,289,175,175
 run
-  rotate: false
-  xy: 887, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 0
+index:0
+bounds:887,112,175,175
 run
-  rotate: false
-  xy: 1064, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 5
+index:5
+bounds:1064,112,175,175
 run
-  rotate: false
-  xy: 1241, 112
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 2
+index:2
+bounds:1241,112,175,175
