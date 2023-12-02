@@ -79,11 +79,11 @@ public class GameWorld {
 		Box2D.init();
 
 		jukebox = new Jukebox();
-		//jukebox.playMusic(1);
+		// jukebox.playMusic(1);
 
 		pause = new PauseMenu(game.getSkin());
 
-		viewport = new ExtendViewport(Units.WIDTH, Units.HEIGHT);//StretchViewport(Units.WIDTH, Units.HEIGHT);
+		viewport = new StretchViewport(Units.WIDTH, Units.HEIGHT);//StretchViewport(Units.WIDTH, Units.HEIGHT);
 		camera = new OrthographicCamera();
 		viewport.setCamera(camera);
 		viewport.apply();
