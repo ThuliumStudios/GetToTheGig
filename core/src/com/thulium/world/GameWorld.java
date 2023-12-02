@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thulium.entity.Amp;
@@ -81,7 +83,7 @@ public class GameWorld {
 
 		pause = new PauseMenu(game.getSkin());
 
-		viewport = new StretchViewport(Units.WIDTH, Units.HEIGHT);
+		viewport = new ExtendViewport(Units.WIDTH, Units.HEIGHT);//StretchViewport(Units.WIDTH, Units.HEIGHT);
 		camera = new OrthographicCamera();
 		viewport.setCamera(camera);
 		viewport.apply();
@@ -252,20 +254,19 @@ public class GameWorld {
 		tweenManager.update(delta);
 
 		// TODO: Delete ASAP
-		if (!shaker.isShaking() && player.isAnimation("attack")) {
+		if (player.isAnimation("attack")) {
 			if (player.getCurrentAnimationFrame() == 2) {
-				shaker.shake(.2f, .05f);
+				if (!shaker.isShaking()) {
+					// Camera shake
+					shaker.shake(.2f, .05f);
 
-				ParticleEffect p = particlePool.obtain();
-				p.initialize("hit0", 1, 1, .5f);
-				p.setPosition(player.getX() + (player.isFlipped() ? 0 : player.getWidth() / 1.5f), player.getY() + .5f);
-				particles.add(p);
-			}
-			if (player.getCurrentAnimationFrame() >= 2 && player.getCurrentAnimationFrame() < 4) {
-//					hitSensor.setTransform(player.getBody().getPosition().x + (player.getWidth() / 4f) *
-//									(player.isFlipped() ? -1 : 1),
-//							player.getY() + 1f, 0);
-
+					// Create particle effect
+					ParticleEffect p = particlePool.obtain();
+					p.initialize("hit0", 1, 1, .5f);
+					p.setPosition(player.getX() + (player.isFlipped() ? 0 : player.getWidth() / 2f), player.getY() + .5f);
+					particles.add(p);
+				}
+				// Set hit sensor location
 				hitSensor.setTransform(player.getBody().getPosition().x + (player.getWidth() / 4f) *
 								(player.isFlipped() ? -1 : 1),
 						player.getY() + 1f, 0);
@@ -368,10 +369,11 @@ public class GameWorld {
 				// || player.getBody().getPosition().y < amp.getBody().getPosition().y + .6f
 				? (short) 2 : (short) 1);
 
-		// TODO: Delete
+		// TODO: Delete. Handles player death/dying
 		if (player.getHP() == 0) {
 			input.clear();
 			info.setStatus("Press R to respawn");
+			player.setXVelocity(0);
 			player.setVelocity(0, 0);
 			if (Gdx.input.isKeyJustPressed(Keys.R))
 				respawn();
@@ -409,7 +411,7 @@ public class GameWorld {
 		info.setStatus("");
 		flicker();
 	}
-	
+
 	public void dispose() {
 		players.forEach(Player::dispose);
 		info.dispose();

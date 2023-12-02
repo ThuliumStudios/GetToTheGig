@@ -89,7 +89,8 @@ public class PlayerInfo {
 				"\nIs position locked? " + player.isPositionLocked() +
 				"\nVelocity: " + roundedVector(player.getBody().getLinearVelocity()) +
 				"\nPosition: " + roundedVector(player.getBody().getPosition()) +
-				"\nAnimation: " + player.getAnimationName();
+				"\nAnimation: " + player.getAnimationName() +
+				"\nAnimation Frame: " + player.getCurrentAnimationFrame();
 	}
 
 	public void setStatus(String status) {

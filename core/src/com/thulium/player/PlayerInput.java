@@ -32,14 +32,12 @@ public class PlayerInput implements InputProcessor {
 		switch (keycode) {
 			case Keys.LEFT:
 			case Keys.A:
-				if (!player.isPositionLocked())
-					player.setXVelocity(-Units.MAX_VELOCITY);
+				player.setXVelocity(-Units.MAX_VELOCITY);
 				player.setFlipState(true);
 				break;
 			case Keys.RIGHT:
 			case Keys.D:
-				if (!player.isPositionLocked())
-					player.setXVelocity(Units.MAX_VELOCITY);
+				player.setXVelocity(Units.MAX_VELOCITY);
 				player.setFlipState(false);
 				break;
 			case Keys.UP:
