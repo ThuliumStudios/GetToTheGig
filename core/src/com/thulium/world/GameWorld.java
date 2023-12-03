@@ -90,7 +90,7 @@ public class GameWorld {
 		camera.update();
 
 		textCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		cl = new MyContactListener();
+		cl = new MyContactListener(this);
 
 		gravity = new Vector2(0, -9.81f * 3);
 		world = new World(gravity, true);
@@ -256,16 +256,6 @@ public class GameWorld {
 		// TODO: Delete ASAP
 		if (player.isAnimation("attack")) {
 			if (player.getCurrentAnimationFrame() == 2) {
-				if (!shaker.isShaking()) {
-					// Camera shake
-					shaker.shake(.2f, .05f);
-
-					// Create particle effect
-					ParticleEffect p = particlePool.obtain();
-					p.initialize("hit0", 1, 1, .5f);
-					p.setPosition(player.getX() + (player.isFlipped() ? 0 : player.getWidth() / 2f), player.getY() + .5f);
-					particles.add(p);
-				}
 				// Set hit sensor location
 				hitSensor.setTransform(player.getBody().getPosition().x + (player.getWidth() / 4f) *
 								(player.isFlipped() ? -1 : 1),
@@ -340,7 +330,7 @@ public class GameWorld {
 			}
 		}
 
-		// TODO: Delet dis -.-
+		// TODO: Delet dis
 		if (!cable.isConnected() && cable.getState() == 0)
 			cutCable();
 		else if (cable.getState() == 1 && cable.isConnected()) {
@@ -410,6 +400,19 @@ public class GameWorld {
 		input.addProcessor(info.getStage());
 		info.setStatus("");
 		flicker();
+	}
+
+	public void hitPlayer() {
+		if (!shaker.isShaking()) {
+			// Camera shake
+			shaker.shake(.2f, .05f);
+
+			// Create particle effect
+			ParticleEffect p = particlePool.obtain();
+			p.initialize("hit0", 1, 1, .5f);
+			p.setPosition(player.getX() + (player.isFlipped() ? 0 : player.getWidth() / 2f), player.getY() + .5f);
+			particles.add(p);
+		}
 	}
 
 	public void dispose() {

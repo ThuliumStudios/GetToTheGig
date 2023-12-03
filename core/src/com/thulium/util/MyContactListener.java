@@ -7,10 +7,16 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.thulium.entity.Enemy;
 import com.thulium.player.Player;
+import com.thulium.world.GameWorld;
 
 public class MyContactListener implements ContactListener {
 	private int numFootContacts;
 	private Player player;
+	private GameWorld world;
+
+	public MyContactListener(GameWorld world) {
+		this.world = world;
+	}
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -26,6 +32,7 @@ public class MyContactListener implements ContactListener {
 				System.out.println("Hitbox is hitting enemy~!");
 				Enemy enemy = a.getUserData() instanceof Enemy ? (Enemy) a.getUserData() : (Enemy) b.getUserData();
 				enemy.die();
+				world.hitPlayer();
 			}
 		} if (collisionContains("hit", a, b)) {
 			System.out.println(a.getUserData() + ", " + b.getUserData());
