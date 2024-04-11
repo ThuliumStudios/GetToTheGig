@@ -1,0 +1,83 @@
+
+taco.png
+size: 1024, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+idle
+  rotate: false
+  xy: 458, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 0
+talk
+  rotate: false
+  xy: 2, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 3
+talk
+  rotate: false
+  xy: 2, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 9
+talk
+  rotate: false
+  xy: 2, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 1
+talk
+  rotate: false
+  xy: 2, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 5
+talk
+  rotate: false
+  xy: 154, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 8
+talk
+  rotate: false
+  xy: 154, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 2
+talk
+  rotate: false
+  xy: 154, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 6
+talk
+  rotate: false
+  xy: 306, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 0
+talk
+  rotate: false
+  xy: 610, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 7
+talk
+  rotate: false
+  xy: 762, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 4
