@@ -60,6 +60,118 @@ attack0
   orig: 175, 175
   offset: 0, 0
   index: 5
+blood
+  rotate: false
+  xy: 887, 223
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+blood
+  rotate: false
+  xy: 1064, 400
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 14
+blood
+  rotate: false
+  xy: 1241, 577
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 8
+blood
+  rotate: false
+  xy: 1418, 754
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+blood
+  rotate: false
+  xy: 1418, 754
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 15
+blood
+  rotate: false
+  xy: 1418, 754
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+blood
+  rotate: false
+  xy: 1595, 931
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 11
+blood
+  rotate: false
+  xy: 112, 46
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+blood
+  rotate: false
+  xy: 887, 157
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+blood
+  rotate: false
+  xy: 953, 223
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 13
+blood
+  rotate: false
+  xy: 1064, 334
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 7
+blood
+  rotate: false
+  xy: 1130, 400
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 10
+blood
+  rotate: false
+  xy: 1241, 511
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+blood
+  rotate: false
+  xy: 1307, 577
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 9
+blood
+  rotate: false
+  xy: 1418, 688
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 12
+blood
+  rotate: false
+  xy: 1484, 754
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 6
 death
   rotate: false
   xy: 179, 643
@@ -73,14 +185,14 @@ death
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 7
+  index: 8
 death
   rotate: false
   xy: 179, 643
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 8
+  index: 7
 death
   rotate: false
   xy: 179, 289
@@ -174,7 +286,7 @@ jump_down
   index: -1
 jump_up
   rotate: false
-  xy: 356, 466
+  xy: 533, 643
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -276,7 +388,7 @@ talk
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 9
+  index: 1
 talk
   rotate: false
   xy: 356, 820
@@ -290,7 +402,7 @@ talk
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 1
+  index: 9
 talk
   rotate: false
   xy: 533, 820
@@ -314,7 +426,7 @@ talk
   index: 6
 talk
   rotate: false
-  xy: 533, 643
+  xy: 356, 466
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
