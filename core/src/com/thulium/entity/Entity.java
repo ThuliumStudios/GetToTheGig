@@ -14,9 +14,6 @@ public class Entity extends BaseEntity {
 	private boolean isPositionLocked;
 	private float originalMass;
 
-	// TODO: Delete
-	private final String[] priorityAnimations = {"rare", "attack"};
-
 	public Entity(TextureAtlas atlas, float width, float height) {
 		super(atlas, width, height);
 		velocity = new Vector2();
@@ -80,7 +77,7 @@ public class Entity extends BaseEntity {
 	}
 
 	public void die() {
-
+		animate("death");
 	}
 
 	public boolean inMargin(float value) {
