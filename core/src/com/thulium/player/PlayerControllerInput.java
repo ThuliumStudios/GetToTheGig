@@ -27,6 +27,7 @@ public class PlayerControllerInput implements ControllerListener {
 	public void connected(Controller controller) {
 		// TODO Auto-generated method stub
 		if (controller.getPlayerIndex() < 1)
+			System.out.print("Controller ");
 		//	world.addPlayer();
 
 		System.out.print("Controller ");

@@ -53,7 +53,43 @@ public class AnimationWrapper {
         return animation.isAnimationFinished(stateTime);
     }
 
-    public boolean isLooping() {
-        return Units.isLooping(name);
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
+    public Animation<TextureRegion> getAnimation() {
+        return animation;
+    }
+
+    public void setAnimation(Animation<TextureRegion> animation) {
+        this.animation = animation;
+    }
+
+    public TextureAtlas getAtlas() {
+        return atlas;
+    }
+
+    public void setAtlas(TextureAtlas atlas) {
+        this.atlas = atlas;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public float getStateTime() {
+        return stateTime;
+    }
+
+    public void setStateTime(float stateTime) {
+        this.stateTime = stateTime;
     }
 }
