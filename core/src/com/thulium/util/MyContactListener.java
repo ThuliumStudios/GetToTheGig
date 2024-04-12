@@ -29,7 +29,7 @@ public class MyContactListener implements ContactListener {
 			if (collisionContains("entity", a, b)) {
 				player.damage(1);
 			} if (collisionContains("hit", a, b)) {
-				System.out.println("Hitbox is hitting enemy~!");
+				System.out.println("Hitbox is hitting enemy!");
 				Enemy enemy = a.getUserData() instanceof Enemy ? (Enemy) a.getUserData() : (Enemy) b.getUserData();
 				enemy.die();
 				world.hitPlayer();

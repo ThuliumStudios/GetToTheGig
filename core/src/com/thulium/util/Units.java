@@ -10,6 +10,7 @@ public final class Units {
 	public static final int WIDTH = 12;
 	public static final int HEIGHT = 8;
 	public static final int JUMP = 11;
+	// public static final int JUMP = 30;
 	public static final float MAX_CHARGE = 1.2f;
 	public static final float MAX_VELOCITY = 5;
 
