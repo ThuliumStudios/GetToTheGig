@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.thulium.util.Units;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,7 +59,7 @@ public class BaseEntity extends Sprite{
 		return animation.getName().contains(animationName); // TODO: Change to equalsIgnoreCase instead of contains
 	}
 
-	public boolean isAnmationFinished() {
+	public boolean isAnimationFinished() {
 		return animation.isFinished();
 	}
 
@@ -75,6 +73,14 @@ public class BaseEntity extends Sprite{
 
 	public void addAnimation(String name, AnimationWrapper anim) {
 		animations.put(name, anim);
+	}
+
+	public void setAtlas(TextureAtlas atlas) {
+		this.atlas = atlas;
+		animations.values().forEach(anim -> {
+			anim.setAtlas(atlas);
+			anim.setAnimation(new Animation<>(anim.getSpeed(), atlas.findRegions(anim.getName())));
+		});
 	}
 
 	public void dispose() {

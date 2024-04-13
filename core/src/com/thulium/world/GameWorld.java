@@ -14,10 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.*;
 import com.thulium.entity.Amp;
 import com.thulium.entity.Cable;
 import com.thulium.entity.Enemy;
@@ -25,6 +22,8 @@ import com.thulium.entity.Entity;
 import com.thulium.entity.ParticleEffect;
 import com.thulium.game.PauseMenu;
 import com.thulium.game.SpawnProperties;
+import com.thulium.item.EquipmentItem;
+import com.thulium.item.Item;
 import com.thulium.main.MainGame;
 import com.thulium.player.Player;
 import com.thulium.player.PlayerControllerInput;
@@ -36,10 +35,11 @@ import com.thulium.util.SpriteAccessor;
 import com.thulium.util.Units;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 public class GameWorld {
 	private Array<Player> players = new Array<>();
+	private Array<Item> items = new Array<>();
+
 	private OrthographicCamera camera;
 	private OrthographicCamera textCamera;
 	private Viewport viewport;
@@ -73,9 +73,12 @@ public class GameWorld {
 	private PauseMenu pause;
 	private TweenManager tweenManager;
 
+	private MainGame game;
+
 	private int flickerHP;
 
 	public GameWorld(MainGame game) {
+		this.game = game;
 		Box2D.init();
 
 		jukebox = new Jukebox();
@@ -83,7 +86,8 @@ public class GameWorld {
 
 		pause = new PauseMenu(game.getSkin());
 
-		viewport = new StretchViewport(Units.WIDTH, Units.HEIGHT);//StretchViewport(Units.WIDTH, Units.HEIGHT);
+		// viewport = new StretchViewport(Units.WIDTH, Units.HEIGHT);
+		viewport = new ExtendViewport(Units.WIDTH, Units.HEIGHT);
 		camera = new OrthographicCamera();
 		viewport.setCamera(camera);
 		viewport.apply();
@@ -105,7 +109,7 @@ public class GameWorld {
 
 		spawn = new Vector2(2.5f, 2.5f);
 
-		playerAtlas = new TextureAtlas(Gdx.files.internal("img/player.atlas"));
+		playerAtlas = game.getAsset("img/player.atlas", TextureAtlas.class);
 		player = new Player(playerAtlas);
 		flickerHP = player.getHP();
 
@@ -126,8 +130,9 @@ public class GameWorld {
 //		cable.setJoint(world.createJoint(cable.getBodyDef(amp.getBody(), player.getBody())));
 
 		// Generate enemies from map
-		for (int i = 0; i < map.getEnemies().size; i++) {
-			SpawnProperties properties = map.getEnemies().get(i);
+		Array<SpawnProperties> getEnemies = map.get("enemy");
+		for (int i = 0; i < getEnemies.size; i++) {
+			SpawnProperties properties = getEnemies.get(i);
 			Enemy enemy = new Enemy( game.getAsset("img/" + properties.getName() + ".atlas", TextureAtlas.class), properties);
 			addEntity(enemy, enemy.getWidth() * .3f, enemy.getHeight() * .2f, properties.getX() / 2f,
 					(properties.getY() / 2f) + enemy.getHeight() / 2f, 0, enemy.getHeight() * -.5f);
@@ -135,6 +140,17 @@ public class GameWorld {
 			enemy.setVelocity(-2, 0);
 			enemies.add(enemy);
 		}
+
+		// Generate items from map
+		Array<SpawnProperties> getItems = map.get("item");
+		getItems.forEach(spawn -> {
+			// TODO: Fix, allow for non-equipment items to spawn
+			Item item = new EquipmentItem(game.getAsset("img/items.atlas", TextureAtlas.class)
+					.findRegion(spawn.getName()),
+					spawn.getX() / 2f, spawn.getY() / 2f, spawn.getWidth(), spawn.getWidth());
+
+			items.add(item);
+		});
 		
 		// Test rendering game info
 		info = new PlayerInfo(player, game.getAsset("img/hud.atlas", TextureAtlas.class), game.getSkin());
@@ -207,6 +223,7 @@ public class GameWorld {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		enemies.forEach(e -> e.render(batch));
+		items.forEach(item -> item.render(batch));
 		players.forEach(p -> p.render(batch));
 //		amp.render(batch);
 		player.render(batch);
@@ -306,12 +323,20 @@ public class GameWorld {
 					System.out.println("Body destroyed.");
 				}
 
-				if (e.isAnimation("death") && e.isAnmationFinished())
+				if (e.isAnimation("death") && e.isAnimationFinished())
 					enemies.removeValue(e, true);
 			}
 		});
 
-
+		items.forEach(item -> {
+			// TODO: Fix ASAP - not all items will have the same logic. Added for convenience in testing
+			if (player.collidesWith(item.getSprite())) {
+				item.obtain();
+				items.removeValue(item, true);
+				playerAtlas = game.getAsset("img/playerwaxe.atlas", TextureAtlas.class);
+				player.switchStates(playerAtlas);
+			}
+		});
 
 
 		info.update(delta);
@@ -363,6 +388,7 @@ public class GameWorld {
 		if (player.getHP() == 0) {
 			input.clear();
 			info.setStatus("Press R to respawn");
+			player.die();
 			player.setXVelocity(0);
 			player.setVelocity(0, 0);
 			if (Gdx.input.isKeyJustPressed(Keys.R))
@@ -413,6 +439,11 @@ public class GameWorld {
 			p.setPosition(player.getX() + (player.isFlipped() ? 0 : player.getWidth() / 2f), player.getY() + .5f);
 			particles.add(p);
 		}
+	}
+
+	public void resize(int width, int height) {
+		info.resize(width, height);
+		viewport.update(width, height);
 	}
 
 	public void dispose() {

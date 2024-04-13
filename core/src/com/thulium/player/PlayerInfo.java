@@ -1,11 +1,17 @@
 package com.thulium.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.thulium.util.Units;
 
 import java.util.stream.IntStream;
 
@@ -14,6 +20,7 @@ public class PlayerInfo {
 	private Label status;
 
 	// HUD objects
+	private Viewport viewport;
 	private Table hudTable;
 	private Stage stage;
 	private Image face;
@@ -29,7 +36,9 @@ public class PlayerInfo {
 	public PlayerInfo(Player player, TextureAtlas hudAtlas, Skin skin) {
 		this.player = player;
 		this.hudAtlas = hudAtlas;
-		stage = new Stage();
+
+		viewport = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		stage = new Stage(viewport);
 
 		infoLabel = new Label("" + Gdx.graphics.getFramesPerSecond(), skin);
 
@@ -104,7 +113,11 @@ public class PlayerInfo {
 	public Stage getStage() {
 		return stage;
 	}
-	
+
+	public void resize(int width, int height) {
+		viewport.update(width, height);
+	}
+
 	public void dispose() {
 		stage.dispose();
 	}

@@ -1,18 +1,13 @@
 package com.thulium.player;
 
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.equations.Elastic;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.thulium.entity.AnimationWrapper;
 import com.thulium.entity.Entity;
 import com.thulium.entity.Priority;
-import com.thulium.util.SpriteAccessor;
 import com.thulium.util.Units;
 
 public class Player extends Entity {
@@ -50,6 +45,7 @@ public class Player extends Entity {
 		addAnimation("rare", new AnimationWrapper("rare", 1/2f, atlas, Priority.High));
 		addAnimation("jump_up", new AnimationWrapper("jump_up", 1f, atlas, Priority.High));
 		addAnimation("jump_down", new AnimationWrapper("jump_down", 1f, atlas, Priority.High));
+		addAnimation("death", new AnimationWrapper("death", .15f, atlas, Priority.High));
 		animate("idle");
 
 		// TODO: Delete all variable declarations below here. For testing purposes only
@@ -107,6 +103,9 @@ public class Player extends Entity {
 	// @Override
 	public void updateAnimation() {
 		// Process run/stop animations
+		if (getHP() < 1) {
+			return;
+		}
 		if (isOnGround && Math.abs(getBody().getLinearVelocity().x) > .01f)
 			animate("run");
 		else if (inMargin(getBody().getLinearVelocity().x) && getAnimationName().equals("run"))
@@ -121,13 +120,13 @@ public class Player extends Entity {
 
 		// Check if player should be idle
 		if (isOnGround) {
-			if ((isAnmationFinished() && !Units.isLooping(getAnimationName())) ||
+			if ((isAnimationFinished() && !Units.isLooping(getAnimationName())) ||
 					(isAnimation("jump_down") || isAnimation("jump_up"))) {
 				animate("idle");
 			}
 		}
 
-		setPositionLocked(isAnimation("attack") && !isAnmationFinished());
+		setPositionLocked(isAnimation("attack") && !isAnimationFinished());
 	}
 
 	@Override
@@ -204,11 +203,19 @@ public class Player extends Entity {
 	public void damage(int damage) {
 		HP = MathUtils.clamp(HP - damage, 0, 4);
 
-		if (damage > 0) {
+		if (damage > 0 && getHP() > 0) {
 			bloodStateTime = 0;
 			blood.setRotation(MathUtils.random(360));
 			blood.setPosition(getX(), getY());
 		}
+	}
+
+	public void switchStates(TextureAtlas atlas) {
+		setAtlas(atlas);
+	}
+
+	public boolean collidesWith(Sprite sprite) {
+		return getBoundingRectangle().overlaps(sprite.getBoundingRectangle());
 	}
 
 	public int getHP() {

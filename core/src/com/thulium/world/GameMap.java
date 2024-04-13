@@ -4,15 +4,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -31,7 +28,7 @@ public class GameMap {
 	private TiledMap map;
 	private TmxMapLoader loader;
 
-	// private Array<SpawnProperties> enemies = new Array<>();
+	private Array<SpawnProperties> enemies = new Array<>();
 	private Array<SpawnProperties> npcs = new Array<>();
 	private Array<SpawnProperties> items = new Array<>();
 
@@ -40,7 +37,7 @@ public class GameMap {
 	public GameMap(MainGame game, Batch batch) {
 		loader = new TmxMapLoader();
 		map = loader.load("maps/map.tmx");
-		mapRenderer = new OrthogonalTiledMapRenderer(map, 1/32f / 2f, batch);
+		mapRenderer = new OrthogonalTiledMapRenderer(map, 1/64f, batch);
 
 		parallax = new ParallaxScene();
 		parallax.addBackgrounds(game.getAsset("maps/BG_Decor.png", Texture.class),
@@ -70,6 +67,7 @@ public class GameMap {
 	}
 
 	public void createBox2dObjects(World world, BodyDef bodyDef, FixtureDef fixtureDef) {
+		// Create Box2d bodies
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("collision");
 		for (int y = 0; y < layer.getHeight(); y++) {
 			for (int x = 0; x < layer.getWidth(); x++) {
@@ -105,10 +103,8 @@ public class GameMap {
 				cs.dispose();
 			}
 		}
-	}
 
-	public Array<SpawnProperties> getEnemies() {
-		Array<SpawnProperties> enemies = new Array<>();
+		// Create spawn items
 		TiledMapTileLayer spawns = (TiledMapTileLayer) map.getLayers().get("spawns");
 		for (int y = 0; y < spawns.getHeight(); y++) {
 			for (int x = 0; x < spawns.getWidth(); x++) {
@@ -128,9 +124,11 @@ public class GameMap {
 							break;
 						case "npc":
 							spawn.setType(SpawnProperties.SpawnType.Npc);
+							npcs.add(spawn);
 							break;
 						case "item":
 							spawn.setType(SpawnProperties.SpawnType.Item);
+							items.add(spawn);
 							break;
 						default:
 							break;
@@ -138,7 +136,19 @@ public class GameMap {
 				}
 			}
 		}
-		return enemies;
+	}
+
+	public Array<SpawnProperties> get(String type) {
+		switch (type) {
+			case "enemy":
+				return enemies;
+			case "npc":
+				return npcs;
+			case "item":
+				return items;
+			default:
+				return null;
+		}
 	}
 
 	public <T> T getProperty(String property, Class<T> classType) {
@@ -167,23 +177,22 @@ public class GameMap {
 			bgs.forEach(bg -> {
 				int i = bgs.indexOf(bg, true);
 				bg.setRegionX((int) (camera.position.x * Math.sqrt(mul) * i) % bg.getTexture().getWidth());
-				bg.setRegionWidth((int) (bg.getTexture().getWidth()));
+				bg.setRegionWidth(bg.getTexture().getWidth());
 
 				batch.draw(bg, camera.position.x - camera.viewportWidth/2f, camera.position.y - camera.viewportHeight / 2f,
-						Units.WIDTH, Units.HEIGHT);
+						Units.WIDTH * 1.25f, Units.HEIGHT * 1.25f);
 			});
 			batch.setColor(Color.WHITE);
 		}
 
 		public void renderFG(Batch batch, OrthographicCamera camera) {
 			fgs.forEach(fg -> {
-				int i = fgs.indexOf(fg, true);
 				fg.setRegionX((int) (camera.position.x * mul) % fg.getTexture().getWidth());
-				fg.setRegionWidth((int) (fg.getTexture().getWidth()));
+				fg.setRegionWidth(fg.getTexture().getWidth());
 
 				// TODO: Delete
 				fg.setRegionX((int) (camera.position.x * mul) % fg.getTexture().getWidth());
-				fg.setRegionWidth((int) (fg.getTexture().getWidth()));
+				fg.setRegionWidth(fg.getTexture().getWidth());
 
 				batch.draw(fg, camera.position.x - camera.viewportWidth/2f, camera.position.y - camera.viewportHeight / 2f,
 						Units.WIDTH, Units.HEIGHT);

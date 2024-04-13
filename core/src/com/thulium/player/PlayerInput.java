@@ -10,6 +10,8 @@ import com.thulium.entity.Amp;
 import com.thulium.entity.Cable;
 import com.thulium.util.Units;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.IntStream;
 
 public class PlayerInput implements InputProcessor {
@@ -73,24 +75,24 @@ public class PlayerInput implements InputProcessor {
 			case Keys.F12:
 				player.setDebugging();
 				break;
-			case Keys.O:
-				cable.getJoint().setMaxLength(Math.abs(player.getBody().getPosition().dst(amp.getBody().getPosition())));
-				if (player.getBody().getPosition().y > amp.getBody().getPosition().y + 1 && player.canPullAmp()) {
-					player.pullAmp(true);
-					amp.changeCollisionFilters(Units.ALL_FLAG, (short) 0);
-					amp.changeCollisionGroup((short) 1);
-					amp.setStateLocked(true);
-				} else if (amp.getBody().getPosition().y > player.getBody().getPosition().y + 1) {
-					amp.pullPlayer(true);
-				}
-				break;
-			case Keys.P:
-				if (cable.isConnected()) {
-					cable.setConnected(false);
-				} else if (player.getBody().getPosition().dst(amp.getBody().getPosition()) < 1) {
-					cable.setConnected(true);
-				}
-				break;
+//			case Keys.O:
+//				cable.getJoint().setMaxLength(Math.abs(player.getBody().getPosition().dst(amp.getBody().getPosition())));
+//				if (player.getBody().getPosition().y > amp.getBody().getPosition().y + 1 && player.canPullAmp()) {
+//					player.pullAmp(true);
+//					amp.changeCollisionFilters(Units.ALL_FLAG, (short) 0);
+//					amp.changeCollisionGroup((short) 1);
+//					amp.setStateLocked(true);
+//				} else if (amp.getBody().getPosition().y > player.getBody().getPosition().y + 1) {
+//					amp.pullPlayer(true);
+//				}
+//				break;
+//			case Keys.P:
+//				if (cable.isConnected()) {
+//					cable.setConnected(false);
+//				} else if (player.getBody().getPosition().dst(amp.getBody().getPosition()) < 1) {
+//					cable.setConnected(true);
+//				}
+//				break;
 			case Keys.K:
 				player.attack(false);
 				// player.attack(true);
@@ -142,20 +144,20 @@ public class PlayerInput implements InputProcessor {
 			case Keys.K:
 				player.attack(true);
 				break;
-			case Keys.O:
-				cable.getJoint().setMaxLength(5);
-				Vector2 impulse = new Vector2(0, Units.JUMP / 2f);
-
-				if (player.isPullingAmp()) {
-					player.pullAmp(false);
-					amp.setStateLocked(false);
-					amp.changeCollisionFilters(Units.ALL_FLAG, (short) (Units.GROUND_FLAG | Units.ALL_FLAG));
-					amp.changeCollisionGroup((short) 1);
-					amp.getBody().applyLinearImpulse(impulse, amp.getBody().getWorldCenter(), true);
-				} else if (amp.isPullingPlayer()) {
-					amp.pullPlayer(false);
-					player.getBody().applyLinearImpulse(impulse.scl(.25f), player.getBody().getWorldCenter(), true);
-				}
+//			case Keys.O:
+//				cable.getJoint().setMaxLength(5);
+//				Vector2 impulse = new Vector2(0, Units.JUMP / 2f);
+//
+//				if (player.isPullingAmp()) {
+//					player.pullAmp(false);
+//					amp.setStateLocked(false);
+//					amp.changeCollisionFilters(Units.ALL_FLAG, (short) (Units.GROUND_FLAG | Units.ALL_FLAG));
+//					amp.changeCollisionGroup((short) 1);
+//					amp.getBody().applyLinearImpulse(impulse, amp.getBody().getWorldCenter(), true);
+//				} else if (amp.isPullingPlayer()) {
+//					amp.pullPlayer(false);
+//					player.getBody().applyLinearImpulse(impulse.scl(.25f), player.getBody().getWorldCenter(), true);
+//				}
 //				if (player.isPullingAmp()) {
 //					player.pullAmp(false);
 //					amp.setStateLocked(false);
@@ -166,7 +168,7 @@ public class PlayerInput implements InputProcessor {
 //				}
 				// player.changeCollisionGroup((short) 1);
 				// amp.getBody().applyAngularImpulse(5, true);
-				break;
+//				break;
 			case Keys.L:
 				player.push();
 				break;
@@ -215,17 +217,12 @@ public class PlayerInput implements InputProcessor {
 
 	@Override
 	public boolean scrolled(float amountX, float amountY) {
-		camera.zoom = MathUtils.clamp(camera.zoom += -amountY * .1f, .1f, 10f);
+		camera.zoom = MathUtils.clamp(camera.zoom + amountY * .1f, .1f, 10f);
 		return false;
 	}
 
 	public boolean keyIsDown(int... keycodes) {
-		for (int key : keysDown) {
-			if (IntStream.of(keycodes).filter(i -> i == key).findAny().isPresent()) {
-				return true;
-			}
-		}
-		return false;
+		return !Collections.disjoint(Arrays.asList(keycodes), Arrays.asList(keysDown));
 	}
 
 	public void setCable(Cable cable) {
