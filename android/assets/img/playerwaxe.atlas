@@ -248,14 +248,14 @@ death
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 8
+  index: 7
 death
   rotate: false
   xy: 356, 1772
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 7
+  index: 8
 death
   rotate: false
   xy: 710, 1772
@@ -535,14 +535,14 @@ talk
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 5
+  index: 9
 talk
   rotate: false
   xy: 179, 1418
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 9
+  index: 5
 talk
   rotate: false
   xy: 179, 1418
