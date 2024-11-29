@@ -1,24 +1,155 @@
 package com.thulium.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
+import com.thulium.item.Item;
+
+import java.lang.reflect.GenericArrayType;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
 public class PauseMenu {
-    private Stage stage;
-    private boolean isShowing;
+    private final Stage stage;
 
-    private Skin skin;
+    // Consistent UI components
+    private final Label rightLabel;
+
+    // Tables
+    private final Table leftTable;
+    private final Table rightTable;
+
+    private static final String[] options = {"*Inventory", "*Game Options", "*Audio", "*Controls"};
+    private final Map<String, Table> tables = new HashMap<>();
 
     public PauseMenu(Skin skin) {
-        this.skin = skin;
         stage = new Stage();
+        int i = 0;  // To iterate over table options
 
-        Gdx.input.setInputProcessor(stage);
+        // Create Inventory table
+        Table inventoryTable = new Table(skin);
+
+        Stack gear = new Stack();
+        Map<String, Image> gearMap = new HashMap<>();
+        gear.add(new Image(skin, "gear"));
+        VerticalGroup itemsGroup = new VerticalGroup();
+        itemsGroup.align(Align.left).grow();
+        Arrays.asList("Amp", "Axe", "Wheels", "Bass", "Mic", "Drums", "Drumsticks", "Keys").forEach(item -> { // In stack order
+            CheckBox checkbox = new CheckBox(item, skin);
+            checkbox.setName(item.toLowerCase());
+            gearMap.put(item.toLowerCase(), new Image(skin, item.toLowerCase()));
+            gearMap.get(item.toLowerCase()).setColor(1, 1, 1, 0);
+            gear.add(gearMap.get(item.toLowerCase()));
+            checkbox.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    if (((CheckBox) actor).isChecked()) {
+                        gearMap.get(actor.getName()).setColor(1, 1, 1, 1);
+                    } else {
+                        gearMap.get(actor.getName()).setColor(1, 1, 1, 0);
+                    }
+                }
+            });
+            checkbox.align(Align.left);
+            itemsGroup.addActor(checkbox);
+        });
+
+        inventoryTable.defaults().width(stage.getWidth() / 4f).growY().uniform();
+        inventoryTable.add(gear).height(Value.percentWidth(1));
+        inventoryTable.add(itemsGroup);
+        inventoryTable.pack();
+        tables.put(options[i++], inventoryTable);
+
+
+        // Create Game Options table
+        Table optionsTable = new Table(skin);
+        tables.put(options[i++], optionsTable);
+
+
+        // Create Sound & Music Volume table
+        Table audioTable = new Table(skin);
+        Table masterAudio = new Table(skin);
+        Table sfxTable = new Table(skin);
+        Table musicTable = new Table(skin);
+        // Slider sfxSlider = new Slider(0, 100, 1, false, skin);
+        // Slider musicSlider = new Slider(0, 100, 1, false, skin);
+        audioTable.add(musicTable, sfxTable);
+        audioTable.add(masterAudio).colspan(2);
+        tables.put(options[i++], audioTable);
+
+
+        // Create Controls table
+        Table controlsTable = new Table(skin);
+        tables.put(options[i++], controlsTable);
+
+
+        // Create default left and right tables
+        Table contentTable = new Table(skin);
+        leftTable = new Table(skin);
+        rightTable = new Table(skin);
+        rightTable.defaults().pad(8);
+        contentTable.defaults().fill();
+
+        // Initialize right table
+        rightLabel = new Label("*Inventory*", skin.get("title", Label.LabelStyle.class));
+        rightLabel.setAlignment(Align.center);
+        rightTable.add(rightLabel).height(stage.getHeight() / 8f).expand().growX().top().row();
+        rightTable.add(contentTable).fill();
+
+
+        // Add left table components
+        leftTable.defaults().pad(8).left();
+        Label pauseLabel = new Label("-PAUSED-", skin.get("title", Label.LabelStyle.class));
+        pauseLabel.setAlignment(Align.center);
+        leftTable.add(pauseLabel).height(stage.getHeight() / 8f).expand().growX().top().row();
+
+        Arrays.asList(options).forEach(str -> {
+            Label l = new Label(str, skin.get("black", Label.LabelStyle.class));
+            l.setName(str);
+            l.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    rightLabel.setText(str.toUpperCase() + "*");
+                    contentTable.clear();
+                    contentTable.addActor(tables.get(event.getTarget().getName()));
+                    contentTable.layout();
+                    tables.get(event.getTarget().getName()).layout();
+                    // contentTable.pack();
+                }
+
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    ((Label) event.getTarget()).setStyle(skin.get("white", Label.LabelStyle.class));
+                }
+
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    ((Label) event.getTarget()).setStyle(skin.get("black", Label.LabelStyle.class));
+                }
+            });
+            leftTable.add(l).row();
+        });
+        leftTable.add().pad(stage.getHeight() / 4, 0, 0, 0); // To add spacing at the bottom
+
+        // TODO: Delete
+        rightTable.debug();
+        contentTable.debug();
+        // TODO: End Delete
+
+        // Add default tables to stage
+        Table table = new Table(skin);
+        table.setBackground(skin.getDrawable("skin_background"));
+        table.setFillParent(true);
+        table.defaults().grow().uniform();
+        table.add(leftTable, rightTable);
+        stage.addActor(table);
     }
 
     public void render(float delta) {
@@ -26,51 +157,20 @@ public class PauseMenu {
         stage.draw();
     }
 
-    public void show(PauseComponents menu) {
-
+    public void renderDebug(boolean debug) {
+        if (stage.isDebugAll() != debug)
+            stage.setDebugAll(debug);
     }
 
-    public void show() {
-        isShowing = !isShowing;
-        show(new Pause());
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 
-    public boolean isShowing() {
-        return isShowing;
+    public Stage getStage() {
+        return stage;
     }
 
     public void dispose() {
         stage.dispose();
-    }
-
-    /**
-     *
-     */
-    private abstract class PauseComponents {
-
-        public abstract String getTitle();
-        public abstract Array<Actor> getComponents();
-    }
-
-    private class Pause extends PauseComponents {
-
-        @Override
-        public String getTitle() {
-            return "-PAUSED-";
-        }
-
-        @Override
-        public Array<Actor> getComponents() {
-            Array<Actor> actors = new Array<>();
-
-            Table table = new Table(skin);
-            for (String s : new String[] {"Inventory", "Game Options", "Sound & Music Volume", "Controls"}) {
-                Label l = new Label(s, skin);
-                table.add(l).row();
-            }
-
-            actors.add(table);
-            return actors;
-        }
     }
 }
