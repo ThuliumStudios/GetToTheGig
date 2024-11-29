@@ -1,18 +1,15 @@
 package com.thulium.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.thulium.util.Units;
 
+import java.util.Locale;
 import java.util.stream.IntStream;
 
 public class PlayerInfo {
@@ -24,9 +21,8 @@ public class PlayerInfo {
 	private Table hudTable;
 	private Stage stage;
 	private Image face;
-	private Image plectrum;
 
-	private TextureAtlas hudAtlas;
+    private TextureAtlas hudAtlas;
 
 	private boolean debug;
 
@@ -48,7 +44,6 @@ public class PlayerInfo {
 
 		hearts = player.getHP();
 		face = new Image(hudAtlas.findRegion("hudface", player.getHP()));
-		plectrum = new Image(hudAtlas.findRegion("hp"));
 
 		hudTable = new Table(skin);
 		hudTable.defaults().size(stage.getWidth() / 16f, stage.getWidth() / 16f).grow();
@@ -107,7 +102,7 @@ public class PlayerInfo {
 	}
 	
 	public String roundedVector(Vector2 v) {
-		return String.format("%.2f", v.x) + ", " + String.format("%.2f", v.y);
+		return String.format(Locale.US, "%.2f", v.x) + ", " + String.format(Locale.US, "%.2f", v.y);
 	}
 	
 	public Stage getStage() {
