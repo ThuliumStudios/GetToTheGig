@@ -24,19 +24,19 @@ import com.thulium.util.Units;
 import java.util.Arrays;
 
 public class GameMap {
-	private OrthogonalTiledMapRenderer mapRenderer;
-	private TiledMap map;
-	private TmxMapLoader loader;
+	private final OrthogonalTiledMapRenderer mapRenderer;
+	private final TiledMap map;
 
-	private Array<SpawnProperties> enemies = new Array<>();
-	private Array<SpawnProperties> npcs = new Array<>();
-	private Array<SpawnProperties> items = new Array<>();
+    private final Array<SpawnProperties> enemies = new Array<>();
+	private final Array<SpawnProperties> npcs = new Array<>();
+	private final Array<SpawnProperties> items = new Array<>();
+	private final Array<SpawnProperties> scenes = new Array<>();
 
-	private ParallaxScene parallax;
+	private final ParallaxScene parallax;
 
 	public GameMap(MainGame game, Batch batch) {
-		loader = new TmxMapLoader();
-		map = loader.load("maps/map.tmx");
+        TmxMapLoader loader = new TmxMapLoader();
+		map = loader.load("maps/map0x0.tmx");
 		mapRenderer = new OrthogonalTiledMapRenderer(map, 1/64f, batch);
 
 		parallax = new ParallaxScene();
@@ -68,20 +68,15 @@ public class GameMap {
 
 	public void createBox2dObjects(World world, BodyDef bodyDef, FixtureDef fixtureDef) {
 		// Create Box2d bodies
-		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("collision");
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("platform");
 		for (int y = 0; y < layer.getHeight(); y++) {
 			for (int x = 0; x < layer.getWidth(); x++) {
 				Cell cell = layer.getCell(x, y);
 
-				if (cell == null || cell.getTile() == null)
+				if (cell == null || cell.getTile() == null || !cell.getTile().getProperties().containsKey("collision"))
 					continue;
 				bodyDef.type = BodyType.StaticBody;
-				// bodyDef.position.set((x + .5f), (y + .5f));
-
-				// Only create collision objects at the top of tiles
-				//bodyDef.position.set(x + .5f, y + .8f);
 				bodyDef.position.set((x + .5f) / 2f, (y + .8f) / 2f);
-
 
 				ChainShape cs = new ChainShape();
 				Vector2[] v = new Vector2[5];
@@ -92,9 +87,9 @@ public class GameMap {
 				v[4] = new Vector2(v[0]);
 
 				Arrays.asList(v).forEach(vec -> vec.scl(.5f));
-				
+
 				cs.createChain(v);
-				fixtureDef.friction = .01f;//.5f;
+				fixtureDef.friction = .05f;//.5f;
 				fixtureDef.shape = cs;
 				fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
 				fixtureDef.filter.maskBits = Units.ENTITY_FLAG | Units.PLAYER_FLAG | Units.ALL_FLAG;
@@ -130,6 +125,10 @@ public class GameMap {
 							spawn.setType(SpawnProperties.SpawnType.Item);
 							items.add(spawn);
 							break;
+						case "scene":
+							spawn.setType(SpawnProperties.SpawnType.SceneObject);
+							scenes.add(spawn);
+							break;
 						default:
 							break;
 					}
@@ -138,14 +137,88 @@ public class GameMap {
 		}
 	}
 
-	public Array<SpawnProperties> get(String type) {
+//	public void createBox2dObjectsOLD(World world, BodyDef bodyDef, FixtureDef fixtureDef) {
+//		// Create Box2d bodies
+//		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("collision");
+//		for (int y = 0; y < layer.getHeight(); y++) {
+//			for (int x = 0; x < layer.getWidth(); x++) {
+//				Cell cell = layer.getCell(x, y);
+//
+//				if (cell == null || cell.getTile() == null)
+//					continue;
+//				bodyDef.type = BodyType.StaticBody;
+//				bodyDef.position.set((x + .5f) / 2f, (y + .8f) / 2f);
+//
+//
+//				ChainShape cs = new ChainShape();
+//				Vector2[] v = new Vector2[5];
+//				v[0] = new Vector2((-1 / 2f), (-1 / 8f));
+//				v[1] = new Vector2((-1 / 2f), (1 / 8f));
+//				v[2] = new Vector2((1 / 2f), (1 / 8f));
+//				v[3] = new Vector2((1 / 2f), (-1 / 8f));
+//				v[4] = new Vector2(v[0]);
+//
+//				Arrays.asList(v).forEach(vec -> vec.scl(.5f));
+//
+//				cs.createChain(v);
+//				fixtureDef.friction = .01f;//.5f;
+//				fixtureDef.shape = cs;
+//				fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
+//				fixtureDef.filter.maskBits = Units.ENTITY_FLAG | Units.PLAYER_FLAG | Units.ALL_FLAG;
+//				fixtureDef.isSensor = false;
+//				world.createBody(bodyDef).createFixture(fixtureDef);
+//				cs.dispose();
+//			}
+//		}
+//
+//		// Create spawn items
+//		TiledMapTileLayer spawns = (TiledMapTileLayer) map.getLayers().get("spawns");
+//		for (int y = 0; y < spawns.getHeight(); y++) {
+//			for (int x = 0; x < spawns.getWidth(); x++) {
+//				Cell cell = spawns.getCell(x, y);
+//				if (cell != null) {
+//					SpawnProperties spawn = new SpawnProperties();
+//					spawn.setName(cell.getTile().getProperties().get("spawn", String.class));
+//					spawn.setX(x);
+//					spawn.setY(y);
+//					spawn.setWidth(cell.getTile().getProperties().get("width", Float.class));
+//					spawn.setHeight(cell.getTile().getProperties().get("height", Float.class));
+//
+//					switch (cell.getTile().getProperties().get("type", String.class)) {
+//						case "enemy":
+//							spawn.setType(SpawnProperties.SpawnType.Enemy);
+//							enemies.add(spawn);
+//							break;
+//						case "npc":
+//							spawn.setType(SpawnProperties.SpawnType.Npc);
+//							npcs.add(spawn);
+//							break;
+//						case "item":
+//							spawn.setType(SpawnProperties.SpawnType.Item);
+//							items.add(spawn);
+//							break;
+//						case "scene":
+//							spawn.setType(SpawnProperties.SpawnType.SceneObject);
+//							scenes.add(spawn);
+//							break;
+//						default:
+//							break;
+//					}
+//				}
+//			}
+//		}
+//	}
+
+	public Array<SpawnProperties> get(SpawnProperties.SpawnType type) {
 		switch (type) {
-			case "enemy":
+			case Enemy:
 				return enemies;
-			case "npc":
+			case Npc:
 				return npcs;
-			case "item":
+			case Item:
 				return items;
+			case SceneObject:
+				return scenes;
 			default:
 				return null;
 		}
@@ -161,11 +234,12 @@ public class GameMap {
 	}
 	
 	/*
-	 * Parrax background inner class
+	 * Parallax background inner class
 	 */
-	private class ParallaxScene {
-		private Array<TextureRegion> fgs, bgs;
-		private float mul = 512f;
+	private static class ParallaxScene {
+		private final Array<TextureRegion> fgs;
+        private final Array<TextureRegion> bgs;
+		private final float mul = 512f;
 
 		public ParallaxScene() {
 			bgs = new Array<>();

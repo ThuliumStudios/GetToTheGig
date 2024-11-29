@@ -6,12 +6,14 @@ public class SpawnProperties {
     public enum SpawnType {
         Enemy,
         Npc,
-        Item;
+        Item,
+        SceneObject;
     };
     public String name;
     public SpawnType type;
     public int x, y;
     public float width, height;
+    public String customData;
 
     public SpawnType getType() {
         return type;
@@ -59,5 +61,13 @@ public class SpawnProperties {
 
     public void setHeight(float height) {
         this.height = height;
+    }
+
+    public void setCustomData(String customData) {
+        this.customData = customData;
+    }
+
+    public String getCustomData() {
+        return customData;
     }
 }

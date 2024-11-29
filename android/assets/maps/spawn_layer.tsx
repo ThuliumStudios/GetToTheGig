@@ -33,4 +33,13 @@
    <property name="width" type="float" value="1"/>
   </properties>
  </tile>
+ <tile id="17">
+  <properties>
+   <property name="customData" value="1"/>
+   <property name="height" type="float" value="1"/>
+   <property name="spawn" value="sign"/>
+   <property name="type" value="sceneobject"/>
+   <property name="width" type="float" value="1"/>
+  </properties>
+ </tile>
 </tileset>
