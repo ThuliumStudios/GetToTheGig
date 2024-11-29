@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +12,9 @@ import java.util.Map;
 public class BaseEntity extends Sprite{
 	private TextureAtlas atlas;
 	private boolean flip;
-	private Map<String, AnimationWrapper> animations;
+	private final Map<String, AnimationWrapper> animations;
 	private AnimationWrapper animation;
+	private Vector2 spawnPoint;
 
 	public BaseEntity(TextureAtlas atlas, float width, float height) {
 		super(atlas.getRegions().first());
@@ -81,6 +83,18 @@ public class BaseEntity extends Sprite{
 			anim.setAtlas(atlas);
 			anim.setAnimation(new Animation<>(anim.getSpeed(), atlas.findRegions(anim.getName())));
 		});
+	}
+
+	public Vector2 getSpawnPoint() {
+		return spawnPoint;
+	}
+
+	public void setSpawnPoint(Vector2 spawnPoint) {
+		this.spawnPoint.set(spawnPoint);
+	}
+
+	public void setSpawnPoint(float x, float y) {
+		spawnPoint.set(x, y);
 	}
 
 	public void dispose() {
