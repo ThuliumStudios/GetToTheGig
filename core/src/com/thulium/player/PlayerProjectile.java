@@ -28,17 +28,15 @@ public class PlayerProjectile {
     public PlayerProjectile(TextureAtlas atlas) {
         this.atlas = atlas;
         sprite = new Sprite();
-        sprite.setSize(2, 2); // TODO: Make variable based on player size
+        sprite.setSize(1.5f, 1.5f); // TODO: Make variable based on player size
 
         animation = new Animation<>(spd, atlas.findRegions("axe_projectile"));
     }
 
     public void render(Batch batch, float delta) {
         // Render sprite over body
-        // sprite.setOriginCenter();
-        sprite.setOrigin(sprite.getX() - (sprite.getWidth() / 2), sprite.getY() - (sprite.getHeight() / 2));
         sprite.setRegion(animation.getKeyFrame(stateTime, true));
-        sprite.setPosition(body.getPosition().x - (sprite.getWidth() / 2), body.getPosition().y);
+        sprite.setPosition(body.getPosition().x - (sprite.getWidth() / 2), body.getPosition().y - (sprite.getHeight() / 2));
         sprite.flip(!isFlipped, false); // TODO: Why is this inverted from the player?
         sprite.draw(batch);
 
@@ -55,6 +53,8 @@ public class PlayerProjectile {
 
         this.isFlipped = isFlipped;
         isLive = true;
+
+        // Set CollisionBody data
         body.setTransform(x, y - (sprite.getHeight() / 2), 0);
         body.setLinearVelocity(Units.THROW * (isFlipped ? -1 : 1), 0);
         body.setGravityScale(0);
@@ -62,7 +62,6 @@ public class PlayerProjectile {
 
         // Set sprite data
         sprite.setPosition(body.getPosition().x - (sprite.getWidth() / 2), body.getPosition().y);
-        sprite.setOrigin(sprite.getX() - (sprite.getWidth() / 2), sprite.getY() - (sprite.getHeight() / 2));
 
         stateTime = MathUtils.random();
         animate("axe_projectile");
@@ -78,7 +77,7 @@ public class PlayerProjectile {
     }
 
     public boolean isInCamera(OrthographicCamera camera) {
-        boolean isInFrustum = camera.frustum.sphereInFrustum(sprite.getOriginX(), sprite.getOriginY(), 0, sprite.getWidth());
+        boolean isInFrustum = camera.frustum.sphereInFrustum(sprite.getX(), sprite.getY(), 0, sprite.getWidth());
         if (isLive)
             isLive = isInFrustum;
         return isInFrustum;

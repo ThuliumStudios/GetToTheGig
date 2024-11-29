@@ -95,13 +95,6 @@ axe_projectile
   orig: 92, 92
   offset: 0, 0
   index: 0
-axe_projectile
-  rotate: false
-  xy: 1788, 61
-  size: 94, 33
-  orig: 94, 33
-  offset: 0, 0
-  index: -1
 axe_projectile_back
   rotate: false
   xy: 1788, 26
