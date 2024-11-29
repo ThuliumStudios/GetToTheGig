@@ -1,9 +1,11 @@
 package com.thulium.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.MassData;
 import com.thulium.entity.AnimationWrapper;
 import com.thulium.entity.Entity;
@@ -11,22 +13,23 @@ import com.thulium.entity.Priority;
 import com.thulium.util.Units;
 
 public class Player extends Entity {
-	private boolean isMoving;
+	// private boolean isMoving;
 	private boolean isPaused;
 	private boolean isOnGround;
 	private boolean isDebugging;
 	private boolean isPullingAmp;
 	private boolean jumped;
-	private boolean noJump = true;
+	// private boolean noJump = true;
+	private boolean isCharging;
+	private float charge;
 	private float xVel;
 	private int HP;
 
-	private boolean isArmed = false;
-
-	// TODO: Delete all variables below here. For testing purposes only
-	private Sprite blood;
-	private Animation<TextureRegion> bloodAnim;
+    // TODO: Delete all variables below here. For testing purposes only
+	private final Sprite blood;
+	private final Animation<TextureRegion> bloodAnim;
 	private float bloodStateTime;
+	private PlayerProjectile projectile;
 
 	public Player(TextureAtlas atlas) {
 		super(atlas, 1, 1);
@@ -41,11 +44,11 @@ public class Player extends Entity {
 		setSize(3, 3);
 		addAnimation("idle", new AnimationWrapper("idle", 1f, atlas, Priority.Bottom));
 		addAnimation("run", new AnimationWrapper("run", 1/10f, atlas, Priority.Normal));
-		addAnimation("attack", new AnimationWrapper("attack0", 1/13f, atlas, Priority.High));
+		addAnimation("attack", new AnimationWrapper("attack0", 1/13f, atlas, Priority.Top));
 		addAnimation("rare", new AnimationWrapper("rare", 1/2f, atlas, Priority.High));
 		addAnimation("jump_up", new AnimationWrapper("jump_up", 1f, atlas, Priority.High));
 		addAnimation("jump_down", new AnimationWrapper("jump_down", 1f, atlas, Priority.High));
-		addAnimation("death", new AnimationWrapper("death", .15f, atlas, Priority.High));
+		addAnimation("death", new AnimationWrapper("death", 1/8f, atlas, Priority.High));
 		animate("idle");
 
 		// TODO: Delete all variable declarations below here. For testing purposes only
@@ -56,18 +59,19 @@ public class Player extends Entity {
 		bloodStateTime = 1;
 	}
 
-	public void render(Batch batch) {
+	public void render(Batch batch, OrthographicCamera camera, float delta) {
 		super.render(batch);
 
-		renderBlood(batch);
+		// Render projectile if in frame
+		if (projectile.isInCamera(camera))
+			projectile.render(batch, delta);
+		renderBlood(batch, delta);
 	}
 
 	public void update(float delta) {
 		super.update(delta);
 		updateAnimation();
 
-//		if (getAnimationName().equals("rare"))
-//			chargeTime += delta;
 		if (isPositionLocked()) {
 			setPosition((getBody().getPosition().x) - (getWidth() / 2f),
 					(getBody().getPosition().y) - (getHeight() / 2f));
@@ -77,27 +81,37 @@ public class Player extends Entity {
 		if (isPullingAmp) {
 			getBody().setTransform(getLockedPosition(), 0);
 		}
+
+		if (isCharging)
+			charge = MathUtils.clamp(charge + delta, 0, 1);
+	}
+
+	public void charge() {
+		isCharging = true;
+		animate(isOnGround ? "rare" : "attack"); // TODO: Account for aerial attacks
 	}
 	
-	public void attack(boolean attack) {
-		attack = attack || !isArmed;
+	public void attack() {
+		// Throw guitar
+		if (charge == 1 || !isOnGround) {	// TODO: Change max charge to variable (possibly in @{Units})
+			System.out.println("Throwing guitar");
+			projectile.throwProjectile(getBody().getPosition().x, getBody().getPosition().y, isFlipped());
+		}
 
-
-		if (!getAnimationName().contains("attack"))
-			animate(attack || !isArmed ? "attack" : "rare");
-
-		// setPositionLocked(!attack);
-		// setXVelocity(0);
+		animate("attack"); // TODO: Animate aerial attacks
 		setVelocity(0, getVelocity().y);
 		getBody().setLinearVelocity(0, getBody().getLinearVelocity().y);
 		getBody().setAngularVelocity(0);
+
+		isCharging = false;
+		charge = 0;
 	}
 
 	// TODO: Delete this whole method
-	private void renderBlood(Batch batch) {
+	private void renderBlood(Batch batch, float delta) {
 		blood.setRegion(bloodAnim.getKeyFrame(bloodStateTime));
 		blood.draw(batch);
-		bloodStateTime += Gdx.graphics.getDeltaTime();
+		bloodStateTime += delta;
 	}
 
 	// @Override
@@ -109,7 +123,7 @@ public class Player extends Entity {
 		if (isOnGround && Math.abs(getBody().getLinearVelocity().x) > .01f)
 			animate("run");
 		else if (inMargin(getBody().getLinearVelocity().x) && getAnimationName().equals("run"))
-			animate("idle");
+			animate(isCharging ? "rare" : "idle");
 
 		if (!isOnGround) {
 			if (getBody().getLinearVelocity().y > .1f)
@@ -135,16 +149,16 @@ public class Player extends Entity {
 	}
 
 	public void jump() {
-		if (!isOnGround && noJump) {
-			System.out.println("cant jump because");
-			System.out.println("is on ground: " + isOnGround + " and has jump? " + !noJump);
-			System.out.println();
+		if (!isOnGround || canDoubleJump())
 			return;
-		}
 
-		float modifier = 1;
+
+		float modifier = 1;	// TODO: Replace with global variable/const if needed
+
+		// Set jump velocity regardless of whether the player is falling
 		getBody().setLinearVelocity(getBody().getLinearVelocity().x, Units.JUMP * modifier);
-		// pullAmp(false);
+
+		// Indicate that the player has air-jumped (double-jumped)
 		jumped = !isOnGround;
 	}
 
@@ -167,6 +181,10 @@ public class Player extends Entity {
 //
 //		if (isOnGround && overrideAnimation())
 //			setPositionLocked(true);
+	}
+
+	public boolean canDoubleJump() {
+		return false;
 	}
 
 	public boolean canPullAmp() {
@@ -207,6 +225,10 @@ public class Player extends Entity {
 			bloodStateTime = 0;
 			blood.setRotation(MathUtils.random(360));
 			blood.setPosition(getX(), getY());
+
+			float rx = -.5f + MathUtils.random(), ry = MathUtils.random(-1f, .5f); // TODO: Make variable
+			blood.translate(rx, ry);
+			// System.out.println("Translation: " + rx + ", " + ry);
 		}
 	}
 
@@ -230,12 +252,20 @@ public class Player extends Entity {
 		return isDebugging;
 	}
 
-	public void setDebugging() {
+	public void toggleDebug() {
 		isDebugging = !isDebugging;
 	}
 
 	public boolean isPaused() {
 		return isPaused;
+	}
+
+	public boolean isCharging() {
+		return isCharging;
+	}
+
+	public float getCharge() {
+		return charge;
 	}
 
 	public void setPaused() {
@@ -244,6 +274,10 @@ public class Player extends Entity {
 
 	public void dispose() {
 		super.dispose();
+	}
+
+	public void setProjectile(PlayerProjectile projectile) {
+		this.projectile = projectile;
 	}
 
 	@Override
@@ -255,5 +289,12 @@ public class Player extends Entity {
 	public void setXVelocity(float x) {
 		super.setXVelocity(x);
 		xVel = x;
+	}
+
+	/**
+	 * Private inner Inventory class
+	 */
+	private class Inventory {
+
 	}
 }

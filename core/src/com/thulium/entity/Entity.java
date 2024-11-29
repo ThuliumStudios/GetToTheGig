@@ -9,10 +9,11 @@ import com.thulium.util.Units;
 
 public class Entity extends BaseEntity {
 	private Body body;
-	private Vector2 velocity;
-	private Vector2 lockedPosition;
 	private boolean isPositionLocked;
 	private float originalMass;
+
+	private final Vector2 velocity;
+	private final Vector2 lockedPosition;
 
 	public Entity(TextureAtlas atlas, float width, float height) {
 		super(atlas, width, height);
@@ -127,14 +128,6 @@ public class Entity extends BaseEntity {
 
 		box.dispose();
 		return body;
-	}
-
-	// TODO: Possibly delete and replace
-	public void changeMass(float density) {
-		body.getFixtureList().forEach(f -> {
-			body.getFixtureList().first().setDensity(density);
-			body.resetMassData();
-		});
 	}
 
 	public void changeCollisionFilters(short categoryBits, short maskBits) {
