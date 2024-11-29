@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+ <tileset firstgid="1" source="woods_background.tsx"/>
+ <tileset firstgid="1981" source="woods_bg trees.tsx"/>
+ <tileset firstgid="5581" source="woods_foreground.tsx"/>
+ <tileset firstgid="7561" source="Woods.tsx"/>
+ <tileset firstgid="7817" source="spawn_layer.tsx"/>
+ <layer id="3" name="collision" width="100" height="100" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3aSw7CIBAAUC7SAyv+r+XnTNIFC02jYGpDw3vJLKab/oaBkoYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB1NkMI2+H12DXltxT3FI9hPTmU+FZP/MfRs11cnOjv0JNxDOxS7FMcOh8L1kqU2KsR+CjO2Etj4TdubW7OYwnWFazduD9xSnFOcams5fyNkfuvvgssaWodqA+Rve+D1ea9iB3d69yWqJl8DijVay+jHeZbpnjvQMv0KOhLK/91/5K3dC1z5bTlCfPjHsRAnAAA
+  </data>
+ </layer>
+ <layer id="6" name="platform" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3ayXLTQBQFUP1IPhhMCLADM+9gw7CDDcOOedgxBvgSLgVaoFguK27Jneicqrt4KZdL3eq8VttuGgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGObMXtOc3fv/b4vU55I3ydvkVfJ6w3rIa0vXp8GLjONlZyzL1FeTb8n35EvydcN6yGtL17XqW9/7yfnOdX9K/bnisZwkBz3z2Le+ryXXzf1WFiv6e6vbZxjfck0/0WfG0fb7Vf19blY9702t7ff6e9NczvivVDgH+xVe0xTuZNx3Zzr2Gj3KvXhc6f1o95WS71X6XFx6z1t1Pq3FsuB+ss2Ze11des+r5Xz6Z/1eqOA6+Kvk/8JcHPxbwxeTSwPnrtu/nTW2dyPzdzO5ldweOJfd/u2ssb17mb/7yYPkobncuSe5B0+TZ8nznudAfWg67zLP75MPycee58Bd9qHjnjFO6ho6zDX/SH4mvwZc/2KisR73jFHzXjbGZ63LzvuUPHefdlN81npY8Xps+Q6gLnP8DmDT/dcancam++/Ya1RvqsscexOso0fVRY9ibLv8Lbf6aL3L33Krj9a/AR51S2xAnAAA
+  </data>
+ </layer>
+ <layer id="1" name="bg" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3auU5CURiF0fMi8MQOGNTCKEhQGwU1IA2oGIfG+Y3YDwAlOQ5rJV9zq5N/t7cUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAvaTdK2U17ab9R+zX/x0Fz+fd+NjhJp+nMHtWNssE43aSJPap7zAZP6Tm92AMAAAAAAAAAAIBfaKNZymbaStuplXZW/FfK+h3m9kepk7rpOPXsUcV57n6RBmmYLtNVurZHFdPcfZZu0126T/P0YI8qXnP3t/SePtJn+krf9vhxFotG435AnAAA
+  </data>
+ </layer>
+ <layer id="2" name="fg" width="100" height="100" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3RYQ0AEBSFUUXUVsimCA0I4P3UgNk5Ce7ulxIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8KuSby/g1KPH0OQZM1osPa6qx/9NCwAAAAAAAAAAAAAAHrIBE43+Y0CcAAA=
+  </data>
+ </layer>
+ <layer id="7" name="spawns" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3bsQ3AMAgEQCbxrGkdT5Bto8yAHCN0179ECy8iAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBu1ojr9AxV3COXn8k8AAAAdJXduQEAAD76OAAAAAD+sPsOVbFDf/wVQNoL0HCfakCcAAA=
+  </data>
+ </layer>
+</map>
