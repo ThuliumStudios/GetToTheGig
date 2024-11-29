@@ -6,30 +6,30 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.utils.viewport.*;
-import com.thulium.entity.Amp;
-import com.thulium.entity.Cable;
 import com.thulium.entity.Enemy;
 import com.thulium.entity.Entity;
 import com.thulium.entity.ParticleEffect;
-import com.thulium.game.PauseMenu;
 import com.thulium.game.SpawnProperties;
 import com.thulium.item.EquipmentItem;
 import com.thulium.item.Item;
 import com.thulium.main.MainGame;
 import com.thulium.player.Player;
-import com.thulium.player.PlayerControllerInput;
+import com.thulium.input.PlayerControllerInput;
 import com.thulium.player.PlayerInfo;
-import com.thulium.player.PlayerInput;
-import com.thulium.util.Jukebox;
+import com.thulium.input.PlayerInput;
+import com.thulium.player.PlayerProjectile;
+import com.thulium.scene.Checkpoint;
+import com.thulium.scene.InteractableSceneObject;
 import com.thulium.util.MyContactListener;
 import com.thulium.util.SpriteAccessor;
 import com.thulium.util.Units;
@@ -37,19 +37,18 @@ import com.thulium.util.Units;
 import java.util.Arrays;
 
 public class GameWorld {
-	private Array<Player> players = new Array<>();
-	private Array<Item> items = new Array<>();
+	private final Array<Player> players = new Array<>();
+	private final Array<Item> items = new Array<>();
+	private final Array<InteractableSceneObject> sceneObjects = new Array<>();
 
-	private OrthographicCamera camera;
-	private OrthographicCamera textCamera;
-	private Viewport viewport;
+	// World environment objects removed here
+	private GameWorldEnvironment environment;
 	private Vector2 gravity;
-	private Vector2 spawn;
 	private World world;
 	private GameMap map;
 	private Player player;
-	private Amp amp;
-	private Cable cable;
+//	private Amp amp;
+//	private Cable cable;
 	private MyContactListener cl;
 
 	private Box2DDebugRenderer debugRenderer;
@@ -59,18 +58,14 @@ public class GameWorld {
 	// TODO: Delete
 	private PlayerInfo info;
 	private PlayerInput pIn;
-	private CameraHelper shaker;
 	private Body hitSensor;
+	private ShapeRenderer shapeRenderer;
 
 	private TextureAtlas playerAtlas;
-
-	private InputMultiplexer input;
 
 	private Array<ParticleEffect> particles;
 	private Pool<ParticleEffect> particlePool;
 
-	private Jukebox jukebox;
-	private PauseMenu pause;
 	private TweenManager tweenManager;
 
 	private MainGame game;
@@ -80,57 +75,48 @@ public class GameWorld {
 	public GameWorld(MainGame game) {
 		this.game = game;
 		Box2D.init();
+		// Jukebox.playMusic(1);
 
-		jukebox = new Jukebox();
-		// jukebox.playMusic(1);
-
-		pause = new PauseMenu(game.getSkin());
-
-		// viewport = new StretchViewport(Units.WIDTH, Units.HEIGHT);
-		viewport = new ExtendViewport(Units.WIDTH, Units.HEIGHT);
-		camera = new OrthographicCamera();
-		viewport.setCamera(camera);
-		viewport.apply();
-		camera.update();
-
-		textCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		// Create Box2d methods and functions
 		cl = new MyContactListener(this);
-
-		gravity = new Vector2(0, -9.81f * 3);
+		gravity = new Vector2(0, Units.GRAVITY);
 		world = new World(gravity, true);
-		world.setContactListener(cl);
 
 		BodyDef groundBodyDef = new BodyDef();
 		PolygonShape groundBox = new PolygonShape();
 		FixtureDef groundDef = new FixtureDef();
 
+		// Implement world functionality methods
+		world.setContactListener(cl);
 		map = new GameMap(game, game.getBatch());
 		map.createBox2dObjects(world, groundBodyDef, groundDef);
 
-		spawn = new Vector2(2.5f, 2.5f);
+		// Create world environment
+		environment = new GameWorldEnvironment(map.getProperty("width", Integer.class),
+				map.getProperty("height", Integer.class));
 
+		// Create player-related objects
 		playerAtlas = game.getAsset("img/player.atlas", TextureAtlas.class);
 		player = new Player(playerAtlas);
 		flickerHP = player.getHP();
+		PlayerProjectile playerProjectile = new PlayerProjectile(game.getAsset("img/axe.atlas", TextureAtlas.class));
 
+		// Populate player-related fields
 		cl.setPlayer(player);
 
+		playerProjectile.createBody(world.createBody(playerProjectile.getBodyDef(0, 0)), player.getWidth() / 4f, player.getHeight() / 8f);
+		player.setProjectile(playerProjectile);
+
 		// TODO: Delete - creates player collision body
-		addEntity(player, .6f,  .2f, spawn.x, spawn.y, 0,
+		Preferences prefs = Gdx.app.getPreferences("world");
+		addEntity(player, .6f,  .2f, prefs.getFloat("x"), prefs.getFloat("y"), 0,
 				player.getHeight() * -.5f + (.2f))
 				.setLinearDamping(.5f);
 		player.setOriginalMass(5);
 
 
-		// Testing 1/4 cable 
-		amp = new Amp(playerAtlas.findRegion("amp"));
-//		amp.createBody(world.createBody(amp.getBodyDef(spawn.x + 2, spawn.y)), "amp", .4f, .4f, true);
-//		amp.setOriginalMass(1.1f);
-		cable = new Cable();
-//		cable.setJoint(world.createJoint(cable.getBodyDef(amp.getBody(), player.getBody())));
-
 		// Generate enemies from map
-		Array<SpawnProperties> getEnemies = map.get("enemy");
+		Array<SpawnProperties> getEnemies = map.get(SpawnProperties.SpawnType.Enemy);
 		for (int i = 0; i < getEnemies.size; i++) {
 			SpawnProperties properties = getEnemies.get(i);
 			Enemy enemy = new Enemy( game.getAsset("img/" + properties.getName() + ".atlas", TextureAtlas.class), properties);
@@ -142,7 +128,7 @@ public class GameWorld {
 		}
 
 		// Generate items from map
-		Array<SpawnProperties> getItems = map.get("item");
+		Array<SpawnProperties> getItems = map.get(SpawnProperties.SpawnType.Item);
 		getItems.forEach(spawn -> {
 			// TODO: Fix, allow for non-equipment items to spawn
 			Item item = new EquipmentItem(game.getAsset("img/items.atlas", TextureAtlas.class)
@@ -151,7 +137,20 @@ public class GameWorld {
 
 			items.add(item);
 		});
-		
+
+		// Create scene objects
+		Array<SpawnProperties> getScenes = map.get(SpawnProperties.SpawnType.Item);
+		getScenes.forEach(spawn -> {
+			// TODO: Fix, allow for non-equipment items to spawn
+			InteractableSceneObject scene = new Checkpoint(game.getAsset("img/scene.atlas", TextureAtlas.class));
+			scene.setBounds(spawn.getX() / 2f, spawn.getY() / 2f, spawn.getWidth(), spawn.getHeight());
+			sceneObjects.add(scene);
+		});
+
+		// Create transport tiles
+		for (int i = 0; i < getScenes.size; i++)
+			getScenes.get(i).setCustomData(map.getLayer("bg").getProperties().get("transport" + i, String.class));
+
 		// Test rendering game info
 		info = new PlayerInfo(player, game.getAsset("img/hud.atlas", TextureAtlas.class), game.getSkin());
 
@@ -166,14 +165,14 @@ public class GameWorld {
 
 		groundBox.dispose();
 
-		pIn = new PlayerInput(player, camera);
-		pIn.setAmp(amp);
-		pIn.setCable(cable);
+		pIn = new PlayerInput(player);
+//		pIn.setAmp(amp);
+//		pIn.setCable(cable);
 
 		{	// TODO: Delete
+			shapeRenderer = new ShapeRenderer();
 			int mapWidth = map.getProperty("width", Integer.class);
 			int mapHeight = map.getProperty("height", Integer.class);
-			shaker = new CameraHelper();//(camera, 3, 1, .9f);
 
 			BodyDef bodyDef = new BodyDef();
 			PolygonShape box = new PolygonShape();
@@ -204,57 +203,54 @@ public class GameWorld {
 		makeHitbox();
 
 		debugRenderer = new Box2DDebugRenderer();
-
-		input = new InputMultiplexer(pIn, info.getStage());
-		Gdx.input.setInputProcessor(input);
-		Controllers.addListener(new PlayerControllerInput(pIn, this));
-
 		tweenManager = new TweenManager();
 	}
 
 	public void render(Batch batch, float delta) {
-		batch.setProjectionMatrix(camera.combined);
+		environment.project(batch);
 		batch.begin();
-		map.renderBG(batch, camera);
+		map.renderBG(batch, environment.getCamera());
 		batch.end();
 
-		map.render(camera, "bg", "platforms");
+		map.render(environment.getCamera(), "bg", "platform");
 
-		batch.setProjectionMatrix(camera.combined);
+		environment.project(batch);
 		batch.begin();
 		enemies.forEach(e -> e.render(batch));
 		items.forEach(item -> item.render(batch));
 		players.forEach(p -> p.render(batch));
-//		amp.render(batch);
-		player.render(batch);
-
-		map.renderFG(batch, camera);
+		player.render(batch, environment.getCamera(), delta);
+		map.renderFG(batch, environment.getCamera());
 		batch.end();
 
-//		Array<Joint> joints = new Array<>();
-//		world.getJoints(joints);
-//		joints.forEach(j -> {
-//			shapes.rectLine(j.getAnchorA(), j.getAnchorB(), .025f);
-//		});
+		map.render(environment.getCamera(), "fg");
 
-		map.render(camera, "fg");
-
-		batch.setProjectionMatrix(camera.combined);
+		environment.project(batch);
 		batch.begin();
-		map.renderFG(batch, camera);
+		map.renderFG(batch, environment.getCamera());
 		batch.end();
 
 		batch.begin();
 		processParticles(batch);
 		batch.end();
 
+		// TODO: Delete
+		if (player.isCharging()) {
+			shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+			shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+			shapeRenderer.setColor(Color.RED);
+			shapeRenderer.rect(player.getX() + .5f, player.getY() - .25f, player.getWidth() / 2, player.getHeight() / 16f);
+			shapeRenderer.setColor(player.getCharge() < 1 ? Color.BLUE : Color.GREEN);
+			shapeRenderer.rect(player.getX() + .5f, player.getY() - .25f, (player.getWidth() / 2) * (player.getCharge()), player.getHeight() / 16f);
+			shapeRenderer.end();
+		}
+
 		info.render(delta);
+
 		if (flickerHP != player.getHP())
 			flicker();
-		
-		if (player.isDebugging()) {
-			debugRenderer.render(world, camera.combined);
-		}
+		if (player.isDebugging())
+			debugRenderer.render(world, environment.getCamera().combined);
 	}
 
 	public void flicker() {
@@ -267,10 +263,14 @@ public class GameWorld {
 		flickerHP = player.getHP();
 	}
 
+	public boolean getDebug() {
+		return player.isDebugging();
+	}
+
 	public void update(float delta) {
 		tweenManager.update(delta);
 
-		// TODO: Delete ASAP
+		// TODO: Delete ASAP. Crudely handles player attack "hitbox" sensor
 		if (player.isAnimation("attack")) {
 			if (player.getCurrentAnimationFrame() == 2) {
 				// Set hit sensor location
@@ -290,27 +290,6 @@ public class GameWorld {
 				particles.add(p);
 			}
 		}
-
-		// TODO: Consider moving this to a player state
-		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
-			pause.show();
-		if (pause.isShowing())
-			return;
-
-
-		// TODO: Don't do this
-		float camX = MathUtils.clamp(player.getBody().getPosition().x, camera.viewportWidth / 2f,
-				map.getProperty("width", Integer.class)/2f - camera.viewportWidth/2f);
-		float camY = MathUtils.clamp(player.getBody().getPosition().y, camera.viewportHeight / 2f,
-				map.getProperty("height", Integer.class));
-		if (shaker.isShaking()) {
-			shaker.update(camera, camX, camY, delta);
-		} else {
-			camera.position.set(camX, camY, 0);
-		}
-
-		// camera.position.set(player.getBody().getPosition().x, player.getBody().getPosition().y, 0);
-		textCamera.position.set(camera.position.x * (cameraScale(true)), camera.position.y * (cameraScale(false)), 0);
 
 		enemies.forEach(e -> {
 			e.update(delta);
@@ -338,30 +317,26 @@ public class GameWorld {
 			}
 		});
 
-
 		info.update(delta);
 		info.setDebug(player.isDebugging());
 		player.setOnGround(cl.isOnGround());
 		player.update(Gdx.graphics.getDeltaTime());
 
-		textCamera.update();
-		camera.update();
+		environment.updateCamera(player.getBody().getPosition(), delta);
 
-		// jukebox.setVolume(player.isPaused() ? 0 : 1);
-
-		if (player.isPullingAmp() || amp.isPullingPlayer()) {
-			if (cable.getJoint().getMaxLength() > 0) {
-				pullAmp(delta);
-			}
-		}
-
-		// TODO: Delet dis
-		if (!cable.isConnected() && cable.getState() == 0)
-			cutCable();
-		else if (cable.getState() == 1 && cable.isConnected()) {
-			cable.setState(0);
-			cable.setJoint(world.createJoint(cable.getBodyDef(amp.getBody(), player.getBody())));
-		}
+//		if (player.isPullingAmp() || amp.isPullingPlayer()) {
+//			if (cable.getJoint().getMaxLength() > 0) {
+//				pullAmp(delta);
+//			}
+//		}
+//
+//		// TODO: Delet dis
+//		if (!cable.isConnected() && cable.getState() == 0)
+//			cutCable();
+//		else if (cable.getState() == 1 && cable.isConnected()) {
+//			cable.setState(0);
+//			cable.setJoint(world.createJoint(cable.getBodyDef(amp.getBody(), player.getBody())));
+//		}
 
 		// TODO: Change collision filters for all entities in loop
 		if (player.getBody().getLinearVelocity().y >= .001f) {
@@ -382,11 +357,12 @@ public class GameWorld {
 
 		player.changeCollisionGroup(player.getBody().getLinearVelocity().y >= .001f
 				// || player.getBody().getPosition().y < amp.getBody().getPosition().y + .6f
-				? (short) 2 : (short) 1);
+				//? (short) 2 : (short) 1
+				? Units.PLAYER_FLAG : Units.ALL_FLAG
+		);
 
-		// TODO: Delete. Handles player death/dying
+		// TODO: Delete. Handles player death/dying, needs to be moved
 		if (player.getHP() == 0) {
-			input.clear();
 			info.setStatus("Press R to respawn");
 			player.die();
 			player.setXVelocity(0);
@@ -402,37 +378,32 @@ public class GameWorld {
 		return e.createBody(world.createBody(e.getBodyDef(spawnX, spawnY)), width / 2f, height / 2f, x, y);
 	}
 
-	public float cameraScale(boolean width) {
-		return width ? (textCamera.viewportWidth / camera.viewportWidth)
-				: (textCamera.viewportHeight / camera.viewportHeight);
-	}
+//	public float cameraScale(boolean width) {
+//		return width ? (textCamera.viewportWidth / camera.viewportWidth)
+//				: (textCamera.viewportHeight / camera.viewportHeight);
+//	}
 
-	public void pullAmp(float delta) {
-		// amp.changeCollisionFilters(Units.ENTITY_FLAG, Units.ALL_FLAG);
-		cable.getJoint().setMaxLength(cable.getJoint().getMaxLength() - (delta * 2f));
-	}
-
-	public void cutCable() {
-		world.destroyJoint(cable.getJoint());
-		cable.setState(1);
-	}
+//	public void pullAmp(float delta) {
+//		// amp.changeCollisionFilters(Units.ENTITY_FLAG, Units.ALL_FLAG);
+//		cable.getJoint().setMaxLength(cable.getJoint().getMaxLength() - (delta * 2f));
+//	}
+//
+//	public void cutCable() {
+//		world.destroyJoint(cable.getJoint());
+//		cable.setState(1);
+//	}
 
 	// TODO: Delete
 	public void respawn() {
 		player.setHP(4);
-		player.getBody().setTransform(spawn, 0);
+		// player.getBody().setTransform(new Vector2(2.5f, 2.5f), 0); // TODO: Fix ASAP
 		player.setVelocity(0, 0);
-		input.addProcessor(pIn);
-		input.addProcessor(info.getStage());
 		info.setStatus("");
 		flicker();
 	}
 
 	public void hitPlayer() {
-		if (!shaker.isShaking()) {
-			// Camera shake
-			shaker.shake(.2f, .05f);
-
+		if (environment.shake()) {
 			// Create particle effect
 			ParticleEffect p = particlePool.obtain();
 			p.initialize("hit0", 1, 1, .5f);
@@ -443,18 +414,21 @@ public class GameWorld {
 
 	public void resize(int width, int height) {
 		info.resize(width, height);
-		viewport.update(width, height);
+		environment.resize(width, height);
 	}
 
 	public void dispose() {
+		// Confirmed this is getting called
+		game.saveValue("x", player.getBody().getPosition().x, MainGame.Prefs.world);
+		game.saveValue("y", player.getBody().getPosition().y, MainGame.Prefs.world);
 		players.forEach(Player::dispose);
 		info.dispose();
 		world.dispose();
 		player.dispose();
 		map.dispose();
+		shapeRenderer.dispose();
 		debugRenderer.dispose();
 		playerAtlas.dispose();
-		pause.dispose();
 		particlePool.clear();
 	}
 
@@ -469,69 +443,22 @@ public class GameWorld {
 		});
 	}
 
-	public class CameraHelper {
+	public void generateEntities() {
 
-		float[] samples;
-		float internalTimer = 0;
-		float shakeDuration = 0;
-		private float intensity;
+	}
 
-		int duration = 5; // In seconds, make longer if you want more variation
-		int frequency = 35; // hertz
-		float amplitude = 2; // how much you want to shake
-		boolean falloff = true; // if the shake should decay as it expires
+	public void generateScene() {
 
-		int sampleCount;
+	}
 
-		public CameraHelper() {
-			sampleCount = duration * frequency;
-			samples = new float[sampleCount];
-			for (int i = 0; i < sampleCount; i++) {
-				samples[i] = MathUtils.random() * 2f - 1f;
-			}
-			intensity = (2f);
-		}
+	public void generateItems() {
 
-		/**
-		 * Called every frame will shake the camera if it has a shake duration
-		 *
-		 * @param camera your camera
-		 * @param delta     Gdx.graphics.getDeltaTime() or your dt in seconds
-		 */
-		public void update(OrthographicCamera camera, float x, float y, float delta) {
-			internalTimer += delta;
-			if (internalTimer > duration)
-				internalTimer -= duration;
-			if (isShaking()) {
-				shakeDuration -= delta;
-				float shakeTime = (internalTimer * frequency);
-				int first = (int) shakeTime;
-				int second = (first + 1) % sampleCount;
-				int third = (first + 2) % sampleCount;
-				float deltaT = shakeTime - (int) shakeTime;
-				float deltaX = samples[first] * deltaT + samples[second] * (1f - deltaT);
-				float deltaY = samples[second] * deltaT + samples[third] * (1f - deltaT);
+	}
 
-				camera.position.x = x + deltaX * amplitude * (falloff ? Math.min(shakeDuration, 1f) : 1f);
-				camera.position.y = y + deltaY * amplitude * (falloff ? Math.min(shakeDuration, 1f) : 1f);
-				camera.update();
-			}
-		}
-
-		/**
-		 * Will make the camera shake for the duration passed in in seconds
-		 *
-		 * @param d duration of the shake in seconds
-		 * @param i the intensity of the shake
-		 */
-		public void shake(float d, float i) {
-			shakeDuration = d;
-			intensity = i;
-		}
-
-		public boolean isShaking() {
-			return shakeDuration > 0;
-		}
+	public InputProcessor getInputProcessors() {
+		InputMultiplexer input = new InputMultiplexer(pIn, info.getStage());
+		Controllers.addListener(new PlayerControllerInput(pIn, this));
+		return input;
 	}
 
 	// TODO: DELETE everything below
@@ -545,10 +472,9 @@ public class GameWorld {
 
 		hitboxDef.shape = hitboxShape;
 		hitboxDef.filter.categoryBits = Units.PLAYER_FLAG;
-		hitboxDef.filter.maskBits = Units.ENTITY_FLAG; //Units.ENTITY_FLAG;
+		hitboxDef.filter.maskBits = Units.ENTITY_FLAG;
 		hitboxDef.isSensor = true;
 
-		//hitDef.type = BodyDef.BodyType.KinematicBody;
 		hitDef.type = BodyDef.BodyType.DynamicBody;
 		hitDef.position.set(0, 0);
 		hitDef.fixedRotation = true;
