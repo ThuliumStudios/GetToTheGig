@@ -3,6 +3,7 @@ package com.thulium.screen;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.thulium.game.PauseMenu;
+import com.thulium.player.PlayerProjectile;
 import com.thulium.util.Jukebox;
 import com.thulium.world.GameWorld;
 import com.thulium.main.MainGame;
@@ -12,10 +13,9 @@ import java.util.Arrays;
 public class GameScreen implements Screen {
 	private GameWorld world;
 	private PauseMenu pause;
+
 	private final MainGame game;
 
-	private boolean isPaused;
-	
 	public GameScreen(MainGame game) {
 		this.game = game;
 	}
@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
 
 		// Set input processors
 		InputMultiplexer input = new InputMultiplexer();
-		input.setProcessors(pauseInput, pause.getStage(), world.getInputProcessors());
+		input.setProcessors(pause.getStage(), world.getInputProcessors());
 		Gdx.input.setInputProcessor(input);
 	}
 
@@ -37,7 +37,7 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		// TODO: Either mute Jukebox or change song on pause
-		if (isPaused) {
+		if (world.getPlayer().isPaused()) {
 			pause.render(delta);
 			pause.renderDebug(world.getDebug());
 		} else {
@@ -54,15 +54,17 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-		isPaused = true;
+		world.getPlayer().setPaused(true);
 	}
 
 	@Override
-	public void resume() {}
+	public void resume() {
+		world.getPlayer().setPaused(true);
+	}
 
 	@Override
 	public void hide() {
-		isPaused = true;
+		world.getPlayer().setPaused(true);
 	}
 
 	@Override
@@ -70,14 +72,4 @@ public class GameScreen implements Screen {
 		world.dispose();
 		pause.dispose();
 	}
-
-	public InputAdapter pauseInput = new InputAdapter() {
-		@Override
-		public boolean keyDown(int keycode) {
-			if (keycode == Input.Keys.ESCAPE) {
-				isPaused = !isPaused;
-			}
-			return false;
-		}
-	};
 }

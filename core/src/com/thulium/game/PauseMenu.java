@@ -1,5 +1,7 @@
 package com.thulium.game;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -7,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.thulium.item.Item;
 
 import java.lang.reflect.GenericArrayType;
@@ -98,7 +102,7 @@ public class PauseMenu {
         contentTable.defaults().fill();
 
         // Initialize right table
-        rightLabel = new Label("*Inventory*", skin.get("title", Label.LabelStyle.class));
+        rightLabel = new Label("*INVENTORY*", skin.get("title", Label.LabelStyle.class));
         rightLabel.setAlignment(Align.center);
         rightTable.add(rightLabel).height(stage.getHeight() / 8f).expand().growX().top().row();
         rightTable.add(contentTable).fill();
@@ -110,6 +114,8 @@ public class PauseMenu {
         pauseLabel.setAlignment(Align.center);
         leftTable.add(pauseLabel).height(stage.getHeight() / 8f).expand().growX().top().row();
 
+        // TEST - Add left lables to vertical group
+        VerticalGroup leftLabels = new VerticalGroup();
         Arrays.asList(options).forEach(str -> {
             Label l = new Label(str, skin.get("black", Label.LabelStyle.class));
             l.setName(str);
@@ -134,14 +140,19 @@ public class PauseMenu {
                     ((Label) event.getTarget()).setStyle(skin.get("black", Label.LabelStyle.class));
                 }
             });
-            leftTable.add(l).row();
+            l.addListener(new FocusListener() {
+                @Override
+                public boolean handle(Event event) {
+                    leftLabels.getChildren().forEach(l -> ((Label) l).setStyle(skin.get("black", Label.LabelStyle.class)));
+                    ((Label) event.getTarget()).setStyle(skin.get("white", Label.LabelStyle.class));
+                    return super.handle(event);
+                }
+            });
+            // leftTable.add(l).row();
+            leftLabels.addActor(l);
         });
-        leftTable.add().pad(stage.getHeight() / 4, 0, 0, 0); // To add spacing at the bottom
-
-        // TODO: Delete
-        rightTable.debug();
-        contentTable.debug();
-        // TODO: End Delete
+        leftTable.add(leftLabels);
+        // leftTable.add().pad(stage.getHeight() / 4, 0, 0, 0); // To add spacing at the bottom
 
         // Add default tables to stage
         Table table = new Table(skin);
@@ -150,6 +161,21 @@ public class PauseMenu {
         table.defaults().grow().uniform();
         table.add(leftTable, rightTable);
         stage.addActor(table);
+
+        // TEST
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                // Hard-coded inputs
+                switch (keycode) {
+                    case Input.Keys.TAB:
+                        stage.setKeyboardFocus(getNextActor(stage.getKeyboardFocus()));
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
     }
 
     public void render(float delta) {
@@ -172,5 +198,26 @@ public class PauseMenu {
 
     public void dispose() {
         stage.dispose();
+    }
+
+    /**
+     *  Selects next actor
+     */
+    private Actor getNextActor(Actor currentActor) {
+        // Get the list of actors in the stage
+        Array<Actor> actors = ((Group) leftTable.getChild(1)).getChildren();
+
+        // Find the index of the current actor
+        int currentIndex = actors.indexOf(currentActor, true);
+
+        // Get the next actor in the list
+        int nextIndex = (currentIndex + 1) % actors.size;
+
+        Actor nextActor = actors.get(nextIndex);
+        if (nextActor == null)
+            nextActor = actors.first();
+
+        System.out.println("Focused " + nextActor);
+        return nextActor;
     }
 }

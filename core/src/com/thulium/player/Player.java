@@ -254,6 +254,8 @@ public class Player extends Entity {
 
 	public void toggleDebug() {
 		isDebugging = !isDebugging;
+		System.out.println("Debugging? " + isDebugging);
+
 	}
 
 	public boolean isPaused() {
@@ -268,7 +270,11 @@ public class Player extends Entity {
 		return charge;
 	}
 
-	public void setPaused() {
+	public void setPaused(boolean isPaused) {
+		this.isPaused = isPaused;
+	}
+
+	public void togglePause() {
 		isPaused = !isPaused;
 	}
 

@@ -11,71 +11,68 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerInput implements InputProcessor {
+	private final Map<Integer, Integer> controls = new HashMap<>();
+	public static final int PAUSE = Keys.ESCAPE;
+	public static final int WALK_LEFT = Keys.A;
+	public static final int WALK_RIGHT = Keys.D;
+	public static final int JUMP = Keys.W;
+	public static final int FALL = Keys.S;
+	public static final int POWERSLIDE = Keys.SHIFT_RIGHT;
+	public static final int DEBUG = Keys.F12;
+	public static final int ATTACK = Keys.K;
+
 	private final Map<Integer, String> keysDown = new HashMap<>();
 	private final StringBuilder string = new StringBuilder();
-	private String keyDownList;
 
 	private final Player player;
 
 	public PlayerInput(Player player) {
 		this.player = player;
+
+		// Map controls based on settings. TODO: Save default controls to settings file, load from settings
+		controls.putIfAbsent(Keys.ESCAPE, PAUSE);
+		controls.putIfAbsent(Keys.A, WALK_LEFT);
+		controls.putIfAbsent(Keys.LEFT, WALK_RIGHT);
+		controls.putIfAbsent(Keys.D, WALK_RIGHT);
+		controls.putIfAbsent(Keys.RIGHT, WALK_RIGHT);
+		controls.putIfAbsent(Keys.W, JUMP);
+		controls.putIfAbsent(Keys.UP, JUMP);
+		controls.putIfAbsent(Keys.S, FALL);
+		controls.putIfAbsent(Keys.DOWN, FALL);
+		controls.putIfAbsent(Keys.SPACE, JUMP);
+		controls.putIfAbsent(Keys.SHIFT_RIGHT, POWERSLIDE);
+		controls.putIfAbsent(Keys.SHIFT_LEFT, POWERSLIDE);
+		controls.putIfAbsent(Keys.K, ATTACK);
+		controls.putIfAbsent(Keys.F12, DEBUG);
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		switch (keycode) {
-			case Keys.LEFT:		// Walk left
-			case Keys.A:
+		switch(controls.getOrDefault(keycode, Keys.UNKNOWN)) {
+			case WALK_LEFT:		// Walk left
 				player.setXVelocity(-Units.MAX_VELOCITY);
 				player.setFlipState(true);
 				break;
-			case Keys.RIGHT:	// Walk right
-			case Keys.D:
+			case WALK_RIGHT:	// Walk right
 				player.setXVelocity(Units.MAX_VELOCITY);
 				player.setFlipState(false);
 				break;
-			case Keys.UP:		// Jump
-			case Keys.W:
-			case Keys.SPACE:
+			case JUMP:			// Jump
 				player.jump();
 				break;
-			case Keys.SHIFT_LEFT:// Powerslide
-			case Keys.SHIFT_RIGHT:
+			case POWERSLIDE:	// Powerslide
 				if (keyIsDown(Keys.A, Keys.D))
 					player.powerslide();
 				break;
-            case Keys.ESCAPE:	// Pause
-				player.setPaused();
+            case PAUSE:			// Pause
+				player.togglePause();
 				break;
-			case Keys.F12:		// Debug Box2D shapes
+			case DEBUG:		// Debug Box2D shapes
+				System.out.println("Toggling debug");
 				player.toggleDebug();
 				break;
-			case Keys.K:		// Attack
+			case ATTACK:		// Attack
 				player.charge();
-				break;
-
-			// Test cases
-			case Keys.PLUS:
-			case Keys.NUMPAD_ADD:
-				player.damage(-1);
-				break;
-			case Keys.MINUS:
-			case Keys.NUMPAD_SUBTRACT:
-				player.damage(1);
-				break;
-			case Keys.NUM_0:
-			case Keys.NUM_1:
-			case Keys.NUM_2:
-			case Keys.NUM_3:
-			case Keys.NUM_4:
-				player.setHP(keycode - 7);
-				break;
-			case Keys.NUMPAD_0:
-			case Keys.NUMPAD_1:
-			case Keys.NUMPAD_2:
-			case Keys.NUMPAD_3:
-			case Keys.NUMPAD_4:
-				player.setHP(keycode - 144);
 				break;
 			default:
 				break;
@@ -90,22 +87,20 @@ public class PlayerInput implements InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		switch (keycode) {
-			case Keys.A:
-			case Keys.LEFT:
-				if (!keyIsDown(Keys.RIGHT)) {
+		switch (controls.getOrDefault(keycode, Keys.UNKNOWN)) {
+			case WALK_LEFT:
+				if (!keyIsDown(WALK_RIGHT)) {
 					player.setXVelocity(0);
 					player.applyOpposingForce();
 				}
 				break;
-			case Keys.D:
-			case Keys.RIGHT:
-				if (!keyIsDown(Keys.LEFT)) {
+			case WALK_RIGHT:
+				if (!keyIsDown(WALK_LEFT)) {
 					player.setXVelocity(0);
 					player.applyOpposingForce();
 				}
 				break;
-			case Keys.K:	// Release attack
+			case ATTACK:	// Release attack
 				player.attack();
 				break;
 			case Keys.L:	// Push
@@ -161,14 +156,4 @@ public class PlayerInput implements InputProcessor {
 	public boolean keyIsDown(int... keycodes) {
 		return !Collections.disjoint(Collections.singletonList(keycodes), Collections.singletonList(keysDown.keySet()));
 	}
-
-	/**
-	 *	Inner controller mapping
-	 */
-
-	/**
-	 * 	Inner keyboard mapping
-	 */
 }
-
-
