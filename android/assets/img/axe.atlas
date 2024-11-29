@@ -4,6 +4,48 @@ size: 2048, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+axe_diag_spin
+  rotate: false
+  xy: 284, 2
+  size: 92, 92
+  orig: 92, 92
+  offset: 0, 0
+  index: 3
+axe_diag_spin
+  rotate: false
+  xy: 566, 2
+  size: 92, 92
+  orig: 92, 92
+  offset: 0, 0
+  index: 0
+axe_diag_spin
+  rotate: false
+  xy: 660, 2
+  size: 92, 92
+  orig: 92, 92
+  offset: 0, 0
+  index: 5
+axe_diag_spin
+  rotate: false
+  xy: 1036, 2
+  size: 92, 92
+  orig: 92, 92
+  offset: 0, 0
+  index: 2
+axe_diag_spin
+  rotate: false
+  xy: 1318, 2
+  size: 92, 92
+  orig: 92, 92
+  offset: 0, 0
+  index: 4
+axe_diag_spin
+  rotate: false
+  xy: 1600, 2
+  size: 92, 92
+  orig: 92, 92
+  offset: 0, 0
+  index: 1
 axe_projectile
   rotate: false
   xy: 96, 2
@@ -20,39 +62,53 @@ axe_spin
   index: 7
 axe_projectile
   rotate: false
-  xy: 284, 2
+  xy: 378, 2
   size: 92, 92
   orig: 92, 92
   offset: 0, 0
   index: 2
 axe_projectile
   rotate: false
-  xy: 566, 2
+  xy: 848, 2
   size: 92, 92
   orig: 92, 92
   offset: 0, 0
   index: 4
 axe_projectile
   rotate: false
-  xy: 754, 2
+  xy: 1130, 2
   size: 92, 92
   orig: 92, 92
   offset: 0, 0
   index: 1
 axe_projectile
   rotate: false
-  xy: 942, 2
+  xy: 1412, 2
   size: 92, 92
   orig: 92, 92
   offset: 0, 0
   index: 3
 axe_projectile
   rotate: false
-  xy: 1130, 2
+  xy: 1694, 2
   size: 92, 92
   orig: 92, 92
   offset: 0, 0
   index: 0
+axe_projectile
+  rotate: false
+  xy: 1788, 61
+  size: 94, 33
+  orig: 94, 33
+  offset: 0, 0
+  index: -1
+axe_projectile_back
+  rotate: false
+  xy: 1788, 26
+  size: 93, 33
+  orig: 93, 33
+  offset: 0, 0
+  index: -1
 axe_spin
   rotate: false
   xy: 2, 2
@@ -60,6 +116,13 @@ axe_spin
   orig: 92, 92
   offset: 0, 0
   index: 1
+sprite_item
+  rotate: false
+  xy: 2, 2
+  size: 92, 92
+  orig: 92, 92
+  offset: 0, 0
+  index: -1
 axe_spin
   rotate: false
   xy: 190, 2
@@ -69,35 +132,35 @@ axe_spin
   index: 6
 axe_spin
   rotate: false
-  xy: 378, 2
+  xy: 472, 2
   size: 92, 92
   orig: 92, 92
   offset: 0, 0
   index: 3
 axe_spin
   rotate: false
-  xy: 472, 2
+  xy: 754, 2
   size: 92, 92
   orig: 92, 92
   offset: 0, 0
   index: 0
 axe_spin
   rotate: false
-  xy: 660, 2
+  xy: 942, 2
   size: 92, 92
   orig: 92, 92
   offset: 0, 0
   index: 5
 axe_spin
   rotate: false
-  xy: 848, 2
+  xy: 1224, 2
   size: 92, 92
   orig: 92, 92
   offset: 0, 0
   index: 2
 axe_spin
   rotate: false
-  xy: 1036, 2
+  xy: 1506, 2
   size: 92, 92
   orig: 92, 92
   offset: 0, 0
