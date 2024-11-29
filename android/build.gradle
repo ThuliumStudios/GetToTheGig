@@ -1,6 +1,6 @@
 android {
     buildToolsVersion "34"
-    compileSdkVersion 33
+    compileSdkVersion 34
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -14,7 +14,9 @@ android {
 
     }
     packagingOptions {
-        exclude 'META-INF/robovm/ios/robovm.xml'
+        resources {
+            excludes += ['META-INF/robovm/ios/robovm.xml']
+        }
     }
     defaultConfig {
         applicationId "com.thulium.main"
@@ -33,6 +35,8 @@ android {
         renderScript true
         aidl true
     }
+
+    namespace 'com.thulium.main'
 }
 
 
@@ -92,5 +96,6 @@ task run(type: Exec) {
     def adb = path + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.thulium.main/com.thulium.main.AndroidLauncher'
 }
+
 
 eclipse.project.name = appName + "-android"
