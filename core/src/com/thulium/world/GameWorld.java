@@ -120,9 +120,10 @@ public class GameWorld {
 		for (int i = 0; i < getEnemies.size; i++) {
 			SpawnProperties properties = getEnemies.get(i);
 			Enemy enemy = new Enemy( game.getAsset("img/" + properties.getName() + ".atlas", TextureAtlas.class), properties);
-			addEntity(enemy, enemy.getWidth() * .3f, enemy.getHeight() * .2f, properties.getX() / 2f,
+//			addEntity(enemy, enemy.getWidth() * .3f, enemy.getHeight() * .2f, properties.getX() / 2f,
+//					(properties.getY() / 2f) + enemy.getHeight() / 2f, 0, enemy.getHeight() * -.5f);
+			addEntity(enemy, enemy.getWidth(), enemy.getHeight(), properties.getX() / 2f,
 					(properties.getY() / 2f) + enemy.getHeight() / 2f, 0, enemy.getHeight() * -.5f);
-			// enemy.changeCollisionGroup((short) 3);
 			enemy.setVelocity(-2, 0);
 			enemies.add(enemy);
 		}
@@ -169,7 +170,7 @@ public class GameWorld {
 //		pIn.setAmp(amp);
 //		pIn.setCable(cable);
 
-		{	// TODO: Delete
+		{	// TODO: Delete. Creates a collision box surrounding the map
 			shapeRenderer = new ShapeRenderer();
 			int mapWidth = map.getProperty("width", Integer.class);
 			int mapHeight = map.getProperty("height", Integer.class);
@@ -190,7 +191,7 @@ public class GameWorld {
 			Arrays.asList(csPts).forEach(csp -> csp.scl(.5f));
 			cs.createChain(csPts);
 
-			fixtureDef.shape = cs; //box;
+			fixtureDef.shape = cs; // box;
 			fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
 			fixtureDef.filter.maskBits = Units.ENTITY_FLAG | Units.PLAYER_FLAG;
 
@@ -345,6 +346,8 @@ public class GameWorld {
 			player.changeCollisionFilters(Units.PLAYER_FLAG, (short) (Units.GROUND_FLAG | Units.ENTITY_FLAG));
 		}
 
+
+
 //		if (!amp.isStateLocked()) {
 //			if (amp.getBody().getLinearVelocity().y >= .001f) {
 //				amp.changeCollisionFilters(Units.ENTITY_FLAG, (short)0);
@@ -372,6 +375,10 @@ public class GameWorld {
 		}
 
 		world.step(Math.min(1 / 60f, delta), 6, 2);
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	public Body addEntity(Entity e, float width, float height, float spawnX, float spawnY, float x, float y) {

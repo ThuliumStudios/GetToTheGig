@@ -118,8 +118,6 @@ public class Entity extends BaseEntity {
 		body.createFixture(fixtureDef).setUserData(name);
 		originalMass = body.getMass();
 
-		System.out.println(originalMass);
-
 		if (hasFoot) {
 			box.setAsBox((width * .9f),.15f, new Vector2(x, y - height * 1.5f), 0);
 			fixtureDef.isSensor = true;
