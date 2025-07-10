@@ -27,35 +27,35 @@ airthrow
   index: 5
 airthrow
   rotate: false
-  xy: 179, 710
+  xy: 356, 887
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 1
 airthrowdiag
   rotate: false
-  xy: 179, 710
+  xy: 356, 887
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 1
 airthrow
   rotate: false
-  xy: 1064, 1418
+  xy: 1418, 1772
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 3
 airthrowdiag
   rotate: false
-  xy: 2, 1241
+  xy: 356, 1595
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 0
 airthrow
   rotate: false
-  xy: 2, 1241
+  xy: 356, 1595
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -76,21 +76,21 @@ airthrowdiag
   index: 4
 airthrowdiag
   rotate: false
-  xy: 179, 887
+  xy: 356, 1064
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 2
 airthrowdiag
   rotate: false
-  xy: 179, 179
+  xy: 533, 533
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 3
 amp
   rotate: false
-  xy: 1595, 1662
+  xy: 1772, 1839
   size: 108, 108
   orig: 108, 108
   offset: 0, 0
@@ -139,14 +139,49 @@ throw
   index: 3
 attack0
   rotate: false
-  xy: 887, 1241
+  xy: 533, 1064
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 0
+attack1
+  rotate: false
+  xy: 533, 1064
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 1
+rare
+  rotate: false
+  xy: 533, 1064
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 0
+throw
+  rotate: false
+  xy: 533, 1064
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 0
+throwdiag
+  rotate: false
+  xy: 533, 1064
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 0
+attack0
+  rotate: false
+  xy: 1241, 1595
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 2
 throw
   rotate: false
-  xy: 887, 1241
+  xy: 1241, 1595
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -160,14 +195,14 @@ attack1
   index: 3
 attack1
   rotate: false
-  xy: 533, 1241
+  xy: 887, 1595
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 0
 attack1
   rotate: false
-  xy: 887, 1064
+  xy: 1595, 1772
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -209,28 +244,35 @@ attack2
   index: 5
 attack2
   rotate: false
-  xy: 887, 1418
+  xy: 1064, 1595
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 2
 attack_idle
   rotate: false
-  xy: 887, 1418
+  xy: 1064, 1595
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 1
 attack2
   rotate: false
-  xy: 179, 356
+  xy: 533, 710
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 4
 attack2
   rotate: false
-  xy: 1595, 1772
+  xy: 179, 179
+  size: 175, 175
+  orig: 175, 175
+  offset: 0, 0
+  index: 1
+death
+  rotate: false
+  xy: 179, 1772
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -248,14 +290,14 @@ death
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 7
+  index: 8
 death
   rotate: false
   xy: 356, 1772
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 8
+  index: 7
 death
   rotate: false
   xy: 710, 1772
@@ -272,77 +314,77 @@ death
   index: 0
 death
   rotate: false
-  xy: 533, 1064
+  xy: 710, 1241
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 5
 death
   rotate: false
-  xy: 179, 533
+  xy: 533, 887
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 11
 death
   rotate: false
-  xy: 356, 710
+  xy: 710, 1064
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 2
 death
   rotate: false
-  xy: 1064, 1241
+  xy: 1241, 1418
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 4
 death
   rotate: false
-  xy: 2, 2
+  xy: 356, 356
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 9
 death
   rotate: false
-  xy: 533, 533
+  xy: 887, 887
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 10
-death
+equip_axe
   rotate: false
-  xy: 710, 710
+  xy: 179, 710
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 1
-equip_axe
+  index: 0
+hang
   rotate: false
-  xy: 356, 887
+  xy: 356, 710
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 0
 idle
   rotate: false
-  xy: 356, 356
+  xy: 710, 710
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: -1
 idlehorns
   rotate: false
-  xy: 710, 887
+  xy: 1064, 1241
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: -1
 jump_down
   rotate: false
-  xy: 533, 710
+  xy: 887, 1064
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -356,70 +398,35 @@ jump_up
   index: -1
 push
   rotate: false
-  xy: 887, 912
+  xy: 1064, 1089
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: 3
 push
   rotate: false
-  xy: 1064, 1089
-  size: 150, 150
-  orig: 150, 150
-  offset: 0, 0
-  index: 0
-push
-  rotate: false
   xy: 1241, 1266
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
-  index: 2
+  index: 0
 push
   rotate: false
   xy: 1418, 1443
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
+  index: 2
+push
+  rotate: false
+  xy: 1595, 1620
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
   index: 1
 rare
   rotate: false
-  xy: 2, 1595
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 0
-attack0
-  rotate: false
-  xy: 2, 1595
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 0
-attack1
-  rotate: false
-  xy: 2, 1595
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 1
-throw
-  rotate: false
-  xy: 2, 1595
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 0
-throwdiag
-  rotate: false
-  xy: 2, 1595
-  size: 175, 175
-  orig: 175, 175
-  offset: 0, 0
-  index: 0
-rare
-  rotate: false
-  xy: 533, 887
+  xy: 887, 1241
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -433,14 +440,14 @@ rarehorns
   index: 0
 rarehorns
   rotate: false
-  xy: 1241, 1418
+  xy: 1418, 1595
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 179, 1772
+  xy: 2, 1595
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -461,21 +468,21 @@ run
   index: 3
 run
   rotate: false
-  xy: 1064, 1595
+  xy: 1241, 1772
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 0
 run
   rotate: false
-  xy: 710, 1064
+  xy: 1064, 1418
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 356, 533
+  xy: 710, 887
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -496,28 +503,28 @@ runhorns
   index: 0
 runhorns
   rotate: false
-  xy: 887, 1595
+  xy: 533, 1241
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 5
 runhorns
   rotate: false
-  xy: 710, 1241
+  xy: 887, 1418
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 2
 runhorns
   rotate: false
-  xy: 2, 179
+  xy: 356, 533
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 4
 runhorns
   rotate: false
-  xy: 1418, 1595
+  xy: 2, 2
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
@@ -535,14 +542,14 @@ talk
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 9
+  index: 5
 talk
   rotate: false
   xy: 179, 1418
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 5
+  index: 9
 talk
   rotate: false
   xy: 179, 1418
@@ -563,14 +570,14 @@ talk
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 2
+  index: 6
 talk
   rotate: false
   xy: 356, 1418
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
-  index: 6
+  index: 2
 talk
   rotate: false
   xy: 356, 1241
@@ -580,56 +587,56 @@ talk
   index: 0
 talk
   rotate: false
-  xy: 2, 356
+  xy: 179, 533
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 7
 talk
   rotate: false
-  xy: 1241, 1595
+  xy: 179, 356
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 4
 throw
   rotate: false
-  xy: 1241, 1772
+  xy: 2, 356
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 5
 throw
   rotate: false
-  xy: 1241, 1772
+  xy: 2, 356
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 4
 throwdiag
   rotate: false
-  xy: 356, 1595
+  xy: 2, 1241
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 2
 throwdiag
   rotate: false
-  xy: 356, 1064
+  xy: 179, 887
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 4
 throwdiag
   rotate: false
-  xy: 356, 1064
+  xy: 179, 887
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
   index: 5
 throwdiag
   rotate: false
-  xy: 1418, 1772
+  xy: 2, 179
   size: 175, 175
   orig: 175, 175
   offset: 0, 0
