@@ -1,17 +1,19 @@
 package com.thulium.screen;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.GL20;
 import com.thulium.game.PauseMenu;
-import com.thulium.player.PlayerProjectile;
+import com.thulium.input.PlayerInput;
 import com.thulium.util.Jukebox;
 import com.thulium.world.GameWorld;
 import com.thulium.main.MainGame;
 
-import java.util.Arrays;
-
 public class GameScreen implements Screen {
-	private GameWorld world;
+	public enum GameState { Running, Paused, Stopped }
+	public static GameState state = GameState.Running;
+	private Jukebox jukebox;
+    private GameWorld world;
 	private PauseMenu pause;
 
 	private final MainGame game;
@@ -24,11 +26,13 @@ public class GameScreen implements Screen {
 	public void show() {
 		world = new GameWorld(game);
 		pause = new PauseMenu(game.getSkin());
+		jukebox = Jukebox.getInstance();
 
-		// Set input processors
-		InputMultiplexer input = new InputMultiplexer();
-		input.setProcessors(pause.getStage(), world.getInputProcessors());
-		Gdx.input.setInputProcessor(input);
+        PlayerInput input = new PlayerInput(world.getPlayer());
+		Controllers.addListener(input);
+		Gdx.input.setInputProcessor(new InputMultiplexer(pause.getStage(), input));
+
+		jukebox.setVolume(0); // TODO: Delete
 	}
 
 	@Override
@@ -36,13 +40,17 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(.1f, .1f, .1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		// TODO: Either mute Jukebox or change song on pause
-		if (world.getPlayer().isPaused()) {
-			pause.render(delta);
-			pause.renderDebug(world.getDebug());
-		} else {
-			world.update(delta);
-			world.render(game.getBatch(), delta);
+		switch (state) {
+			case Running -> {
+				// jukebox.setVolume(1); // TODO: Un-comment
+				world.update(delta);
+				world.render(game.getBatch(), delta);
+			} case Paused -> {
+				// jukebox.setVolume(.4f); // TODO: Un-comment
+				pause.render(delta);
+				pause.renderDebug(world.getDebug());
+			} case Stopped -> {
+			}
 		}
 	}
 
@@ -54,21 +62,26 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-		world.getPlayer().setPaused(true);
+		state = GameState.Paused;
+		jukebox.pause();
 	}
 
 	@Override
 	public void resume() {
-		world.getPlayer().setPaused(true);
+		state = GameState.Running;
+		jukebox.resume();
 	}
 
 	@Override
 	public void hide() {
-		world.getPlayer().setPaused(true);
+		state = GameState.Paused;
+		jukebox.pause();
 	}
 
 	@Override
 	public void dispose() {
+		state = GameState.Stopped;
+		jukebox.stop();
 		world.dispose();
 		pause.dispose();
 	}
