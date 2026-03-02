@@ -6,15 +6,21 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.MassData;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.thulium.entity.AnimationWrapper;
 import com.thulium.entity.Entity;
 import com.thulium.entity.Priority;
 import com.thulium.util.Units;
 
+/*
+TODO:
+	BUG: Collision detection, including sensors (i.e., ledge grab), only occurs when player is not jumping.
+ */
 public class Player extends Entity {
 	// private boolean isMoving;
-	private boolean isPaused;
+	private boolean canGrabLedge;
 	private boolean isOnGround;
 	private boolean isDebugging;
 	private boolean isPullingAmp;
@@ -30,6 +36,9 @@ public class Player extends Entity {
 	private final Animation<TextureRegion> bloodAnim;
 	private float bloodStateTime;
 	private PlayerProjectile projectile;
+
+	// TODO: Consider removing and replacing functionality
+	private Vector2 ledgePoint;
 
 	public Player(TextureAtlas atlas) {
 		super(atlas, 1, 1);
@@ -88,12 +97,12 @@ public class Player extends Entity {
 
 	public void charge() {
 		isCharging = true;
-		animate(isOnGround ? "rare" : "attack"); // TODO: Account for aerial attacks
+		animate(isOnGround() ? "rare" : "attack"); // TODO: Account for aerial attacks
 	}
 	
 	public void attack() {
 		// Throw guitar
-		if (charge == 1 || !isOnGround) {	// TODO: Change max charge to variable (possibly in @{Units})
+		if (charge == 1 || !isOnGround()) {	// TODO: Change max charge to variable (possibly in @{Units})
 			System.out.println("Throwing guitar");
 			projectile.throwProjectile(getBody().getPosition().x, getBody().getPosition().y, isFlipped());
 		}
@@ -109,9 +118,9 @@ public class Player extends Entity {
 
 	// TODO: Delete this whole method
 	private void renderBlood(Batch batch, float delta) {
-		blood.setRegion(bloodAnim.getKeyFrame(bloodStateTime));
-		blood.draw(batch);
-		bloodStateTime += delta;
+//		blood.setRegion(bloodAnim.getKeyFrame(bloodStateTime));
+//		blood.draw(batch);
+//		bloodStateTime += delta;
 	}
 
 	// @Override
@@ -120,12 +129,12 @@ public class Player extends Entity {
 		if (getHP() < 1) {
 			return;
 		}
-		if (isOnGround && Math.abs(getBody().getLinearVelocity().x) > .01f)
+		if (isOnGround() && Math.abs(getBody().getLinearVelocity().x) > .01f)
 			animate("run");
 		else if (inMargin(getBody().getLinearVelocity().x) && getAnimationName().equals("run"))
 			animate(isCharging ? "rare" : "idle");
 
-		if (!isOnGround) {
+		if (!isOnGround()) {
 			if (getBody().getLinearVelocity().y > .1f)
 				animate("jump_up");
 			else if (getBody().getLinearVelocity().y < -1f)
@@ -133,7 +142,7 @@ public class Player extends Entity {
 		}
 
 		// Check if player should be idle
-		if (isOnGround) {
+		if (isOnGround()) {
 			if ((isAnimationFinished() && !Units.isLooping(getAnimationName())) ||
 					(isAnimation("jump_down") || isAnimation("jump_up"))) {
 				animate("idle");
@@ -162,6 +171,10 @@ public class Player extends Entity {
 		jumped = !isOnGround;
 	}
 
+	public void ledgeGrab() {
+
+	}
+
 	public void push() {
 
 	}
@@ -172,6 +185,10 @@ public class Player extends Entity {
 
 		getBody().applyLinearImpulse(force, getBody().getWorldCenter(), true);
 		applyOpposingForce();
+	}
+
+	public boolean isOnGround() {
+		return isOnGround && Math.abs(getBody().getLinearVelocity().y) < .001f;
 	}
 
 	public void setOnGround(boolean isOnGround) {
@@ -232,6 +249,25 @@ public class Player extends Entity {
 		}
 	}
 
+	// TODO: Cleanup after testing
+	public void grabLedge() {
+		getBody().setTransform(ledgePoint.add(0, getHeight() / 2), 0);
+		System.out.println("GRABBING LEDGE");
+	}
+
+	public void setCanGrabLedge(boolean canGrabLedge) {
+		this.canGrabLedge = canGrabLedge;
+	}
+
+	public boolean canGrabLedge() {
+		return canGrabLedge;
+	}
+
+	public void setLedgePoint(Vector2 ledgePoint) {
+		this.ledgePoint = ledgePoint;
+		System.out.println("Set ledge point to " + ledgePoint);
+	}
+
 	public void switchStates(TextureAtlas atlas) {
 		setAtlas(atlas);
 	}
@@ -258,24 +294,12 @@ public class Player extends Entity {
 
 	}
 
-	public boolean isPaused() {
-		return isPaused;
-	}
-
 	public boolean isCharging() {
 		return isCharging;
 	}
 
 	public float getCharge() {
 		return charge;
-	}
-
-	public void setPaused(boolean isPaused) {
-		this.isPaused = isPaused;
-	}
-
-	public void togglePause() {
-		isPaused = !isPaused;
 	}
 
 	public void dispose() {
@@ -297,10 +321,28 @@ public class Player extends Entity {
 		xVel = x;
 	}
 
-	/**
-	 * Private inner Inventory class
-	 */
-	private class Inventory {
+	public Body createBody(Body body, Object name, float width, float height, float x, float y, boolean hasFoot) {
+		super.createBody(body, name, width, height, x, y, hasFoot);
 
+		float w = .3f;
+		float h = .5f;
+
+		// Create 'left hand' sensor
+		PolygonShape box = new PolygonShape();
+		box.setAsBox(w, h, new Vector2(x - .4f, y + 1), 0);
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = box;
+		fixtureDef.filter.categoryBits = Units.ENTITY_FLAG;
+		fixtureDef.filter.maskBits = Units.GROUND_FLAG | Units.PLAYER_FLAG;
+		fixtureDef.filter.groupIndex = 2;
+		fixtureDef.isSensor = true;
+		body.createFixture(fixtureDef).setUserData("hand");
+
+		// Create 'right hand' sensor
+		box.setAsBox(w, h, new Vector2(x + .4f, y + 1), 0);
+		body.createFixture(fixtureDef).setUserData("hand");
+
+		box.dispose();
+		return body;
 	}
 }
