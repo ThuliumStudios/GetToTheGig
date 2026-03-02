@@ -10,11 +10,15 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.ChainShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.thulium.game.SpawnProperties;
@@ -31,6 +35,8 @@ public class GameMap {
 	private final Array<SpawnProperties> npcs = new Array<>();
 	private final Array<SpawnProperties> items = new Array<>();
 	private final Array<SpawnProperties> scenes = new Array<>();
+
+	private final Array<Fixture> ledges = new Array<>();
 
 	private final ParallaxScene parallax;
 
@@ -76,8 +82,9 @@ public class GameMap {
 				if (cell == null || cell.getTile() == null || !cell.getTile().getProperties().containsKey("collision"))
 					continue;
 				bodyDef.type = BodyType.StaticBody;
-				bodyDef.position.set((x + .5f) / 2f, (y + .8f) / 2f);
+				bodyDef.position.set((x + .5f) / 2f, (y + .8f) / 2f); // TODO: Review hard-coded values
 
+				// TODO: For parallel bodies, merge into one collision object
 				ChainShape cs = new ChainShape();
 				Vector2[] v = new Vector2[5];
 				v[0] = new Vector2((-1 / 2f), (-1 / 8f));
@@ -94,7 +101,25 @@ public class GameMap {
 				fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
 				fixtureDef.filter.maskBits = Units.ENTITY_FLAG | Units.PLAYER_FLAG | Units.ALL_FLAG;
 				fixtureDef.isSensor = false;
-				world.createBody(bodyDef).createFixture(fixtureDef);
+				world.createBody(bodyDef).createFixture(fixtureDef).setUserData("platform"); // TODO: Fix to filter platforms versus standard collision
+
+				// Create ledges where applicable
+				if (cell.getTile() == null || cell.getTile().getProperties().containsKey("ledge")) {
+					boolean left = cell.getTile().getProperties().get("ledge", Boolean.class); // Left by default
+					Arrays.asList(v).forEach(vec -> vec.add(left ? - 1 : 1, 0));
+
+					PolygonShape ledge = new PolygonShape();
+					ledge.setAsBox(1/2f, 1/8f);
+
+					fixtureDef.shape = ledge;
+					fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
+					fixtureDef.filter.maskBits = Units.ENTITY_FLAG | Units.PLAYER_FLAG | Units.ALL_FLAG;
+					fixtureDef.isSensor = true;
+					Fixture ledgeFixture = world.createBody(bodyDef).createFixture(fixtureDef);
+					ledgeFixture.setUserData("ledge");
+
+					// ledges.add(ledgeBody.createFixture(fixtureDef));
+				}
 				cs.dispose();
 			}
 		}
@@ -137,91 +162,20 @@ public class GameMap {
 		}
 	}
 
-//	public void createBox2dObjectsOLD(World world, BodyDef bodyDef, FixtureDef fixtureDef) {
-//		// Create Box2d bodies
-//		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("collision");
-//		for (int y = 0; y < layer.getHeight(); y++) {
-//			for (int x = 0; x < layer.getWidth(); x++) {
-//				Cell cell = layer.getCell(x, y);
-//
-//				if (cell == null || cell.getTile() == null)
-//					continue;
-//				bodyDef.type = BodyType.StaticBody;
-//				bodyDef.position.set((x + .5f) / 2f, (y + .8f) / 2f);
-//
-//
-//				ChainShape cs = new ChainShape();
-//				Vector2[] v = new Vector2[5];
-//				v[0] = new Vector2((-1 / 2f), (-1 / 8f));
-//				v[1] = new Vector2((-1 / 2f), (1 / 8f));
-//				v[2] = new Vector2((1 / 2f), (1 / 8f));
-//				v[3] = new Vector2((1 / 2f), (-1 / 8f));
-//				v[4] = new Vector2(v[0]);
-//
-//				Arrays.asList(v).forEach(vec -> vec.scl(.5f));
-//
-//				cs.createChain(v);
-//				fixtureDef.friction = .01f;//.5f;
-//				fixtureDef.shape = cs;
-//				fixtureDef.filter.categoryBits = Units.GROUND_FLAG;
-//				fixtureDef.filter.maskBits = Units.ENTITY_FLAG | Units.PLAYER_FLAG | Units.ALL_FLAG;
-//				fixtureDef.isSensor = false;
-//				world.createBody(bodyDef).createFixture(fixtureDef);
-//				cs.dispose();
-//			}
-//		}
-//
-//		// Create spawn items
-//		TiledMapTileLayer spawns = (TiledMapTileLayer) map.getLayers().get("spawns");
-//		for (int y = 0; y < spawns.getHeight(); y++) {
-//			for (int x = 0; x < spawns.getWidth(); x++) {
-//				Cell cell = spawns.getCell(x, y);
-//				if (cell != null) {
-//					SpawnProperties spawn = new SpawnProperties();
-//					spawn.setName(cell.getTile().getProperties().get("spawn", String.class));
-//					spawn.setX(x);
-//					spawn.setY(y);
-//					spawn.setWidth(cell.getTile().getProperties().get("width", Float.class));
-//					spawn.setHeight(cell.getTile().getProperties().get("height", Float.class));
-//
-//					switch (cell.getTile().getProperties().get("type", String.class)) {
-//						case "enemy":
-//							spawn.setType(SpawnProperties.SpawnType.Enemy);
-//							enemies.add(spawn);
-//							break;
-//						case "npc":
-//							spawn.setType(SpawnProperties.SpawnType.Npc);
-//							npcs.add(spawn);
-//							break;
-//						case "item":
-//							spawn.setType(SpawnProperties.SpawnType.Item);
-//							items.add(spawn);
-//							break;
-//						case "scene":
-//							spawn.setType(SpawnProperties.SpawnType.SceneObject);
-//							scenes.add(spawn);
-//							break;
-//						default:
-//							break;
-//					}
-//				}
-//			}
-//		}
-//	}
-
 	public Array<SpawnProperties> get(SpawnProperties.SpawnType type) {
 		switch (type) {
-			case Enemy:
-				return enemies;
-			case Npc:
+            case Enemy -> {
+                return enemies;
+            } case Npc -> {
 				return npcs;
-			case Item:
+			} case Item -> {
 				return items;
-			case SceneObject:
-				return scenes;
-			default:
-				return null;
-		}
+			} case SceneObject -> {
+                return scenes;
+            } default -> {
+                return null;
+            }
+        }
 	}
 
 	public <T> T getProperty(String property, Class<T> classType) {
@@ -239,7 +193,8 @@ public class GameMap {
 	private static class ParallaxScene {
 		private final Array<TextureRegion> fgs;
         private final Array<TextureRegion> bgs;
-		private final float mul = 512f;
+		private final float speed = 32;
+		private int factor = 0;
 
 		public ParallaxScene() {
 			bgs = new Array<>();
@@ -249,28 +204,36 @@ public class GameMap {
 		public void renderBG(Batch batch, OrthographicCamera camera) {
 			batch.setColor(1, 1, 1, 1f); // .25f alpha
 			bgs.forEach(bg -> {
-				int i = bgs.indexOf(bg, true);
-				bg.setRegionX((int) (camera.position.x * Math.sqrt(mul) * i) % bg.getTexture().getWidth());
+				// bg.setRegionX((int) (camera.position.x * (speed / factor++)) % bg.getTexture().getWidth());
+				// bg.setRegionWidth(bg.getTexture().getWidth());
+				float adjusted = speed * (++factor / (float) bgs.size);
+				// bg.setRegionX((int) (camera.position.x * (speed / Math.pow(++factor, 2))) % bg.getTexture().getWidth());
+				bg.setRegionX((int) (camera.position.x * adjusted));
 				bg.setRegionWidth(bg.getTexture().getWidth());
 
-				batch.draw(bg, camera.position.x - camera.viewportWidth/2f, camera.position.y - camera.viewportHeight / 2f,
-						Units.WIDTH * 1.25f, Units.HEIGHT * 1.25f);
+				batch.draw(bg,
+						camera.position.x - camera.viewportWidth / 2f,
+						camera.position.y - camera.viewportHeight / 2f,
+						Units.WIDTH * 1.25f,
+						Units.HEIGHT * 1.25f);
+
 			});
+			factor = 0;
 			batch.setColor(Color.WHITE);
 		}
 
 		public void renderFG(Batch batch, OrthographicCamera camera) {
-			fgs.forEach(fg -> {
-				fg.setRegionX((int) (camera.position.x * mul) % fg.getTexture().getWidth());
-				fg.setRegionWidth(fg.getTexture().getWidth());
-
-				// TODO: Delete
-				fg.setRegionX((int) (camera.position.x * mul) % fg.getTexture().getWidth());
-				fg.setRegionWidth(fg.getTexture().getWidth());
-
-				batch.draw(fg, camera.position.x - camera.viewportWidth/2f, camera.position.y - camera.viewportHeight / 2f,
-						Units.WIDTH, Units.HEIGHT);
-			});
+//			fgs.forEach(fg -> {
+//				fg.setRegionX((int) (camera.position.x * mul) % fg.getTexture().getWidth());
+//				fg.setRegionWidth(fg.getTexture().getWidth());
+//
+//				// TODO: Delete
+//				fg.setRegionX((int) (camera.position.x * mul) % fg.getTexture().getWidth());
+//				fg.setRegionWidth(fg.getTexture().getWidth());
+//
+//				batch.draw(fg, camera.position.x - camera.viewportWidth/2f, camera.position.y - camera.viewportHeight / 2f,
+//						Units.WIDTH, Units.HEIGHT);
+//			});
 		}
 
 		public void addBackgrounds(Texture... bgsToAdd) {
