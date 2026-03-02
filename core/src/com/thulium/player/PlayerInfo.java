@@ -39,7 +39,7 @@ public class PlayerInfo {
 		infoLabel = new Label("" + Gdx.graphics.getFramesPerSecond(), skin);
 
 		status = new Label("", skin);
-		status.setFontScale(5);
+		status.setFontScale(2);
 		status.setPosition(stage.getWidth() / 4f, stage.getHeight() / 2f);
 
 		hearts = player.getHP();
@@ -103,10 +103,6 @@ public class PlayerInfo {
 	
 	public String roundedVector(Vector2 v) {
 		return String.format(Locale.US, "%.2f", v.x) + ", " + String.format(Locale.US, "%.2f", v.y);
-	}
-	
-	public Stage getStage() {
-		return stage;
 	}
 
 	public void resize(int width, int height) {

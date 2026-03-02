@@ -2,6 +2,10 @@ package com.thulium.game;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -12,9 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.thulium.input.PlayerInput;
 import com.thulium.item.Item;
 
 import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +35,8 @@ public class PauseMenu {
     // Tables
     private final Table leftTable;
     private final Table rightTable;
+
+    private boolean isPaused;
 
     private static final String[] options = {"*Inventory", "*Game Options", "*Audio", "*Controls"};
     private final Map<String, Table> tables = new HashMap<>();
@@ -162,20 +170,7 @@ public class PauseMenu {
         table.add(leftTable, rightTable);
         stage.addActor(table);
 
-        // TEST
-        stage.addListener(new InputListener() {
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                // Hard-coded inputs
-                switch (keycode) {
-                    case Input.Keys.TAB:
-                        stage.setKeyboardFocus(getNextActor(stage.getKeyboardFocus()));
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
+        stage.addListener(new PauseInput());
     }
 
     public void render(float delta) {
@@ -194,6 +189,10 @@ public class PauseMenu {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public void setPaused(boolean isPaused) {
+        this.isPaused = isPaused;
     }
 
     public void dispose() {
@@ -219,5 +218,83 @@ public class PauseMenu {
 
         System.out.println("Focused " + nextActor);
         return nextActor;
+    }
+
+    /**
+     *  Input class for Stage/Pause menu input handling
+     */
+    private class PauseInput extends InputListener implements ControllerListener {
+        private final Map<Integer, Integer> buttonMap = new HashMap<>();
+
+        public PauseInput() {
+            // Controllers.addListener(this);
+        }
+
+        /*
+         * Keyboard/mouse input methods
+         */
+        @Override
+        public boolean keyDown(InputEvent event, int keycode) {
+            switch (keycode) {
+                case PlayerInput.DOWN:
+                    stage.setKeyboardFocus(getNextActor(stage.getKeyboardFocus()));
+                    break;
+                default:
+                    break;
+            }
+            return isPaused;
+        }
+
+        /*
+         * Controller input methods
+         */
+        @Override
+        public void connected(Controller controller) {
+            System.out.println("Controller " + controller.getPlayerIndex() + " connected.");
+        }
+
+        @Override
+        public void disconnected(Controller controller) {
+            System.out.println("Controller " + controller.getPlayerIndex() + " disconnected.");
+        }
+
+        @Override
+        public boolean buttonDown(Controller controller, int buttonCode) {
+            System.out.println("Pressing button " + buttonCode + " mapped to " + buttonMap.get(buttonCode));
+            return keyDown(new InputEvent(), buttonMap.get(buttonCode));
+        }
+
+        @Override
+        public boolean buttonUp(Controller controller, int buttonCode) {
+            return keyUp(new InputEvent(), buttonCode);
+        }
+
+        /**
+         * @param controller The controller sending the input
+         * @param axisCode   Left/right (0), up/down (1)
+         * @param value      A -1 (left/down) to 1 (right/up) range indicating how far the axis has moved
+         * @return Only true if the value is greater than zero and the corresponding input process returns true.
+         * Returns key up if the axis is less than .1, representing a resting position
+         */
+        @Override
+        public boolean axisMoved(Controller controller, int axisCode, float value) {
+            InputEvent event = new InputEvent();
+            switch (axisCode) {
+                case 0:    // Left-right
+                    return false;
+                case 1:    // Up-down
+                    if (Math.abs(value) > .1f) {    // Joystick moved
+                        System.out.println("On pause, controller moved " + value);
+                        return value > 0 ? keyDown(event, PlayerInput.WALK_RIGHT) : keyDown(event, PlayerInput.WALK_LEFT);
+                    }
+                case 2:    // Left joycon, left-right
+                case 3:    // Left joycon, up-down
+                case 4:    // Left trigger
+                case 5:    // Right trigger
+                    return false;
+                default:
+                    return false;
+            }
+        }
     }
 }

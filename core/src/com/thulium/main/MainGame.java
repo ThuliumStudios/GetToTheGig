@@ -99,7 +99,7 @@ public class MainGame extends Game {
 		assets.finishLoadingAsset("skin/uiskin.json");
 		skin = assets.get("skin/uiskin.json");
 
-		assets.finishLoading();
+		assets.finishLoading(); // TODO: Remove, handle in splash screen
 		assets.finishLoadingAsset("img/player.atlas");
 	}
 
@@ -110,8 +110,8 @@ public class MainGame extends Game {
 	@Override
 	public void dispose() {
 		super.dispose();
+		// getScreen().dispose();
 		assets.dispose();
 		batch.dispose();
-		getScreen().dispose();
 	}
 }
