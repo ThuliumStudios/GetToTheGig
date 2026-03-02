@@ -4,16 +4,19 @@
  <tile id="0">
   <properties>
    <property name="collision" value=""/>
+   <property name="ledge" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="1">
   <properties>
    <property name="collision" value=""/>
+   <property name="ledge" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="2">
   <properties>
    <property name="collision" value=""/>
+   <property name="ledge" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="3">
@@ -29,6 +32,7 @@
  <tile id="5">
   <properties>
    <property name="collision" value=""/>
+   <property name="ledge" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="6">
