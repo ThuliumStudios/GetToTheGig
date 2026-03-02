@@ -5,10 +5,7 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -24,9 +21,7 @@ import com.thulium.item.EquipmentItem;
 import com.thulium.item.Item;
 import com.thulium.main.MainGame;
 import com.thulium.player.Player;
-import com.thulium.input.PlayerControllerInput;
 import com.thulium.player.PlayerInfo;
-import com.thulium.input.PlayerInput;
 import com.thulium.player.PlayerProjectile;
 import com.thulium.scene.Checkpoint;
 import com.thulium.scene.InteractableSceneObject;
@@ -41,14 +36,11 @@ public class GameWorld {
 	private final Array<Item> items = new Array<>();
 	private final Array<InteractableSceneObject> sceneObjects = new Array<>();
 
-	// World environment objects removed here
 	private GameWorldEnvironment environment;
 	private Vector2 gravity;
 	private World world;
 	private GameMap map;
 	private Player player;
-//	private Amp amp;
-//	private Cable cable;
 	private MyContactListener cl;
 
 	private Box2DDebugRenderer debugRenderer;
@@ -57,7 +49,6 @@ public class GameWorld {
 	
 	// TODO: Delete
 	private PlayerInfo info;
-	private PlayerInput pIn;
 	private Body hitSensor;
 	private ShapeRenderer shapeRenderer;
 
@@ -75,7 +66,6 @@ public class GameWorld {
 	public GameWorld(MainGame game) {
 		this.game = game;
 		Box2D.init();
-		// Jukebox.playMusic(1);
 
 		// Create Box2d methods and functions
 		cl = new MyContactListener(this);
@@ -109,7 +99,12 @@ public class GameWorld {
 
 		// TODO: Delete - creates player collision body
 		Preferences prefs = Gdx.app.getPreferences("world");
-		addEntity(player, .6f,  .2f, prefs.getFloat("x"), prefs.getFloat("y"), 0,
+//		addEntity(player, .6f,  .2f, prefs.getFloat("x"), prefs.getFloat("y"), 0,
+//				player.getHeight() * -.5f + (.2f))
+//				.setLinearDamping(.5f);
+
+		// Test
+		addEntity(player, "player", .6f,  .2f, prefs.getFloat("x"), prefs.getFloat("y"), 0,
 				player.getHeight() * -.5f + (.2f))
 				.setLinearDamping(.5f);
 		player.setOriginalMass(5);
@@ -165,10 +160,6 @@ public class GameWorld {
 		};
 
 		groundBox.dispose();
-
-		pIn = new PlayerInput(player);
-//		pIn.setAmp(amp);
-//		pIn.setCable(cable);
 
 		{	// TODO: Delete. Creates a collision box surrounding the map
 			shapeRenderer = new ShapeRenderer();
@@ -283,6 +274,8 @@ public class GameWorld {
 			}
 		}
 
+		 // Move
+
 		if (player.isAnimation("run")) {
 			if (player.getCurrentAnimationFrame() == 1 || player.getCurrentAnimationFrame() == 4) {
 				ParticleEffect p = particlePool.obtain();
@@ -340,11 +333,13 @@ public class GameWorld {
 //		}
 
 		// TODO: Change collision filters for all entities in loop
+/*
 		if (player.getBody().getLinearVelocity().y >= .001f) {
 			player.changeCollisionFilters(Units.PLAYER_FLAG, (short) 0);
 		} else {
 			player.changeCollisionFilters(Units.PLAYER_FLAG, (short) (Units.GROUND_FLAG | Units.ENTITY_FLAG));
 		}
+*/
 
 
 
@@ -357,12 +352,6 @@ public class GameWorld {
 //				// player.changeCollisionGroup((short) 1);
 //			}
 //		}
-
-		player.changeCollisionGroup(player.getBody().getLinearVelocity().y >= .001f
-				// || player.getBody().getPosition().y < amp.getBody().getPosition().y + .6f
-				//? (short) 2 : (short) 1
-				? Units.PLAYER_FLAG : Units.ALL_FLAG
-		);
 
 		// TODO: Delete. Handles player death/dying, needs to be moved
 		if (player.getHP() == 0) {
@@ -379,6 +368,10 @@ public class GameWorld {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public Body addEntity(Entity e, Object data, float width, float height, float spawnX, float spawnY, float x, float y) {
+		return e.createBody(world.createBody(e.getBodyDef(spawnX, spawnY)), data, width / 2f, height / 2f, x, y,true);
 	}
 
 	public Body addEntity(Entity e, float width, float height, float spawnX, float spawnY, float x, float y) {
@@ -462,12 +455,6 @@ public class GameWorld {
 
 	}
 
-	public InputProcessor getInputProcessors() {
-		InputMultiplexer input = new InputMultiplexer(pIn, info.getStage());
-		Controllers.addListener(new PlayerControllerInput(pIn, this));
-		return input;
-	}
-
 	// TODO: DELETE everything below
 	public void makeHitbox() {
 		PolygonShape hitboxShape = new PolygonShape();
@@ -475,7 +462,8 @@ public class GameWorld {
 		FixtureDef hitboxDef = new FixtureDef();
 
 		// hitboxShape.setAsBox(.5f, .5f, new Vector2(0, 0), 0);
-		hitboxShape.setAsBox(.5f, 1, new Vector2(0, 0), 0);
+		// hitboxShape.setAsBox(.5f, 1, new Vector2(0, 0), 0);
+		hitboxShape.setAsBox(.5f, 1);
 
 		hitboxDef.shape = hitboxShape;
 		hitboxDef.filter.categoryBits = Units.PLAYER_FLAG;

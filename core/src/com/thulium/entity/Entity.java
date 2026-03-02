@@ -91,16 +91,8 @@ public class Entity extends BaseEntity {
 		this.originalMass = originalMass;
 	}
 
-	public void createBody(Body body, float width, float height) {
-		createBody(body, "entity", width, height, width, height, true);
-	}
-
 	public Body createBody(Body body, float width, float height, float x, float y) {
 		return createBody(body, "entity", width, height, x, y, true);
-	}
-
-	public Body createBody(Body body, Object name, float width, float height, boolean hasFoot) {
-		return createBody(body, "entity", width, height, width, height, hasFoot);
 	}
 
 	public Body createBody(Body body, Object name, float width, float height, float x, float y, boolean hasFoot) {
@@ -128,22 +120,13 @@ public class Entity extends BaseEntity {
 		return body;
 	}
 
-	public void changeCollisionFilters(short categoryBits, short maskBits) {
-		body.getFixtureList().forEach(f -> {
-			Filter filter = f.getFilterData();
-			filter.categoryBits = categoryBits;
-			filter.maskBits = maskBits;
-			body.getFixtureList().first().setFilterData(filter);
-		});
-	}
-
-	public void changeCollisionGroup(short group) {
-		body.getFixtureList().forEach(f -> {
-			Filter filter = f.getFilterData();
-			filter.groupIndex = group;
-			body.getFixtureList().first().setFilterData(filter);
-		});
-	}
+//	public void changeCollisionGroup(short group) {
+//		body.getFixtureList().forEach(f -> {
+//			Filter filter = f.getFilterData();
+//			filter.groupIndex = group;
+//			body.getFixtureList().first().setFilterData(filter);
+//		});
+//	}
 	
 	public void dispose() {
 		super.dispose();
